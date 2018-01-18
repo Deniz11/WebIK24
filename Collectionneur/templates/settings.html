@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Settings
+{% endblock %}
+
+{% block main %}
+    <p style = "align-text:center">
+        <font size="5">Change Password</font>
+    </p>
+
+    <form action="{{ url_for('settings') }}" method="post">
+        <fieldset>
+
+            <div class="form-group">
+                <input class="form-control" name="password" placeholder="Password" type="password"/>
+            </div>
+            <div class="form-group">
+                <input class="form-control" name="password-new" placeholder="New password" type="password"/>
+            </div>
+            <div class="form-group">
+                <input class="form-control" name="password-new-again" placeholder="New password again" type="password"/>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-default" type="submit" value= "change password selected" name="change password selected">change password</button>
+            </div>
+        </fieldset>
+    </form>
+
+    <p style = "align-text:center">
+        <font color="red">------------------------------------------------------------------------------------------------------------------</font>
+    </p>
+
+    <p style = "align-text:center">
+        <font size="5">Delete account</font>
+    </p>
+
+    <form action="{{ url_for('settings') }}" method="post">
+        <fieldset>
+
+            <div class="form-group">
+                <input class="form-control" name="username" placeholder="username" type="text"/>
+            </div>
+
+            <div class="form-group">
+                <input class="form-control" name="password" placeholder="Password" type="password"/>
+            </div>
+            <div class="form-group">
+                <input class="form-control" name="password-again" placeholder="Password again" type="password"/>
+            </div>
+
+            <div>
+            <input type="checkbox" id="checker" name="delete account" value=True>
+            <label for="checker">Yes, I want to delete my account.</label>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-default" type="submit" value= "delete account selected" name= "delete account selected">delete my account</button>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}
