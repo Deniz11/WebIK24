@@ -1,8 +1,16 @@
 import csv
 import urllib.request
+from cs50 import SQL
 
 from flask import redirect, render_template, request, session
 from functools import wraps
+
+# configure CS50 Library to use SQLite database
+db = SQL("sqlite:///Collectionneur.db")
+
+def test(username):
+
+    return db.execute("SELECT * FROM users WHERE username = :username", username=username)
 
 
 def apology(message, code=400):
