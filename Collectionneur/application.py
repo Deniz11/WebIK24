@@ -56,6 +56,9 @@ def login():
             flash("Please provide a password")
             return render_template("login.html")
 
+        # for test purposes
+        print(test(request.form.get("username")))
+
         # query database for username
         rows = db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username"))
 
