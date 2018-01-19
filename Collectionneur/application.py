@@ -3,6 +3,7 @@ from flask import Flask, flash, redirect, render_template, request, session, url
 from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
+from communities import Community as com
 
 from helpers import *
 
@@ -224,3 +225,19 @@ def settings():
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("settings.html")
+
+@app.route("/createcommunity", methods=["GET", "POST"])
+@login_required
+def createcommunity():
+
+    # if user reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+
+        # pass input to function
+        com.create(request.form.get("communityname"), request.form.get("communitydescription"))
+
+        # redirect to newly created community
+        return redirect(url_for("community"))
+
+    else:
+        return render_template("createcommunity.html")
