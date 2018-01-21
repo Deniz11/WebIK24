@@ -1,7 +1,7 @@
 from imdbpie import Imdb
 imdb = Imdb()
 
-class homepage():
+class Home():
     def get_popular_movies():
         lijst = []
         popular = imdb.get_popular_movies()
