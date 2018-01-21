@@ -2,6 +2,29 @@ class User(User):
     def __init__(self, username, password):
         self.username = username
 
+    def register():
+        # register user
+        hash1 = pwd_context.hash(request.form.get("password"))
+        rows=db.execute("INSERT INTO users (username, hash) VALUES(:username, :password)", username=request.form.get("username"), password=hash1)
+        # let user log in
+        flash("Account succesfully created")
+        return redirect(url_for("login"))
+
+    def changepass():
+        # update password
+        db.execute("UPDATE users SET hash = :hash1 WHERE id= :id ",hash1 = hash1, id = session["user_id"])
+        # show index page
+        flash("Succesfully changed password")
+        return redirect(url_for("index"))
+
+    def deleteaccount():
+        # delete user
+        db.execute("DELETE FROM users WHERE id= :id ", id = session["user_id"])
+
+        # show index/log in page
+        flash("Succesfully deleted account")
+        return redirect(url_for("logout"))
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """Log user in."""
@@ -143,11 +166,7 @@ def settings():
             hash1 = pwd_context.hash(request.form.get("password-new"))
 
             # update password
-            db.execute("UPDATE users SET hash = :hash1 WHERE id= :id ",hash1 = hash1, id = session["user_id"])
-
-            # show index page
-            flash("Succesfully changed password")
-            return redirect(url_for("index"))
+            changepass()
 
         if request.form.get("delete account selected"):
 
@@ -178,11 +197,7 @@ def settings():
                 return render_template("settings.html")
 
             # delete user
-            db.execute("DELETE FROM users WHERE id= :id ", id = session["user_id"])
-
-            # show index/log in page
-            flash("Succesfully deleted account")
-            return redirect(url_for("logout"))
+            deleteaccount()
 
         else:
             flash("nothing selected")

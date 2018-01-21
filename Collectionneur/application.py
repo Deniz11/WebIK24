@@ -4,6 +4,8 @@ from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 # from communities import communities as com
+from communities import Communities as com
+
 from imdbpie import Imdb
 imdb = Imdb()
 
