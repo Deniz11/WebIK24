@@ -7,4 +7,17 @@
 {% block main %}
     <h1 align="center">Filmdatabase</h1>
     <h2 align="center">Op deze website kunt u lijsten aanmaken met uw favoriete films en community's volgen met de laatste filmupdates.</h2>
+
+
+    <table class="centered thick-border">
+	<tr>
+		<th>First name</th>
+		<th>Age</th>
+	</tr>
+	{% for k in popular.items() %}
+		<tr>
+			<td>{{ k }}</td>
+			<td>{{ v }}</td>
+		</tr>
+	{% endfor %}
 {% endblock %}

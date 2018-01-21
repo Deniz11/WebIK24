@@ -5,6 +5,9 @@ from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 from communities import Communities as com
 
+from imdbpie import Imdb
+imdb = Imdb()
+
 from helpers import *
 
 # configure application
@@ -34,7 +37,8 @@ db = SQL("sqlite:///Collectionneur.db")
 @app.route("/")
 @login_required
 def index():
-    return render_template("index.html")
+    popular = imdb.get_popular_titles()
+    return render_template("index.html", popular=popular)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
