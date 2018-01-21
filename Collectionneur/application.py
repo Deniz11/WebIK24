@@ -4,6 +4,8 @@ from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 from communities import Community as com
+from imdbpie import Imdb
+imdb = Imdb()
 
 from helpers import *
 
@@ -34,7 +36,8 @@ db = SQL("sqlite:///Collectionneur.db")
 @app.route("/")
 @login_required
 def index():
-    return render_template("index.html")
+    popular = imdb.get_popular_titles()
+    return render_template("index.html", popular=popular)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
