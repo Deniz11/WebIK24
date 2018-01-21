@@ -1,8 +1,14 @@
-class User(User):
+from cs50 import SQL
+
+# configure CS50 Library to use SQLite database
+db = SQL("sqlite:///Collectionneur.db")
+
+
+class User():
     def __init__(self, username, password):
         self.username = username
 
-    def register():
+    def registeruser():
         # register user
         hash1 = pwd_context.hash(request.form.get("password"))
         rows=db.execute("INSERT INTO users (username, hash) VALUES(:username, :password)", username=request.form.get("username"), password=hash1)
