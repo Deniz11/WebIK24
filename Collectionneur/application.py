@@ -39,8 +39,8 @@ db = SQL("sqlite:///Collectionneur.db")
 @app.route("/")
 @login_required
 def index():
-    popular = imdb.get_popular_titles()
-    return render_template("index.html", popular=popular)
+    home.get_popular_movies()
+    return render_template("index.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
