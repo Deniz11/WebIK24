@@ -39,13 +39,7 @@
                         {% if session.user_id %}
                             <ul class="nav navbar-nav">
 
-                                <div class="dropdown">
-                                  <button class="dropbtn">Zoeken</button>
-                                  <div class="dropdown-content">
-                                    <a href="#">Search for community</a>
-                                    <a href="#">Search for movie</a>
-                                  </div>
-                                </div>
+                                <li><a href="{{ url_for('search') }}"><font size="5">Search</font></a></li>
 
                                 <div class="dropdown">
                                   <button class="dropbtn">Communities</button>
@@ -69,13 +63,8 @@
                         {% else %}
                             <ul class="nav navbar-nav">
 
-                                <div class="dropdown">
-                                    <button class="dropbtn">Zoeken</button>
-                                        <div class="dropdown-content">
-                                            <a href="#">Search for community</a>
-                                            <a href="#">Search for movie</a>
-                                        </div>
-                                </div>
+                                <li><a href="{{ url_for('search') }}"><font size="5">Search</font></a></li>
+
                             </ul>
 
                             <ul class="nav navbar-nav navbar-right">

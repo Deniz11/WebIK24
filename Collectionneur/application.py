@@ -6,6 +6,7 @@ from tempfile import mkdtemp
 from communities import Communities as com
 from user import User as user
 from homepage import Home as home
+from search import Search
 
 from imdbpie import Imdb
 imdb = Imdb()
@@ -247,3 +248,95 @@ def createcommunity():
 
     else:
         return render_template("createcommunity.html")
+
+@app.route("/search", methods=["GET", "POST"])
+def search():
+
+    # if user reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+
+        # check if user want to join community
+        if request.form.get("join community"):
+
+            # community.join(request.form.get("join community"))
+
+            flash("todo join community")
+            return render_template("search.html", community_select = True)
+
+        # go to community page
+        if request.form.get("go to community page"):
+            flash("todo go to community page")
+            return render_template("search.html")
+
+        # check if more information route clicked
+        if request.form.get("imdb_id"):
+
+            full_movie_info = Search.title_info(request.form.get("imdb_id"))
+
+            return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
+
+        # check if user want to add item to list
+        if request.form.get("add_to_list"):
+
+            # check if something filled in
+            if not request.form.get("name"):
+                full_movie_info = Search.title_info(request.form.get("add_to_list"))
+                flash("please fill in a community/user")
+                return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
+
+            # add list to community user
+
+            # add film in films
+            Search.add_item(request.form.get("add_to_list"))
+
+            full_movie_info = Search.title_info(request.form.get("add_to_list"))
+            return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
+
+
+        # if nothing selected to search for
+        if request.form.get("search_for") == "None":
+            flash("please select something to search")
+            return render_template("search.html", select_something_select = True)
+
+        # if movie selected to search for
+        if request.form.get("search_for") == "movie":
+
+            # check if something filled in
+            if not request.form.get("search"):
+                flash("please fill in something to search")
+                return render_template("search.html", movie_select = True)
+
+            # check if something found or valid search given
+            if not only_signs(request.form.get("search")) or not Search.search_titles(request.form.get("search")):
+                flash("Nothing found")
+                return render_template("search.html", movie_select = True)
+
+            all_movie_info = Search.search_titles(request.form.get("search"))
+            return render_template("search.html", all_movie_info=all_movie_info, movie_select = True)
+
+
+        # if community selected to search for
+        if request.form.get("search_for") == "community":
+
+            # remember search name
+            to_search = request.form.get("search")
+
+            # check if something filled in
+            if not to_search:
+                flash("please fill in something to search")
+                return render_template("search.html", community_select = True)
+
+            # search communities
+            communities_found = Search.community(to_search)
+
+            # notify that no communities similiar to search
+            if not communities_found:
+                flash("no communities found")
+                render_template("search.html", community_select = True)
+
+            return render_template("search.html", communities_found = communities_found, community_select = True)
+
+
+    # else if user reached route via GET (as by clicking a link or via redirect)
+    else:
+        return render_template("search.html")

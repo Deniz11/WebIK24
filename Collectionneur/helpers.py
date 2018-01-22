@@ -5,6 +5,9 @@ from cs50 import SQL
 from flask import redirect, render_template, request, session
 from functools import wraps
 
+from imdbpie import Imdb
+imdb = Imdb()
+
 # configure CS50 Library to use SQLite database
 db = SQL("sqlite:///Collectionneur.db")
 
@@ -120,3 +123,32 @@ def lookup(symbol):
 def usd(value):
     """Formats value as USD."""
     return f"${value:,.2f}"
+
+def valid_id(imdb_id):
+    """checks if valid imdb_id"""
+
+    # check if imdb_id stars starts with valid 2 startings characters
+    if not (imdb_id[:2] not in ['tt']):
+
+        # return true if id exist else false
+        try:
+            imdb.validate_imdb_id(imdb_id)
+            return True
+
+        except:
+            return False
+
+    # if id does not start with valid character return false
+    else:
+        return False
+
+def only_signs(s):
+    """checks if string contains only special characters"""
+
+    for character in s:
+
+        if character.isalnum():
+            return True
+
+    return False
+

@@ -1,0 +1,92 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Search
+{% endblock %}
+
+{% block main %}
+
+    <form class="search" action="{{ url_for('search') }}" method="post">
+        <input type="text" placeholder="Search.." name="search">
+        <select style="float:left" name ="search_for">
+            <option value="None" {% if select_something_select %} selected {% endif %}>search for...</option>
+            <option value="movie" {% if movie_select %} selected {% endif %}>Movie</option>
+            <option value="community" {% if community_select %} selected {% endif %}>Community</option>
+        </select>
+        <button type="submit"><i class="fa fa-search"></i></button><br>
+
+    </form>
+
+    <br><br>
+
+    {% for movie_info in all_movie_info %}
+
+    <br><p>
+        <br><font size="10">{{movie_info["title"]}}</font><br>
+    </p>
+    <img src={{movie_info["image"]}} alt="movie picture" height="382" width="268">
+
+    <p>
+        <ul style="width:100%">
+            <p style="border-bottom:1px solid grey">
+            <font size="2">title: {{movie_info["title"]}}</font>
+            </p>
+
+            <p style="border-bottom:1px solid grey">
+            <font size="2">year: {{movie_info["year"]}}</font>
+            </p>
+
+            <p style="border-bottom:1px solid grey">
+            <font size="2">{{movie_info["short plot"]}}</font>
+            </p>
+
+            <form action="{{ url_for('search') }}" method="post">
+                <fieldset>
+                    <div class="form-group">
+                        <button class="btn btn-default" type= "submit" name= "imdb_id" value = {{movie_info["imdb_id"]}} >More information</button>
+                    </div>
+                </fieldset>
+            </form>
+        </ul>
+    </p><br>
+
+    {% endfor %}
+
+    {% for community in communities_found %}
+
+    <br><p style="border-bottom:1px solid grey">
+        <br><font size="10">{{community["name"]}}</font><br>
+    </p>
+
+    <p>
+        <ul style="width:100%">
+            <p>
+            <font size="5">description: {{community["description"]}}</font>
+            </p>
+
+            <p>
+            <font size="5">total members: {{community["members amount"]}}</font>
+            </p>
+
+            <form action="{{ url_for('search') }}" method="post">
+                <fieldset>
+                    <div class="form-group">
+                        <button class="btn btn-default" type= "submit" name= "join community" value = {{community["name"]}} >Join community</button>
+                    </div>
+                </fieldset>
+            </form>
+
+            <form action="{{ url_for('search') }}" method="post">
+                <fieldset>
+                    <div class="form-group">
+                        <button class="btn btn-default" type= "submit" name= "go to community page" value = {{community["name"]}} >Go to community page</button>
+                    </div>
+                </fieldset>
+            </form>
+
+        </ul>
+    </p><br>
+
+    {% endfor %}
+
+{% endblock %}

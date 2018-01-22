@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Movie information
+{% endblock %}
+
+{% block main %}
+
+    <form class="search" action="{{ url_for('search') }}" method="post">
+        <input type="text" placeholder="Search.." name="search">
+        <select style="float:left" name ="search_for">
+            <option value="None" {% if select_something_select %} selected {% endif %}>search for...</option>
+            <option value="movie" {% if movie_select %} selected {% endif %}>Movie</option>
+            <option value="community" {% if community_select %} selected {% endif %}>Community</option>
+        </select>
+        <button type="submit"><i class="fa fa-search"></i></button><br>
+    </form>
+
+    <br><br>
+
+    <br><p>
+        <br><font size="10">{{full_movie_info["title"]}}</font><br>
+    </p>
+    <img src={{full_movie_info["image"]}} alt="movie picture">
+
+    <p>
+        <ul style="width:100%">
+            <p style="border-bottom:1px solid grey">
+            <font size="2">title: {{full_movie_info["title"]}}</font>
+            </p>
+
+            <p style="border-bottom:1px solid grey">
+            <font size="2">year: {{full_movie_info["year"]}}</font>
+            </p>
+
+            <p style="border-bottom:1px solid grey">
+            <font size="2">plot: {{full_movie_info["plot"]}}</font>
+            </p>
+
+            <p style="border-bottom:1px solid grey">
+            <font size="2">genre(s) : {{full_movie_info["genre"]}}</font>
+            </p>
+
+            <p style="border-bottom:1px solid grey">
+            <font size="2">rating : {{full_movie_info["rating"]}}</font>
+            </p>
+        </ul>
+    </p><br>
+
+    <form action="{{ url_for('search') }}" method="post">
+        <fieldset>
+            <div class="form-group">
+                <input class="form-control" name="name" placeholder="type community/user name" type="text"/>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-default" type="submit" name = "add_to_list" value ="{{full_movie_info["imdb_id"]}}" >Add to list</button>
+            </div>
+        </fieldset>
+    </form>
+
+{% endblock %}
