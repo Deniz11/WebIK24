@@ -266,7 +266,7 @@ def search():
             # search communities
             communities_found = Search.community(split[1])
 
-            return render_template("search.html", communities_found = communities_found, to_search = ("_" + split[1]), community_select = True)
+            return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + split[1]), community_select = True)
 
         # go to community page
         if request.form.get("go to community page"):
@@ -339,7 +339,7 @@ def search():
                 flash("no communities found")
                 render_template("search.html", community_select = True)
 
-            return render_template("search.html", communities_found = communities_found, to_search = ("_" + request.form.get("search")), movie_select = True)
+            return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + request.form.get("search")), movie_select = True)
 
 
     # else if user reached route via GET (as by clicking a link or via redirect)
