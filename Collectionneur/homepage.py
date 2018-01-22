@@ -3,5 +3,12 @@ imdb = Imdb()
 
 class Home():
     def get_popular_movies():
-        popular = imdb.get_popular_titles()
-        return render_template("index.html", popular=popular)
+        """returns dic of ranks"""
+
+        poptitles = imdb.get_popular_titles()["ranks"]
+        ranks = {}
+
+        for i in range(len(poptitles)):
+            ranks[i + 1] = poptitles[i]["title"]
+
+        return ranks
