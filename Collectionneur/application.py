@@ -65,14 +65,8 @@ def login():
             flash("Please provide a password")
             return render_template("login.html")
 
-        # for test purposes
-        print(test(request.form.get("username")))
-        username=request.form.get("username")
-        # query database for username
-        rows = User.userexist(username)
-
         # ensure username exists and password is correct
-        if not User.userexist(username) or not pwd_context.verify(request.form.get("password"), rows[0]["hash"]):
+        if not User.userexist(username) or not pwd_context.verify(request.form.get("password"), User.user(session["user_id"])[0]["hash"]):
             flash("Invalid username and/or password")
             return render_template("login.html")
 
