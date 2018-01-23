@@ -45,14 +45,19 @@ class Communities():
     # Return lijst met leden
     def members(name):
         rows = db.execute("SELECT username FROM community_users WHERE communityname=:communityname", communityname=name)
-        #return [row["username"] for row in rows]
+        return [row["username"] for row in rows]
 
     # Returnt overzicht van communities.
-    def show(communityname):
+    def show(communityname = ""):
         # Returnt alle communities indien invoer leeg is.
         if not communityname:
             return db.execute("SELECT * FROM community_page")
         # Zoekt gegevens van specifieke community.
         else:
             return db.execute("SELECT * FROM community_page WHERE name=:communityname",communityname=communityname)
+
+    def all_communities():
+        """returns list of all communities"""
+        rows = db.execute("SELECT name FROM community_page")
+        return [row["name"] for row in rows
 
