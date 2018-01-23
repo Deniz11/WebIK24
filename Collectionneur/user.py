@@ -43,6 +43,9 @@ class User():
         rows = db.execute("SELECT hash FROM users WHERE id = :id", id=id)
         return rows
 
+    def get_username(id):
+        return db.execute("SELECT username FROM users WHERE id = :id", id=id)[0]["username"]
+
     '''
     def mylists():
         username = db.execute("SELECT username FROM user WHERE id=:id", id = session["user_id"])
