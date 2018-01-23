@@ -13,7 +13,11 @@ class Communities():
 
     # Community aanmaken.
     def create(communityname, userid, description):
-        if len(db.execute("SELECT * FROM users WHERE username = :communityname", communityname=communityname)) == 1:
+
+        users = db.execute("SELECT * FROM users WHERE username = :communityname", communityname=communityname)
+        communities = db.execute("SELECT * FROM community_page WHERE name = :communityname", communityname=communityname)
+
+        if len(users) == 1 or len(communities) == 1
             return False
         else:
             username = db.execute("SELECT username FROM users WHERE id = :id", id=userid)[0]["username"]

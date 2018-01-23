@@ -241,8 +241,8 @@ def createcommunity():
     if request.method == "POST":
 
         # pass input to function
-         if not com.create(request.form.get("communityname"), session["user_id"], request.form.get("communitydescription")):
-             flash("name already in use")
+        if not com.create(request.form.get("communityname"), session["user_id"], request.form.get("communitydescription")):
+            flash("name already in use")
 
         # redirect to newly created community
         return redirect(url_for("community", name=request.form.get("communityname")))
