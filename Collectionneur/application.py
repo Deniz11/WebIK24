@@ -291,17 +291,21 @@ def search():
             # get community to join and to search
             split = split_community_search(request.form.get("join community"))
 
-            # join community
-
             # search communities
             communities_found = Search.community(split[1])
 
-            return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + split[1]), community_select = True)
+            # check if user is logged in
+            if "user_id" not in session:
+                flash("To use this function, please log in")
+                return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + split[1]), community_select = True)
 
-        # go to community page
-        if request.form.get("go to community page"):
-            flash("todo go to community page")
-            return render_template("search.html")
+            # join community and if already joined notify user
+            if not com.join_searched(User.get_username(session["user_id"]), split[0]):
+                flash("you are already a member of this community")
+                return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + split[1]), community_select = True)
+
+            flash("succesfully joined community")
+            return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + split[1]), community_select = True)
 
         # check if more information route clicked
         if request.form.get("imdb_id"):
