@@ -308,21 +308,40 @@ def search():
                 flash("please fill in a community/user")
                 return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
 
-            # check if user exists
-            if not User.userexist(request.form.get("name")):
+            # check if user or exists
+            if User.userexist(request.form.get("name")) or request.form.get("name") in com.all_communities():
+
+                # check if given input is user or community
+                try:
+                    user_id = User.user(request.form.get("name"))[0]["id"]
+
+                except:
+                    user_id = ""
+
+                # check if user has rights to add to given list
+                if session["user_id"] == user_id or request.form.get("name") in com.members(request.form.get("add_to_list")):
+
+                    # add film in films
+                    Search.add_item(request.form.get("add_to_list"))
+
+                    # add list to community user
+                    Lists.add_item(request.form.get("name"), request.form.get("add_to_list"))
+
+                    full_movie_info = Search.title_info(request.form.get("add_to_list"))
+
+                    return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
+
+                else:
+                    full_movie_info = Search.title_info(request.form.get("add_to_list"))
+                    flash("You can only add items to your own list or community list")
+                    return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
+
+            # notify user that user or community does not exist
+            else:
                 full_movie_info = Search.title_info(request.form.get("add_to_list"))
-                flash("user does not exist")
+                print(request.form.get("name") + " omg")
+                flash("Can not find user/community")
                 return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
-
-            # add film in films
-            Search.add_item(request.form.get("add_to_list"))
-
-            # add list to community user
-            Lists.add_item(request.form.get("name"), request.form.get("add_to_list"))
-
-            full_movie_info = Search.title_info(request.form.get("add_to_list"))
-
-            return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
 
         # if nothing selected to search for
         if request.form.get("search_for") == "None":
