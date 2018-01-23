@@ -296,20 +296,33 @@ def search():
         # check if user want to add item to list
         if request.form.get("add_to_list"):
 
+            # check if user is logged in
+            if "user_id" not in session:
+                full_movie_info = Search.title_info(request.form.get("add_to_list"))
+                flash("To use this function, please log in")
+                return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
+
             # check if something filled in
             if not request.form.get("name"):
                 full_movie_info = Search.title_info(request.form.get("add_to_list"))
                 flash("please fill in a community/user")
                 return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
 
-            # add list to community user
+            # check if user exists
+            if not User.userexist(request.form.get("name")):
+                full_movie_info = Search.title_info(request.form.get("add_to_list"))
+                flash("user does not exist")
+                return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
 
             # add film in films
             Search.add_item(request.form.get("add_to_list"))
 
-            full_movie_info = Search.title_info(request.form.get("add_to_list"))
-            return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
+            # add list to community user
+            Lists.add_item(request.form.get("name"), request.form.get("add_to_list"))
 
+            full_movie_info = Search.title_info(request.form.get("add_to_list"))
+
+            return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
 
         # if nothing selected to search for
         if request.form.get("search_for") == "None":
