@@ -5,7 +5,7 @@ class Home():
     def get_popular_movies():
         """returns dic of ranks"""
 
-        poptitles = imdb.get_popular_titles()["ranks"]
+        poptitles = imdb.get_popular_movies()["ranks"]
         ranks = {}
 
         for i in range(10):
