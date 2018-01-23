@@ -38,7 +38,6 @@ Session(app)
 db = SQL("sqlite:///Collectionneur.db")
 
 @app.route("/")
-@login_required
 def index():
     ranks = home.get_popular_movies()
     # lists = User.mylists()
