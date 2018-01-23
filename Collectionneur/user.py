@@ -7,10 +7,11 @@ db = SQL("sqlite:///Collectionneur.db")
 
 ''' User class '''
 
-class User(id):
-    def user():
-        UserInfo = db.execute("SELECT * FROM users WHERE id=:id", id=id)
+class User():
+    def user(username):
+        UserInfo = db.execute("SELECT * FROM users WHERE username=:username", username=username)
         return UserInfo
+
     def registeruser(username, hash1):
         # register user
         hash1 = pwd_context.hash(request.form.get("password"))

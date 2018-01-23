@@ -66,12 +66,12 @@ def login():
             return render_template("login.html")
 
         # ensure username exists and password is correct
-        if not User.userexist(username) or not pwd_context.verify(request.form.get("password"), User.user(session["user_id"])[0]["hash"]):
+        if not User.user(request.form.get("username")) or not pwd_context.verify(request.form.get("password"), User.user(request.form.get("username"))[0]["hash"]):
             flash("Invalid username and/or password")
             return render_template("login.html")
 
         # remember which user has logged in
-        session["user_id"] = rows[0]["id"]
+        session["user_id"] = User.user(request.form.get("username"))[0]["id"]
 
         # redirect user to home page
         flash("succesfully logged in")
@@ -237,9 +237,11 @@ def createcommunity():
         # pass input to function
         if not com.create(request.form.get("communityname"), session["user_id"], request.form.get("communitydescription")):
             flash("name already in use")
+        else:
+            com.create(request.form.get("communityname"), session["user_id"], request.form.get("communitydescription"))
 
-        # redirect to newly created community
-        return redirect(url_for("community", name=request.form.get("communityname")))
+            # redirect to newly created community
+            return redirect(url_for("community", name=request.form.get("communityname")))
 
     else:
         return render_template("createcommunity.html")
