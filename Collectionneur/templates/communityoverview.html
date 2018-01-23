@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Communities
+{% endblock %}
+
+{% block main %}
+    <head>
+        <style>
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            td, th {
+                border: 2px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: #dddddd;
+            }
+        </style>
+    </head>
+
+
+
+    <body>
+        <table>
+            <thead><tr><th>Community</th><th>Description</th></tr></thead>
+                <tbody>
+                    {% for item in overview %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>
+                                {{ item.description }}
+                                <div class="container">
+                                    <a href="{{ url_for('community', name=item.name) }}" <class="btn btn-default">More information</button>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+        </table>
+    </body>
+{% endblock %}

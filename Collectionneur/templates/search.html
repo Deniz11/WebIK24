@@ -71,7 +71,7 @@
             <form action="{{ url_for('search') }}" method="post">
                 <fieldset>
                     <div class="form-group">
-                        <button class="btn btn-default" type= "submit" name= "join community" value = {{community["name"]}} >Join community</button>
+                        <button class="btn btn-default" type= "submit" name= "join community" value = {{community["name"] + to_search}} >Join community</button>
                     </div>
                 </fieldset>
             </form>
