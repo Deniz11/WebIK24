@@ -7,6 +7,7 @@ from communities import Communities as com
 from user import User
 from homepage import Home as home
 from search import Search
+from lists import Lists
 
 from imdbpie import Imdb
 imdb = Imdb()
@@ -111,15 +112,20 @@ def register():
             flash("Passwords do not match!")
             return render_template("register.html")
 
-
         # ensure username exists
-        if not User.userexist(username):
+        if User.userexist(request.form.get("username")):
             flash("Seems like this username already exists, please provide another one.")
             return render_template("register.html")
 
         # register user
         hash1 = pwd_context.hash(request.form.get("password"))
-        User.registeruser(username, hash1)
+        User.registeruser(request.form.get("username"), hash1)
+
+        # make list name
+        list_name = "list of " + request.form.get("username")
+
+        # give an user a list
+        Lists.create_list(request.form.get("username"), list_name)
 
         # let user log in
         flash("Account succesfully created")
