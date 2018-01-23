@@ -43,8 +43,8 @@ class Communities():
         #return redirect(url_for("overzicht"))
 
     # Return lijst met leden
-    def members(name):
-        rows = db.execute("SELECT username FROM community_users WHERE communityname=:communityname", communityname=name)
+    def members(communityname):
+        rows = db.execute("SELECT username FROM community_users WHERE communityname=:communityname", communityname=communityname)
         return [row["username"] for row in rows]
 
     # Returnt overzicht van communities.

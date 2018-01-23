@@ -254,8 +254,18 @@ def createcommunity():
 @app.route("/community", methods=["GET", "POST"])
 @login_required
 def community():
+    members = com.members(request.args.get('community'))
 
-    return render_template("community.html", page=com.show(request.args.get('community'))[0])
+    # add random users for TEST PURPOSES
+    for i in range(2,11):
+        members.append("member"+str(i))
+
+    # add random films for TEST PURPOSES
+    films = Search.search_titles("star wars")
+    for film in films:
+        film["shortplot"]=film["short plot"]
+
+    return render_template("community.html", page=com.show(request.args.get('community'))[0], members=members, films=films)
 
 @app.route("/communityoverview", methods=["GET", "POST"])
 @login_required
@@ -267,9 +277,7 @@ def communityoverview():# GEEFT OVERVIEW WEER <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 @login_required
 
 def mycommunities():
-    pages = com.mycommunities(session["user_id"])
-    print(pages)
-    return render_template("mycommunities.html", pages=pages)
+    return render_template("mycommunities.html", pages=com.mycommunities(session["user_id"]))
 
 @app.route("/search", methods=["GET", "POST"])
 def search():

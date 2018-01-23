@@ -44,6 +44,7 @@
                 background-color: #dddddd;
             }
             td .half {
+                font-weight: bold;
 	            border-bottom: 2px solid #dddddd;
             }
         </style>
@@ -52,8 +53,8 @@
         <h1>{{ page.name }}</h1>
     </div>
     <div class="memberlist">
-        {% for i in range(10) %}
-            <ul>member</ul>
+        {% for member in members %}
+            <ul>{{ member }}</ul>
         {% endfor %}
     </div>
     <div class="textbox">
@@ -69,18 +70,18 @@
                 </tr>
             </thead>
             <tbody>
-                {% for i in range(5) %}
+                {% for film in films %}
                     <tr>
                         <td>
                             <div class="half">
-                                HELE MOOIE LANGE FILMTITEL
+                                {{ film.title }}
                             </div>
                             <div>
-                                NOG EEN HELE MOOIE ZEER BEKNOPTE BESCHRIJVING VAN DIE HELE MOOIE FILMTITEL
+                                {{ film.shortplot }}
                             </div>
                         </td>
                         <td>
-                            1959
+                            {{ film.year }}
                         </td>
                         <td>
                             <div>
