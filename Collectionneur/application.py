@@ -123,7 +123,7 @@ def register():
         rows = User.userexist(username)
 
         # ensure username exists
-        if not User.userexist(username):
+        if User.userexist(username):
             flash("Seems like this username already exists, please provide another one.")
             return render_template("register.html")
 
