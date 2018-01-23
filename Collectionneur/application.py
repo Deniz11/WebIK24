@@ -285,6 +285,11 @@ def search():
     # if user reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
+        # check if user want to go to community page
+        if request.form.get("go to community page"):
+
+            return redirect(url_for('community', community=request.form.get("go to community page")))
+
         # check if user want to join community
         if request.form.get("join community"):
 
