@@ -152,3 +152,10 @@ def only_signs(s):
 
     return False
 
+def split_community_search(s):
+    "return list with found community and community to search"
+
+    split_location = s.find("__````@#$!^$@#86afsdc")
+
+    # remove _ and put 2 words in tuple
+    return (s[:split_location], s[split_location:].replace("__````@#$!^$@#86afsdc", ""))
