@@ -4,7 +4,7 @@ from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 from communities import Communities as com
-from user import User as user
+from user import User
 from homepage import Home as home
 from search import Search
 
@@ -40,8 +40,9 @@ db = SQL("sqlite:///Collectionneur.db")
 @app.route("/")
 @login_required
 def index():
-    home.get_popular_movies()
-    return render_template("index.html")
+    ranks = home.get_popular_movies()
+    # lists = User.mylists()
+    return render_template("index.html", ranks=ranks)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -66,9 +67,9 @@ def login():
 
         # for test purposes
         print(test(request.form.get("username")))
-
+        username=request.form.get("username")
         # query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username"))
+        rows = User.userexist(username)
 
         # ensure username exists and password is correct
         if len(rows) != 1 or not pwd_context.verify(request.form.get("password"), rows[0]["hash"]):
@@ -118,7 +119,8 @@ def register():
             return render_template("register.html")
 
         # query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username"))
+        username=request.form.get("username")
+        rows = User.userexist(username)
 
         # ensure username exists
         if len(rows) == 1:
@@ -127,8 +129,7 @@ def register():
 
         # register user
         hash1 = pwd_context.hash(request.form.get("password"))
-        rows=db.execute("INSERT INTO users (username, hash) VALUES(:username, :password)", username=request.form.get("username"), password=hash1)
-
+        User.registeruser(username, hash1)
 
         # let user log in
         flash("Account succesfully created")
@@ -168,7 +169,8 @@ def settings():
                 return render_template("settings.html")
 
             # query database for password
-            rows = db.execute("SELECT hash FROM users WHERE id = :id", id = session["user_id"])
+            id = session["user_id"]
+            rows = User.requestpassword(id)
 
             ##print(rows[0]["hash"])
 
@@ -184,7 +186,7 @@ def settings():
             hash1 = pwd_context.hash(request.form.get("password-new"))
 
             # update password
-            db.execute("UPDATE users SET hash = :hash1 WHERE id= :id ",hash1 = hash1, id = session["user_id"])
+            User.changepassword(hash1, id)
 
             # show index page
             flash("Succesfully changed password")
@@ -207,7 +209,8 @@ def settings():
                 return render_template("settings.html")
 
             # query database for password
-            rows = db.execute("SELECT hash FROM users WHERE id = :id", id = session["user_id"])
+            id = session["user_id"]
+            rows = User.requestpassword(id)
 
             # ensure that password is correct
             if not pwd_context.verify(request.form.get("password"), rows[0]["hash"]):
@@ -219,7 +222,7 @@ def settings():
                 return render_template("settings.html")
 
             # delete user
-            db.execute("DELETE FROM users WHERE id= :id ", id = session["user_id"])
+            User.deleteaccount(id)
 
             # show index/log in page
             flash("Succesfully deleted account")
