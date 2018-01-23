@@ -22,6 +22,27 @@ class Search():
 
             movie_info = {}
 
+            # look for information in database
+            info_database = db.execute("SELECT * FROM films WHERE film_id = :film_id", film_id = title_results[i]["imdb_id"])
+            if info_database:
+
+                info_database_indexed = info_database[0]
+
+                # put movie imdb_id in list
+                movie_info["imdb_id"] = info_database_indexed["film_id"]
+
+                # put movie title in list
+                movie_info["title"] = info_database_indexed["title"]
+
+                # put movie year in list
+                movie_info["year"] = info_database_indexed["summary"]
+
+                # put movie image in list
+                movie_info["image"] = info_database_indexed["year"]
+
+                #put short plot in list
+                movie_info["short plot"] = info_database_indexed["image"]
+
             # do if imdb_id exist
             if valid_id(title_results[i]["imdb_id"]):
 
