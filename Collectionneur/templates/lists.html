@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Lists
+{% endblock %}
+
+{% block main %}
+
+    {% for movie_info in all_movie_info %}
+
+    <p>
+        <ul style="width:100%">
+            <p style="border-bottom:1px solid grey">
+            <font size="2">title: {{movie_info["title"]}}</font>
+            </p>
+
+            <p style="border-bottom:1px solid grey">
+            <font size="2">year: {{movie_info["year"]}}</font>
+            </p>
+
+            <p style="border-bottom:1px solid grey">
+            <font size="2">{{movie_info["short plot"]}}</font>
+            </p>
+
+        </ul>
+    </p><br>
+
+    {% endfor %}
