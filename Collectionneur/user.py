@@ -27,9 +27,13 @@ class User():
         return True
 
     def userexist(username):
-        # return true if user exists
-        rows = db.execute("SELECT * FROM users WHERE username = :username", username=username)
-        return rows
+        # return row if username exists in users or community table
+        UsernameCheck = db.execute("SELECT * FROM users WHERE username = :username", username=username)
+        CommunityNameCheck = db.execute("SELECT * FROM community_page WHERE name = :username", username=username)
+        if not UsernameCheck or not CommunityNameCheck:
+            return True
+        else:
+            return False
 
     def requestpassword(id):
         rows = db.execute("SELECT hash FROM users WHERE id = :id", id=id)
