@@ -34,7 +34,7 @@ class User():
         # return row if username exists in users or community table
         UsernameCheck = db.execute("SELECT * FROM users WHERE username = :username", username=username)
         CommunityNameCheck = db.execute("SELECT * FROM community_page WHERE name = :username", username=username)
-        if not UsernameCheck or not CommunityNameCheck:
+        if len(UsernameCheck) == 0 or not len(CommunityNameCheck) == 0:
             return False
         else:
             return True
