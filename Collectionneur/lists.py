@@ -23,9 +23,8 @@ class Lists():
 
     # item aan lijst toevoegen
     def add_item(name, film):
-        list_id = Lists.name_to_id(name)
-        lijstje = db.execute("SELECT * FROM list_item WHERE film_id = :film", film = film)
-        db.execute("INSERT INTO list_item (list_id, film_id) VALUES(:list_id, :film_id)", list_id=list_id, film_id=film)
+        list_id = Lists.name_to_id(name)[0]["id"]
+        db.execute("INSERT INTO list_item (list_id, film_id) VALUES (:list_id, :film_id)", list_id=list_id, film_id=film)
        # return redirect(url_for("list"))
 
 
