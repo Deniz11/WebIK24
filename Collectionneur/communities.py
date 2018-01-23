@@ -59,5 +59,4 @@ class Communities():
     def all_communities():
         """returns list of all communities"""
         rows = db.execute("SELECT name FROM community_page")
-        return [row["name"] for row in rows
-
+        return [row["name"] for row in rows]
