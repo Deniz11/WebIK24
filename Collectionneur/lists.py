@@ -11,7 +11,7 @@ class Lists():
 
     # lijst aanmaken
     def create_list(owner, listname):
-        db.execute("INSERT INTO lists (owner, listname) VALUES(:owner, :listname)", owner=owner, listname=listname)
+        db.execute("INSERT INTO lists (owner, list_name) VALUES(:owner, :listname)", owner=owner, listname=listname)
         #return render_template("list.html")
 
 
@@ -24,11 +24,8 @@ class Lists():
     # item aan lijst toevoegen
     def add_item(name, film):
         list_id = Lists.name_to_id(name)
-        lijstje = db.execute("SELECT * FROM list_item WHERE film = :film", film = film)
-        if film not in lijstje.values():
-            db.execute("INSERT INTO list_item (list_id, film_id) VALUES(:list_id, :film_id)", list_id=list_id, film_id=film)
-        else:
-             flash("film already in list")
+        lijstje = db.execute("SELECT * FROM list_item WHERE film_id = :film", film = film)
+        db.execute("INSERT INTO list_item (list_id, film_id) VALUES(:list_id, :film_id)", list_id=list_id, film_id=film)
        # return redirect(url_for("list"))
 
 
