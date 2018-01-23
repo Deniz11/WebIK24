@@ -72,7 +72,7 @@ def login():
         rows = User.userexist(username)
 
         # ensure username exists and password is correct
-        if len(rows) != 1 or not pwd_context.verify(request.form.get("password"), rows[0]["hash"]):
+        if not User.userexist(username) or not pwd_context.verify(request.form.get("password"), rows[0]["hash"]):
             flash("Invalid username and/or password")
             return render_template("login.html")
 
@@ -118,12 +118,9 @@ def register():
             flash("Passwords do not match!")
             return render_template("register.html")
 
-        # query database for username
-        username=request.form.get("username")
-        rows = User.userexist(username)
 
         # ensure username exists
-        if User.userexist(username):
+        if not User.userexist(username):
             flash("Seems like this username already exists, please provide another one.")
             return render_template("register.html")
 
@@ -244,7 +241,8 @@ def createcommunity():
     if request.method == "POST":
 
         # pass input to function
-        com.create(request.form.get("communityname"), session["user_id"], request.form.get("communitydescription"))
+         if not com.create(request.form.get("communityname"), session["user_id"], request.form.get("communitydescription")):
+             flash("name already in use")
 
         # redirect to newly created community
         return redirect(url_for("community", name=request.form.get("communityname")))

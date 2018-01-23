@@ -13,11 +13,13 @@ class Communities():
 
     # Community aanmaken.
     def create(communityname, userid, description):
-        username = db.execute("SELECT username FROM users WHERE id = :id", id=userid)[0]["username"]
-        db.execute("INSERT INTO community_page (name, description) VALUES(:name, :description)", name=communityname, description=description)
-        db.execute("INSERT INTO community_users (communityname, username) VALUES(:communityname, :username)", communityname=communityname, username=username)
-        db.execute("INSERT INTO lists (owner, description) VALUES(:owner, :name)", owner=communityname, name=communityname+" Shared List")
-        #return render_template(community.html)
+        if len(db.execute("SELECT * FROM users WHERE username = :communityname", communityname=communityname)) == 1:
+            return False
+        else:
+            username = db.execute("SELECT username FROM users WHERE id = :id", id=userid)[0]["username"]
+            db.execute("INSERT INTO community_page (name, description) VALUES(:name, :description)", name=communityname, description=description)
+            db.execute("INSERT INTO community_users (communityname, username) VALUES(:communityname, :username)", communityname=communityname, username=username)
+            db.execute("INSERT INTO lists (owner, description) VALUES(:owner, :name)", owner=communityname, name=communityname+" Shared List")
 
     # Community verwijderen.
     def delete(name):
