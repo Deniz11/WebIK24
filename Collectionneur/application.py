@@ -241,13 +241,24 @@ def createcommunity():
     if request.method == "POST":
 
         # pass input to function
-        com.create(request.form.get("communityname"), request.form.get("communitydescription"))
+        com.create(request.form.get("communityname"), session["user_id"], request.form.get("communitydescription"))
 
         # redirect to newly created community
-        return redirect(url_for("community"))
+        return redirect(url_for("community", name=request.form.get("communityname")))
 
     else:
         return render_template("createcommunity.html")
+
+@app.route("/community", methods=["GET", "POST"])
+@login_required
+def community():
+    return render_template("community.html", name=request.args.get('name'))
+
+@app.route("/communityoverview", methods=["GET", "POST"])
+@login_required
+def communityoverview():# GEEFT OVERVIEW WEER <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<DEZE LATER IN TOTAALOVERZICHT ZETTEN!!!!!!!!!!!!!!!!!!!!!
+    overview = com.show("")
+    return render_template("communityoverview.html", overview=overview)
 
 @app.route("/search", methods=["GET", "POST"])
 def search():

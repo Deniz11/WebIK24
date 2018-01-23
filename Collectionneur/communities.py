@@ -12,9 +12,11 @@ db = SQL("sqlite:///Collectionneur.db")
 class Communities():
 
     # Community aanmaken.
-    def create(community, user, summary):
-        db.execute("INSERT INTO community_page (username, description) VALUES(:username, :description)", username=user, description=summary)
-        db.execute("INSERT INTO community_users (communityname, username) VALUES(:communityname, :username)", communityname=community, username=user)
+    def create(communityname, userid, description):
+        username = db.execute("SELECT username FROM users WHERE id = :id", id=userid)[0]["username"]
+        db.execute("INSERT INTO community_page (name, description) VALUES(:name, :description)", name=communityname, description=description)
+        db.execute("INSERT INTO community_users (communityname, username) VALUES(:communityname, :username)", communityname=communityname, username=username)
+        db.execute("INSERT INTO lists (owner, description) VALUES(:owner, :name)", owner=communityname, name=communityname+" Shared List")
         #return render_template(community.html)
 
     # Community verwijderen.
@@ -25,6 +27,7 @@ class Communities():
 
     # Lid worden.
     def join(name):
+
         db.execute("INSERT INTO community_users WHERE username=:username", username=name)
         #return redirect(url_for("community"))
 
@@ -37,3 +40,13 @@ class Communities():
     def members(name):
         rows = db.execute("SELECT username FROM community_users WHERE communityname=:communityname", communityname=name)
         #return [row["username"] for row in rows]
+
+    # Returnt overzicht van communities.
+    def show(communityname):
+        # Returnt alle communities indien invoer leeg is.
+        if not communityname:
+            return db.execute("SELECT * FROM community_page")
+        # Zoekt gegevens van specifieke community.
+        else:
+            return db.execute("SELECT * FROM community_page WHERE name=:communityname",communityname=communityname)
+
