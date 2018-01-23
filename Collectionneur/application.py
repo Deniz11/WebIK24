@@ -254,13 +254,22 @@ def createcommunity():
 @app.route("/community", methods=["GET", "POST"])
 @login_required
 def community():
-    return render_template("community.html", name=request.args.get('name'))
+
+    return render_template("community.html", page=com.show(request.args.get('community'))[0])
 
 @app.route("/communityoverview", methods=["GET", "POST"])
 @login_required
 def communityoverview():# GEEFT OVERVIEW WEER <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<DEZE LATER IN TOTAALOVERZICHT ZETTEN!!!!!!!!!!!!!!!!!!!!!
-    overview = com.show("")
-    return render_template("communityoverview.html", overview=overview)
+
+    return render_template("communityoverview.html", overview=com.show())
+
+@app.route("/mycommunities", methods=["GET", "POST"])
+@login_required
+
+def mycommunities():
+    pages = com.mycommunities(session["user_id"])
+    print(pages)
+    return render_template("mycommunities.html", pages=pages)
 
 @app.route("/search", methods=["GET", "POST"])
 def search():

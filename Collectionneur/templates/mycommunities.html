@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Communities
+    My communities
 {% endblock %}
 
 {% block main %}
@@ -30,11 +30,10 @@
         <table>
             <thead><tr><th>Community</th><th>Description</th></tr></thead>
                 <tbody>
-                    {% for item in overview %}
+                    {% for item in pages %}
                         <tr>
                             <td>{{ item.name }}</td>
-                            <td>
-                                {{ item.description }}
+                            <td>{{ item.description }}
                                 <div class="container">
                                     <a href="{{ url_for('community', community=item.name) }}">More information</a>
                                 </div>

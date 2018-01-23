@@ -60,3 +60,12 @@ class Communities():
         """returns list of all communities"""
         rows = db.execute("SELECT name FROM community_page")
         return [row["name"] for row in rows]
+
+    def mycommunities(user_id):
+        # Returns alle communities waar gebruiker lid van is
+        username = db.execute("SELECT username FROM users WHERE id = :id", id=user_id)[0]["username"]
+        pages = db.execute("SELECT communityname FROM community_users WHERE username=:username",username=username)
+        print(pages)
+        test = [Communities.show(page["communityname"])[0] for page in pages]
+        print(test)
+        return test
