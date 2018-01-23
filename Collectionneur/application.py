@@ -324,8 +324,13 @@ def search():
                     # add film in films
                     Search.add_item(request.form.get("add_to_list"))
 
-                    # add list to community user
-                    Lists.add_item(request.form.get("name"), request.form.get("add_to_list"))
+                    # add list to community user if not already in his list
+                    if not Lists.add_item(request.form.get("name"), request.form.get("add_to_list")):
+
+                        full_movie_info = Search.title_info(request.form.get("add_to_list"))
+                        flash("Already in your list")
+                        return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
+
 
                     full_movie_info = Search.title_info(request.form.get("add_to_list"))
 
@@ -339,7 +344,6 @@ def search():
             # notify user that user or community does not exist
             else:
                 full_movie_info = Search.title_info(request.form.get("add_to_list"))
-                print(request.form.get("name") + " omg")
                 flash("Can not find user/community")
                 return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
 
