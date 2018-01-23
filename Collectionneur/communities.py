@@ -37,6 +37,15 @@ class Communities():
         db.execute("INSERT INTO community_users WHERE username=:username", username=name)
         #return redirect(url_for("community"))
 
+    # lid worden via zoek
+    def join_searched(name, community):
+
+        if len(db.execute("SELECT * FROM community_users WHERE communityname = :communityname AND username = :username", communityname = community, username = name)) == 0:
+            db.execute("INSERT INTO community_users (communityname , username) VALUES (:communityname, :username)", communityname = community, username = name)
+            return True
+        else:
+            return False
+
     # Lid verwijderen.
     def remove(community, name):
         db.execute("DELETE FROM community_users WHERE communityname=:communityname AND username=:username", communityname=community, username=name)
