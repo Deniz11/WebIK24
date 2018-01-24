@@ -25,7 +25,22 @@ class User():
         return True
 
     def deleteaccount(id):
-        # delete user
+        # get username from id
+        username = User.get_username(id)
+
+        # delete from community
+        db.execute("DELETE FROM community_users WHERE username= :username ", username = username)
+
+        # get list id
+        list_id =  db.execute("SELECT id FROM lists WHERE owner= :username ", username = username)[0]["id"]
+
+        # delete list items
+        db.execute("DELETE FROM list_item WHERE list_id= :list_id", list_id = list_id)
+
+        # delete list
+        db.execute("DELETE FROM lists WHERE owner= :username ", username = username)
+
+        #
         db.execute("DELETE FROM users WHERE id= :id ", id = id)
         # show index/log in page
         return True
