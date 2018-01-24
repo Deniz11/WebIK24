@@ -39,6 +39,34 @@ class Lists():
         #return redirect(url_for("list"))
 
 
-    #
+    # get user_id from name
     def name_to_id(name):
         return db.execute("SELECT id FROM lists WHERE owner = :name", name = name)
+
+    # get list of dics of users film
+    def user_films(id):
+
+        # get username from id
+        username = User.get_username(id)
+
+        # get list id
+        list_id =  db.execute("SELECT id FROM lists WHERE owner= :username ", username = username)[0]["id"]
+
+        # return films of user
+        films = db.execute("SELECT film_id FROM list_item WHERE list_id= :list_id", list_id = list_id)
+
+        films_info = []
+
+        # put movie information from database in list
+        for film in films:
+
+            # get movie id from dic
+            film_id = film["film_id"]
+
+            # get movie data from database
+            film_data =  db.execute("SELECT title,summary,year,image FROM films WHERE film_id = :film ", film = film_id)[0]
+
+            # add to list
+            films_info.append(film_data)
+
+        return films_info

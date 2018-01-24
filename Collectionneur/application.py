@@ -377,7 +377,7 @@ def search():
 
 
                     full_movie_info = Search.title_info(request.form.get("add_to_list"))
-
+                    flash("succesfully added to your list")
                     return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
 
                 else:
