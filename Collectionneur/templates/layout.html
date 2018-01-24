@@ -65,7 +65,12 @@
                             <ul class="nav navbar-nav">
 
                                 <li><a href="{{ url_for('search') }}"><font size="5">Search</font></a></li>
-
+                                <div class="dropdown">
+                                  <button class="dropbtn">Communities</button>
+                                  <div class="dropdown-content">
+                                    <a href="{{ url_for('communityoverview') }}">All communities</a>
+                                  </div>
+                                </div>
                             </ul>
 
                             <ul class="nav navbar-nav navbar-right">
