@@ -361,7 +361,7 @@ def search():
                     user_id = ""
 
                 # check if user has rights to add to given list
-                if session["user_id"] == user_id or request.form.get("name") in com.members(request.form.get("add_to_list")):
+                if session["user_id"] == user_id or User.get_username(session["user_id"]) in com.showmembers(request.form.get("name")):
 
                     # add film in films
                     Search.add_item(request.form.get("add_to_list"))
@@ -430,7 +430,7 @@ def search():
                 flash("no communities found")
                 render_template("search.html", community_select = True)
 
-            return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + request.form.get("search")), movie_select = True)
+            return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + request.form.get("search")), community_select = True)
 
 
     # else if user reached route via GET (as by clicking a link or via redirect)
