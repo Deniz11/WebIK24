@@ -42,7 +42,7 @@
 		{% for k, v in ranks.items() %}
 		<tr>
 			<td>{{ k }}</td>
-			<td>{{ v }} &nbsp;<form action="{{ url_for('index') }}"><button class="btn btn-default" style="float:right" type= "submit" name= "filmname" value = {{ v }} >More</button></td>
+			<td>{{ v }} &nbsp;<form action="{{ url_for('index') }}"><button class="btn btn-default" style="float:right" type= "submit" name= "filmname" value = {{ v }} >Search</button></td>
 		</tr>
 		{% endfor %}
 		</table>
@@ -58,7 +58,7 @@
             <tbody>
                 {% for item in pages %}
                     <tr>
-                        <td>{{ item.name }}</td>
+                        <td>{{ item.name }} <a class="btn btn-default" style="float:right" href="{{ url_for('community', community=item.name) }}">Visit page</a></td>
                         <td>{{ item.description }}</td>
                     </tr>
                 {% endfor %}
