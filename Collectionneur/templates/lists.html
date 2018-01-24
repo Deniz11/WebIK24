@@ -15,9 +15,14 @@
                 border: 2px solid #dddddd;
                 text-align: left;
                 padding: 8px;
+                max-width: 70%;
             }
             tr:nth-child(even) {
                 background-color: #dddddd;
+            }
+            td .half {
+                font-weight: bold;
+	            border-bottom: 2px solid #dddddd;
             }
         </style>
     </head>
@@ -30,18 +35,18 @@
                 <tr>
                     <th>Cover</th>
                     <th>Film</th>
-                    <th>Description</th>
                     <th>Year</th>
                 </tr>
             </thead>
                 <tbody>
                      {% for info in information %}
                         <tr>
-                            <td><img src={{info["image"]}} alt="movie picture" height="100" width="70"></td>
-                            <td>{{ info.title }}</td>
-                            <td>{{ info.summary }}</td>
-                            <td>{{ info.year }}</td>
-
+                            <td width="180"><img src={{info["image"]}} alt="movie picture"</td>
+                            <td>
+                                <div class="half">{{ info.title }}</div>
+                                <div>{{ info["summary"] }}</div>
+                            </td>
+                            <td>{{ info["year"] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

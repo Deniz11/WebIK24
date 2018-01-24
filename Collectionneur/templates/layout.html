@@ -55,7 +55,6 @@
                                 <div class="dropdown">
                                       <button class="dropbtn">Profiel</button>
                                       <div class="dropdown-content">
-                                        <a href="#">My overview</a>
                                         <a href="{{ url_for('mylist') }}">My list</a>
                                         <a href="{{ url_for('settings') }}">Settings</a>
                                         <a href="{{ url_for('logout') }}">logout</a>
@@ -64,7 +63,6 @@
                             </ul>
                         {% else %}
                             <ul class="nav navbar-nav">
-
                                 <li><a href="{{ url_for('search') }}"><font size="5">Search</font></a></li>
                                 <div class="dropdown">
                                   <button class="dropbtn">Communities</button>

@@ -24,7 +24,7 @@ class Communities():
         else:
             db.execute("INSERT INTO community_page (name, description) VALUES(:name, :description)", name=communityname, description=description)
             db.execute("INSERT INTO community_users (communityname, username) VALUES(:communityname, :username)", communityname=communityname, username=User.get_username(userid))
-            db.execute("INSERT INTO lists (owner, description) VALUES(:owner, :name)", owner=communityname, name=communityname+" Shared List")
+            db.execute("INSERT INTO lists (owner, list_name) VALUES(:owner, :name)", owner=communityname, name=communityname+" Shared List")
             return True
 
     # Community verwijderen.

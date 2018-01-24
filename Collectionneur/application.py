@@ -255,7 +255,6 @@ def createcommunity():
 @login_required
 def community():
 
-
     # add random films for TEST PURPOSES
     films = Search.search_titles("star wars")
     for film in films:
@@ -284,7 +283,7 @@ def community():
         return render_template("community.html", page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
 
 @app.route("/communityoverview", methods=["GET", "POST"])
-@login_required
+
 def communityoverview():# GEEFT OVERVIEW WEER <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<DEZE LATER IN TOTAALOVERZICHT ZETTEN!!!!!!!!!!!!!!!!!!!!!
 
     return render_template("communityoverview.html", overview=com.show())
