@@ -1,6 +1,7 @@
 from cs50 import SQL
 from user import User
 from imdbpie import Imdb
+from flask import flash
 from flask_session import Session
 imdb = Imdb()
 from tempfile import mkdtemp
@@ -24,6 +25,7 @@ class Communities():
             db.execute("INSERT INTO community_page (name, description) VALUES(:name, :description)", name=communityname, description=description)
             db.execute("INSERT INTO community_users (communityname, username) VALUES(:communityname, :username)", communityname=communityname, username=User.get_username(userid))
             db.execute("INSERT INTO lists (owner, description) VALUES(:owner, :name)", owner=communityname, name=communityname+" Shared List")
+            return True
 
     # Community verwijderen.
     def delete(name):
@@ -31,13 +33,8 @@ class Communities():
         db.execute("DELETE FROM community_users WHERE communityname=:communityname", communityname=community)
         #return redirect(url_for("overzicht"))
 
-    # Lid worden.
-    def join(name):
 
-        db.execute("INSERT INTO community_users WHERE username=:username", username=name)
-        #return redirect(url_for("community"))
-
-    # lid worden via zoek
+    # lid worden
     def join(name, community):
 
         if not db.execute("SELECT * FROM community_users WHERE communityname = :communityname AND username = :username", communityname = community, username = name):
@@ -47,8 +44,13 @@ class Communities():
             return False
 
     # Lid verwijderen.
-    def remove_member(community, name):
-        db.execute("DELETE FROM community_users WHERE communityname=:communityname AND username=:username", communityname=community, username=name)
+    def remove_member(name, community):
+        # CODE TOEVOEGEN VOOR OWNER OF LAATSTE MEMBER
+        if not db.execute("SELECT * FROM community_users WHERE communityname = :communityname AND username = :username", communityname = community, username = name):
+            return flash("user not in community")
+        else:
+            db.execute("DELETE FROM community_users WHERE communityname=:communityname AND username=:username", communityname=community, username=name)
+            return flash("successfully left community")
         #return redirect(url_for("overzicht"))
 
     # Return lijst met leden

@@ -237,31 +237,53 @@ def createcommunity():
 
     # if user reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-
+        request.form.get("delete account selected")
         # pass input to function
-        com.create(request.form.get("communityname"), session["user_id"], request.form.get("communitydescription"))
+        if com.create(request.form.get("communityname"), session["user_id"], request.form.get("communitydescription")):
+            # redirect to newly created community
+            return redirect(url_for("community", name=request.form.get("communityname")))
 
-        # redirect to newly created community
-        return redirect(url_for("community", name=request.form.get("communityname")))
-
+        return render_template("createcommunity.html")
     else:
         return render_template("createcommunity.html")
+
+
 
 @app.route("/community", methods=["GET", "POST"])
 @login_required
 def community():
-    memberlist = com.showmembers(request.args.get('community'))
 
-    # add random users for TEST PURPOSES
-    for i in range(2,11):
-        memberlist.append("member"+str(i))
+    if request.method == "POST":
 
-    # add random films for TEST PURPOSES
-    films = Search.search_titles("star wars")
-    for film in films:
-        film["shortplot"]=film["short plot"]
+        if request.form.get("comaction") == "leave":
 
-    return render_template("community.html", page=com.show(request.args.get('community'))[0], members=memberlist, films=films, member=com.member(session["user_id"], request.args.get('community')))
+            com.join(User.get_username(session["user_id"]),request.args.get('community'))
+
+            return render_template("community.html", page=com.show(request.args.get('community'))[0], members=memberlist, films=films, member=com.member(session["user_id"], request.args.get('community')))
+
+        elif request.form.get("comaction") == "join":
+
+            com.remove_member(User.get_username(session["user_id"]),request.args.get('community'))
+
+            return render_template("community.html", page=com.show(request.args.get('community'))[0], members=memberlist, films=films, member=com.member(session["user_id"], request.args.get('community')))
+
+        #wrong post request
+        else:
+            return render_template("community.html", page=com.show(request.args.get('community'))[0], members=memberlist, films=films, member=com.member(session["user_id"], request.args.get('community')))
+    else:
+
+        memberlist = com.showmembers(request.args.get('community'))
+
+        # add random users for TEST PURPOSES
+        for i in range(2,11):
+            memberlist.append("member"+str(i))
+
+        # add random films for TEST PURPOSES
+        films = Search.search_titles("star wars")
+        for film in films:
+            film["shortplot"]=film["short plot"]
+
+        return render_template("community.html", page=com.show(request.args.get('community'))[0], members=memberlist, films=films, member=com.member(session["user_id"], request.args.get('community')))
 
 @app.route("/communityoverview", methods=["GET", "POST"])
 @login_required
