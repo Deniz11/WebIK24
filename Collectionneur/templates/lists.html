@@ -1,28 +1,50 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Lists
+    List
 {% endblock %}
 
 {% block main %}
+    <head>
+        <style>
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            td, th {
+                border: 2px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+            tr:nth-child(even) {
+                background-color: #dddddd;
+            }
+        </style>
+    </head>
 
-    {% for movie_info in all_movie_info %}
 
-    <p>
-        <ul style="width:100%">
-            <p style="border-bottom:1px solid grey">
-            <font size="2">title: {{movie_info["title"]}}</font>
-            </p>
 
-            <p style="border-bottom:1px solid grey">
-            <font size="2">year: {{movie_info["year"]}}</font>
-            </p>
+    <body>
+        <table>
+            <thead>
+                <tr>
+                    <th>Cover</th>
+                    <th>Film</th>
+                    <th>Description</th>
+                    <th>Year</th>
+                </tr>
+            </thead>
+                <tbody>
+                     {% for info in information %}
+                        <tr>
+                            <td><img src={{info["image"]}} alt="movie picture" height="100" width="70"></td>
+                            <td>{{ info.title }}</td>
+                            <td>{{ info.summary }}</td>
+                            <td>{{ info.year }}</td>
 
-            <p style="border-bottom:1px solid grey">
-            <font size="2">{{movie_info["short plot"]}}</font>
-            </p>
-
-        </ul>
-    </p><br>
-
-    {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+        </table>
+    </body>
+{% endblock %}

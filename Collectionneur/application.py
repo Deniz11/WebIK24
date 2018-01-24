@@ -40,7 +40,9 @@ db = SQL("sqlite:///Collectionneur.db")
 
 @app.route("/")
 def index():
-    # lists = User.mylists()
+    if request.args.get("filmname"):
+        all_movie_info = Search.search_titles(request.args.get("filmname"))
+        return render_template("search.html", all_movie_info=all_movie_info, movie_select = True)
     return render_template("index.html", ranks=home.get_popular_movies(), pages=com.show())
 
 @app.route("/login", methods=["GET", "POST"])
@@ -434,3 +436,14 @@ def search():
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("search.html")
+
+
+@app.route("/mylist", methods=["GET", "POST"])
+@login_required
+def mylist():
+
+    information = Lists.user_films(session["user_id"])
+
+
+
+    return render_template("lists.html", information=information)
