@@ -436,3 +436,14 @@ def search():
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("search.html")
+
+
+@app.route("/mylist", methods=["GET", "POST"])
+@login_required
+def mylist():
+
+    information = Lists.user_films(session["user_id"])
+
+
+
+    return render_template("lists.html", information=information)
