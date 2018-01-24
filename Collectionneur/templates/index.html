@@ -42,7 +42,7 @@
 		{% for k, v in ranks.items() %}
 		<tr>
 			<td>{{ k }}</td>
-			<td>{{ v }}</td>
+			<td>{{ v }} &nbsp;<form action="{{ url_for('index') }}"><button class="btn btn-default" style="float:right" type= "submit" name= "filmname" value = {{ v }} >More</button></td>
 		</tr>
 		{% endfor %}
 		</table>

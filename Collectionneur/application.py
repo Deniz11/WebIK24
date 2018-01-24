@@ -40,7 +40,9 @@ db = SQL("sqlite:///Collectionneur.db")
 
 @app.route("/")
 def index():
-    # lists = User.mylists()
+    if request.args.get("filmname"):
+        all_movie_info = Search.search_titles(request.args.get("filmname"))
+        return render_template("search.html", all_movie_info=all_movie_info, movie_select = True)
     return render_template("index.html", ranks=home.get_popular_movies(), pages=com.show())
 
 @app.route("/login", methods=["GET", "POST"])
