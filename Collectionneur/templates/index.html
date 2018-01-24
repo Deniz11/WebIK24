@@ -5,33 +5,64 @@
 {% endblock %}
 
 {% block main %}
-    <h1 align="center">Filmdatabase</h1>
-    <h2 align="center">Op deze website kunt u lijsten aanmaken met uw favoriete films en community's volgen met de laatste filmupdates.</h2>
+	<style>
+    	.filmindex {
+            border-collapse: collapse;
+            float: left;
+            width: 45%;
+        }
+        .comindex {
+            border-collapse: collapse;
+            float: right;
+            width: 45%;
+        }
 
-	{% if session.user_id %}
-	<table class="table">
-    <caption>Lijsten</caption>
-	<tr>
-		<th>Mijn lijsten</th>
-	</tr>
-	{% for i in lists %}
-	<tr>
-			<td>{{ i }}</td>
-		</tr>
-	{% endfor %}
-	{% else %}
-    <table class="table">
-    <caption>Popular movies</caption>
-	<tr>
-		<th>Rank</th>
-		<th>Movie</th>
-	</tr>
+        td, th {
+            border: 2px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+	<body>
+	    <h1 align="center">Filmdatabase</h1>
+	    <h2 align="center">Op deze website kunt u lijsten aanmaken met uw favoriete films en community's volgen met de laatste filmupdates.</h2>
+
+		<table class="filmindex">
+	    <caption>Popular movies</caption>
+	    <thead>
+			<tr>
+				<th>Rank</th>
+				<th>Movie</th>
+			</tr>
+		</thead>
 		{% for k, v in ranks.items() %}
 		<tr>
 			<td>{{ k }}</td>
 			<td>{{ v }}</td>
 		</tr>
+		{% endfor %}
+		</table>
 
-	{% endfor %}
-	{% endif %}
+		<table class="comindex">
+		<caption>Popular communities</caption>
+            <thead>
+                <tr>
+                    <th>Community</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in pages %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.description }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
 {% endblock %}

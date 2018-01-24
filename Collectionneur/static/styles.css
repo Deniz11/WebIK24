@@ -6,6 +6,7 @@
     text-align: center;
 }
 
+
 /* colors for navbar */
 .navbar-default .navbar-brand .blue
 {
@@ -43,6 +44,12 @@ main td
 {
     /* left-align tables' cells */
     text-align: left;
+}
+
+/* makes site cover width of screen*/
+main body{
+  margin:0;
+  padding:0;
 }
 
 .dropbtn {

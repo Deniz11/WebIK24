@@ -40,9 +40,8 @@ db = SQL("sqlite:///Collectionneur.db")
 
 @app.route("/")
 def index():
-    ranks = home.get_popular_movies()
     # lists = User.mylists()
-    return render_template("index.html", ranks=ranks)
+    return render_template("index.html", ranks=home.get_popular_movies(), pages=com.show())
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
