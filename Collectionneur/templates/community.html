@@ -100,6 +100,7 @@
             <table>
                 <thead>
                     <tr>
+                        <th>Poster</th>
                         <th>Film</th>
                         <th>Year</th>
                         <th>Actions</th>
@@ -108,6 +109,9 @@
                 <tbody>
                     {% for film in films %}
                         <tr>
+                            <td>
+                                <img src={{ film.image }} height="60" width="40">
+                            </td>
                             <td>
                                 <div class="half">
                                     {{ film.title }}
