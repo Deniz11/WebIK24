@@ -130,7 +130,8 @@ def register():
 
         # let user log in
         flash("Account succesfully created")
-        return redirect(url_for("login"))
+        session["user_id"] = User.user(request.form.get("username"))[0]["id"]
+        return redirect(url_for("index"))
 
     else:
         return render_template("register.html")
