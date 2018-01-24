@@ -52,7 +52,7 @@ class Communities():
         #return redirect(url_for("overzicht"))
 
     # Return lijst met leden
-    def members(communityname):
+    def showmembers(communityname):
         rows = db.execute("SELECT username FROM community_users WHERE communityname=:communityname", communityname=communityname)
         return [row["username"] for row in rows]
 
@@ -74,7 +74,12 @@ class Communities():
         # Returns alle communities waar gebruiker lid van is
         username = db.execute("SELECT username FROM users WHERE id = :id", id=user_id)[0]["username"]
         pages = db.execute("SELECT communityname FROM community_users WHERE username=:username",username=username)
-        print(pages)
-        test = [Communities.show(page["communityname"])[0] for page in pages]
-        print(test)
-        return test
+        return [Communities.show(page["communityname"])[0] for page in pages]
+
+    def member(user_id, communityname):
+        username = db.execute("SELECT username FROM users WHERE id = :id", id=user_id)[0]["username"]
+        check = db.execute("SELECT username FROM community_users WHERE communityname = :communityname", communityname=communityname)
+        for name in check:
+            if username == name["username"]:
+                return True
+        return False
