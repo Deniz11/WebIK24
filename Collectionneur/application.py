@@ -239,13 +239,10 @@ def createcommunity():
     if request.method == "POST":
 
         # pass input to function
-        if not com.create(request.form.get("communityname"), session["user_id"], request.form.get("communitydescription")):
-            flash("name already in use")
-        else:
-            com.create(request.form.get("communityname"), session["user_id"], request.form.get("communitydescription"))
+        com.create(request.form.get("communityname"), session["user_id"], request.form.get("communitydescription"))
 
-            # redirect to newly created community
-            return redirect(url_for("community", name=request.form.get("communityname")))
+        # redirect to newly created community
+        return redirect(url_for("community", name=request.form.get("communityname")))
 
     else:
         return render_template("createcommunity.html")
@@ -304,7 +301,7 @@ def search():
                 return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + split[1]), community_select = True)
 
             # join community and if already joined notify user
-            if not com.join_searched(User.get_username(session["user_id"]), split[0]):
+            if not com.join(User.get_username(session["user_id"]), split[0]):
                 flash("you are already a member of this community")
                 return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + split[1]), community_select = True)
 

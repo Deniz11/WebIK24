@@ -1,6 +1,7 @@
 from cs50 import SQL
-
+from user import User
 from imdbpie import Imdb
+from flask_session import Session
 imdb = Imdb()
 from tempfile import mkdtemp
 
@@ -18,11 +19,10 @@ class Communities():
         communities = db.execute("SELECT * FROM community_page WHERE name = :communityname", communityname=communityname)
 
         if len(users) == 1 or len(communities) == 1:
-            return False
+            return flash("name already in use")
         else:
-            username = db.execute("SELECT username FROM users WHERE id = :id", id=userid)[0]["username"]
             db.execute("INSERT INTO community_page (name, description) VALUES(:name, :description)", name=communityname, description=description)
-            db.execute("INSERT INTO community_users (communityname, username) VALUES(:communityname, :username)", communityname=communityname, username=username)
+            db.execute("INSERT INTO community_users (communityname, username) VALUES(:communityname, :username)", communityname=communityname, username=User.get_username(userid))
             db.execute("INSERT INTO lists (owner, description) VALUES(:owner, :name)", owner=communityname, name=communityname+" Shared List")
 
     # Community verwijderen.
@@ -38,16 +38,16 @@ class Communities():
         #return redirect(url_for("community"))
 
     # lid worden via zoek
-    def join_searched(name, community):
+    def join(name, community):
 
-        if len(db.execute("SELECT * FROM community_users WHERE communityname = :communityname AND username = :username", communityname = community, username = name)) == 0:
+        if not db.execute("SELECT * FROM community_users WHERE communityname = :communityname AND username = :username", communityname = community, username = name):
             db.execute("INSERT INTO community_users (communityname , username) VALUES (:communityname, :username)", communityname = community, username = name)
             return True
         else:
             return False
 
     # Lid verwijderen.
-    def remove(community, name):
+    def remove_member(community, name):
         db.execute("DELETE FROM community_users WHERE communityname=:communityname AND username=:username", communityname=community, username=name)
         #return redirect(url_for("overzicht"))
 
@@ -70,14 +70,13 @@ class Communities():
         rows = db.execute("SELECT name FROM community_page")
         return [row["name"] for row in rows]
 
-    def mycommunities(user_id):
+    def mycommunities(userid):
         # Returns alle communities waar gebruiker lid van is
-        username = db.execute("SELECT username FROM users WHERE id = :id", id=user_id)[0]["username"]
-        pages = db.execute("SELECT communityname FROM community_users WHERE username=:username",username=username)
+        pages = db.execute("SELECT communityname FROM community_users WHERE username=:username",username=User.get_username(userid))
         return [Communities.show(page["communityname"])[0] for page in pages]
 
-    def member(user_id, communityname):
-        username = db.execute("SELECT username FROM users WHERE id = :id", id=user_id)[0]["username"]
+    def member(userid, communityname):
+        username = db.execute("SELECT username FROM users WHERE id = :id", id=userid)[0]["username"]
         check = db.execute("SELECT username FROM community_users WHERE communityname = :communityname", communityname=communityname)
         for name in check:
             if username == name["username"]:
