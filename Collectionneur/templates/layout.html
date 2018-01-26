@@ -1,86 +1,103 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
-    <head>
-
-        <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta -->
-        <meta charset="utf-8"/>
-        <meta content="initial-scale=1, width=device-width" name="viewport"/>
-
-        <!-- documentation at http://getbootstrap.com/, alternative themes at https://www.bootstrapcdn.com/bootswatch/ -->
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
-        <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet"/>
-
-        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-        <title>Collectionneur: {% block title %}{% endblock %}</title>
-
-    </head>
-
-    <body>
-
-        <div class="container">
-
-            <nav class="navbar navbar-default">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button aria-expanded="false" class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse" type="button">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Collectionneur</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style type="text/css">
+	.navbar{
+		margin-top: 20px;
+	}
+</style>
+</head>
+<body>
+    <div class="container">
+    <nav class="navbar navbar-inverse">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+                        <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
                             <span class="sr-only">Toggle navigation</span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="{{ url_for('index') }}"><span class="blue">Col</span><span class="brown">lec</span><span class="yellow">tion</span><span class="green">neur</span> <span class="red">Communities</span></a>
+                        <a href="{{ url_for('index') }}" class="navbar-brand">Collectionneur</a>
                     </div>
-                    <div class="collapse navbar-collapse" id="navbar">
+                    <!-- Collection of nav links, forms, and other content for toggling -->
+                    <div id="navbarCollapse" class="collapse navbar-collapse">
                         {% if session.user_id %}
-                            <ul class="nav navbar-nav">
-
-                                <li><a href="{{ url_for('search') }}"><font size="5">Search</font></a></li>
-
-                                <div class="dropdown">
-                                  <button class="dropbtn">Communities</button>
-                                  <div class="dropdown-content">
-                                    <a href="{{ url_for('communityoverview') }}">All communities</a>
-                                    <a href="{{ url_for('mycommunities') }}">My communities</a>
-                                    <a href="{{ url_for('createcommunity') }}">Create community</a>
-                                  </div>
-                                </div>
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="{{ url_for('index') }}">Home</a></li>
+                        <li><a href="#">Profile</a></li>
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">Communities <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url_for('communityoverview') }}">All communities</a></li>
+                                <li><a href="{{ url_for('mycommunities') }}">My communities</a></li>
+                                <li><a href="{{ url_for('createcommunity') }}">Create community</a></li>
                             </ul>
+                        </li>
+                    </ul>
 
-                            <ul class="nav navbar-nav navbar-right">
-                                <div class="dropdown">
-                                      <button class="dropbtn">Profiel</button>
-                                      <div class="dropdown-content">
-                                        <a href="{{ url_for('mylist') }}">My list</a>
-                                        <a href="{{ url_for('settings') }}">Settings</a>
-                                        <a href="{{ url_for('logout') }}">logout</a>
-                                      </div>
-                                </div>
-                            </ul>
-                        {% else %}
-                            <ul class="nav navbar-nav">
-                                <li><a href="{{ url_for('search') }}"><font size="5">Search</font></a></li>
-                                <div class="dropdown">
-                                  <button class="dropbtn">Communities</button>
-                                  <div class="dropdown-content">
-                                    <a href="{{ url_for('communityoverview') }}">All communities</a>
-                                  </div>
-                                </div>
-                            </ul>
 
-                            <ul class="nav navbar-nav navbar-right">
-                                <li><a href="{{ url_for('register') }}"><font size="5">Register</font></a></li>
-                                <li><a href="{{ url_for('login') }}"><font size="5">Log in</font></a></li>
+                    <form class="navbar-form navbar-left" action="{{ url_for('search') }}" method="post">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search" name="search">
+                            <select class="selectpicker" name ="search_for" multiple>
+                                <option value="None" {% if select_something_select %} selected {% endif %}>search for...</option>
+                                <option value="movie" {% if movie_select %} selected {% endif %}>Movie</option>
+                                <option value="community" {% if community_select %} selected {% endif %}>Community</option>
+                            </select>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                            </span>
+                        </div>
+                    </form>
+
+
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Username<span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('mylist') }}" target="_blank"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> My lists</a></li>
+                            <li><a href="{{ url_for('settings') }}" target="_blank"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> User Settings</a></li>
+                            <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                    {% else %}
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Home</a></li>
+                        <li><a href="#">Profile</a></li>
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">Communities <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url_for('communityoverview') }}">All communities</a></li>
+                                <li><a href="{{ url_for('mycommunities') }}">My communities</a></li>
+                                <li><a href="{{ url_for('createcommunity') }}">Create community</a></li>
                             </ul>
-                        {% endif %}
-                    </div>
+                        </li>
+                    </ul>
+                    <form class="navbar-form navbar-left">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                            </span>
+                        </div>
+                    </form>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{{ url_for('register') }}">Register</a></li>
+                        <li><a href="{{ url_for('login') }}">Login</a></li>
+                    </ul>
+                    {% endif %}
                 </div>
             </nav>
-
             {% if get_flashed_messages() %}
                 <header>
                     <div class="alert alert-info" role="alert">
@@ -92,9 +109,8 @@
             <main>
                 {% block main %}{% endblock %}
             </main>
-
         </div>
-
     </body>
-
 </html>
+
+<!---<li><a href="{{ url_for('search') }}"><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Search</a></li> ---->
