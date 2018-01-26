@@ -207,3 +207,91 @@ html, body {
     background-color: #005577;
   }
 } /* END Media Query */
+.communitydiv {
+    float: left;
+    margin: 10px;
+    width: 75%;
+}
+
+
+table.list {
+    border-collapse: collapse;
+}
+
+table.list tr, td, th {
+    border: 2px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+table.list tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+table.communityoverview {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table.communityoverview tr, td, th {
+    border: 2px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+table.communityoverview tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+.half {
+    font-weight: bold;
+	border-bottom: 2px solid #dddddd;
+}
+
+.textbox {
+    float: left;
+    width: 75%;
+    height: 100px;
+    margin: 10px;
+    border: 2px solid #dddddd;
+    border-style: solid;
+}
+.memberlist {
+    float: right;
+    text-align: center;
+    width: 20%;
+    margin: 10px;
+    border: 2px solid #dddddd;
+}
+
+table.filmindex {
+    border-collapse: collapse;
+    float: left;
+    width: 45%;
+}
+
+table.filmindex tr, td, th {
+    border: 2px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+table.filmindex tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+table.comindex {
+    border-collapse: collapse;
+    float: right;
+    width: 45%;
+}
+
+table.comindex tr, td, th {
+    border: 2px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+table.comindex tr:nth-child(even) {
+    background-color: #dddddd;
+}

@@ -5,54 +5,8 @@
 {% endblock %}
 
 {% block main %}
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <style>
-            .textbox {
-                display: inline-block;
-                float: left;
-                width: 75%;
-                height: 100px;
-                margin: 10px;
-                border: 2px solid #dddddd;
-            }
-            .memberlist {
-                display: inline-block;
-                float: right;
-                text-align: center;
-                width: 20%;
-                margin: 10px;
-                border: 2px solid #dddddd;
-            }
-            .communitylist {
-                display: inline-block;
-                float: left;
-                width: 75%;
-                margin: 10px;;
-            }
 
-            table {
-                border-collapse: collapse;
-                width: 100%;
-            }
-
-            td, th {
-                border: 2px solid #dddddd;
-                text-align: left;
-                padding: 8px;
-            }
-
-            tr:nth-child(even) {
-                background-color: #dddddd;
-            }
-            td .half {
-                font-weight: bold;
-	            border-bottom: 2px solid #dddddd;
-            }
-        </style>
-    </head>
     <body>
-
         {% if member %}
         <form action="{{ url_for('community', community=page.name ) }}" method="post">
             <div class="form-group" style="float:right" >
@@ -68,69 +22,56 @@
         {% endif %}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <div class="textbox">
             <h1>{{ page.name }}</h1>
         </div>
+
         <div class="memberlist">
             <caption><b>Members</b></caption>
             {% for member in members %}
                 <ul>{{ member }}</ul>
             {% endfor %}
         </div>
+
         <div class="textbox">
             <h2>{{ page.description }}</h2>
         </div>
-        <div class="communitylist">
-            <table>
-                <thead>
+        <div class="communitydiv">
+        <table class="list">
+            <thead>
+                <tr>
+                    <th>Poster</th>
+                    <th>Film</th>
+                    <th>Year</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for film in films %}
                     <tr>
-                        <th>Poster</th>
-                        <th>Film</th>
-                        <th>Year</th>
-                        <th>Actions</th>
+                        <td>
+                            <img src={{ film.image }} height="60" width="40">
+                        </td>
+                        <td>
+                            <div class="half">
+                                {{ film.title }}
+                            </div>
+                            <div>
+                                {{ film.shortplot }}
+                            </div>
+                        </td>
+                        <td>
+                            {{ film.year }}
+                        </td>
+                        <td>
+                            <div>
+                                <a href="{{ url_for('community', community=page.name) }}">More</a>
+                            </div>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    {% for film in films %}
-                        <tr>
-                            <td>
-                                <img src={{ film.image }} height="60" width="40">
-                            </td>
-                            <td>
-                                <div class="half">
-                                    {{ film.title }}
-                                </div>
-                                <div>
-                                    {{ film.shortplot }}
-                                </div>
-                            </td>
-                            <td>
-                                {{ film.year }}
-                            </td>
-                            <td>
-                                <div>
-                                    <a href="{{ url_for('community', community=page.name) }}">More</a>
-                                </div>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                {% endfor %}
+            </tbody>
+        </table>
         </div>
     </body>
 
