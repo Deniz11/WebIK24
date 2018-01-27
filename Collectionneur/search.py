@@ -1,5 +1,5 @@
 from cs50 import SQL
-from helpers import valid_id
+from helpers import valid_id, valid_id_actor
 
 from imdbpie import Imdb
 imdb = Imdb()
@@ -322,3 +322,195 @@ class Search():
                 communities_found.append(community_found)
 
         return communities_found
+
+    def search_actor(to_search):
+        """returns short actor information"""
+
+        actors = imdb.search_for_name(to_search)
+
+        actors_information = []
+
+        for actor in actors:
+
+            actor_information = Search.actor_information(actor["imdb_id"])
+
+            actors_information.append(actor_information)
+
+        return actors_information
+
+    def actor_information(actor_id):
+        """return actor information"""
+
+        if valid_id_actor(actor_id):
+
+            actor_information = {}
+
+            # get actor id
+            actor_information["actor_id"] = actor_id
+
+            actor_info = imdb.get_name(actor_id)
+
+            # get actor name
+            try:
+                actor_information["actor_name"]  = actor_info["actor_name"]
+
+            except:
+                try:
+                    actor_information["actor_name"]  = actor_info["base"]["name"]
+
+                # this is just to see if the key is different e.g. returns name but in a different path at the end it will return an empty string because not knowing a name but giving it as result is just weird.
+                except:
+                    actor_information["actor_name"] = "Something went wrong when trying to fetch this actors name!"
+
+            # look for image of actor
+            try:
+                actor_information["image"] = actor_info["base"]["image"]["url"]
+
+            except:
+                actor_information["image"] = "http://www.gentsbierfestival.be/sites/default/files/default_images/notfound.jpg"
+
+            # look for birthdate
+            try:
+                actor_information["birthdate"] = actor_info["base"]["birthDate"]
+
+            except:
+                actor_information["birthdate"] = "could not find birthdate"
+
+            # look for actor trademarks
+            try:
+                actor_information["trademarks"] = actor_info["base"]["trademarks"][0]
+
+            except:
+                actor_information["trademarks"] = "could not find trademarks"
+
+            # look for actor jobs
+            try:
+                actor_information["jobs"] = ', '.join(actor_info["jobs"])
+
+            except:
+                actor_information["jobs"] = "could not find jobs"
+
+            # look for mini bios
+            try:
+                actor_information["minibios"] = actor_info["base"]["miniBios"][0]["text"]
+
+            except:
+                actor_information["minibios"] = "could not find mini bios"
+
+            return actor_information
+
+    def actor_movies(actor_id):
+        """returns dic of actors most recent movies"""
+
+        films = (imdb.get_name_filmography(actor_id)["filmography"])
+        teller = 0
+        recent_movies = []
+
+        # loop trough films actor played role in
+        for film in films:
+
+            futured_films = {}
+
+            # check if film is released
+            if film["status"] == 'released':
+
+                try:
+                    # filter film id from /title/film_id/
+                    futured_films["film_id"] = film["id"][7:16]
+
+                    futured_films["image"] = film["image"]["url"]
+
+                    futured_films["title"] = film["title"]
+
+                    recent_movies.append(futured_films)
+
+                    teller += 1
+
+                except:
+                    futured_films = {}
+
+            # only get first 5 movies
+            if teller == 5:
+                return recent_movies
+
+        # return list of movies actor played if it is less than 5
+        return recent_movies
+
+    def movie_actors(imdb_id):
+        """returns list of movie actors"""
+
+        # get cast members
+        actors = imdb.get_title_credits(imdb_id)["credits"]["cast"]
+
+        teller = 0
+        movie_actors = []
+
+        # loop trough each cast member
+        for actor in actors:
+
+            movie_actor= {}
+
+            # check if cast member is really an actor or actress
+            if actor["category"] == 'actor' or actor["category"] == "actress":
+
+                try:
+                    # filter actor id from /name/actor_id/
+                    movie_actor["actor_id"] = actor["id"][6:15]
+
+                    movie_actor["image"] = actor["image"]["url"]
+
+                    movie_actor["name"] = actor["name"]
+
+                    movie_actors.append(movie_actor)
+
+                    teller += 1
+
+                except:
+                    movie_actor = {}
+
+            # only get first 5 actors
+            if teller == 5:
+                return movie_actors
+
+        # return list of actors played in movie if it is less than 5
+        return movie_actors
+
+    def similair_films(imdb_id):
+        """returns list of similair_films"""
+
+        # get all similair films
+        similarities = imdb.get_title_similarities(imdb_id)["similarities"]
+
+        teller = 0
+        similair_titles = []
+
+        # loop trough each film
+        for title in similarities:
+
+            similair_title = {}
+
+            # check if similair title is not the same movie
+            if not title["id"][7:16] == imdb_id:
+
+                # try to get all requited information
+                try:
+                    # filter film id from /title/film_id/
+                    similair_title["imdb_id"] = title["id"][7:16]
+
+                    similair_title["image"] = title["image"]["url"]
+
+                    similair_title["title"] = title["title"]
+
+                    similair_titles.append(similair_title)
+
+                    teller += 1
+
+                except:
+                    similair_title = {}
+
+                # only get first 5 films
+                if teller == 5:
+                    return similair_titles
+
+        #return list of similair films if it is less than 5
+        return similair_titles

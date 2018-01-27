@@ -11,6 +11,7 @@
         <select style="float:left" name ="search_for">
             <option value="None" {% if select_something_select %} selected {% endif %}>search for...</option>
             <option value="movie" {% if movie_select %} selected {% endif %}>Movie</option>
+            <option value="actor" {% if actor_select %} selected {% endif %}>Actor</option>
             <option value="community" {% if community_select %} selected {% endif %}>Community</option>
         </select>
         <button type="submit"><i class="fa fa-search"></i></button><br>
@@ -40,10 +41,43 @@
             <font size="2">{{movie_info["short plot"]}}</font>
             </p>
 
-            <form action="{{ url_for('search') }}" method="post">
+            <form action="{{ url_for('movie_info') }}">
                 <fieldset>
                     <div class="form-group">
                         <button class="btn btn-default" type= "submit" name= "imdb_id" value = {{movie_info["imdb_id"]}} >More information</button>
+                    </div>
+                </fieldset>
+            </form>
+        </ul>
+    </p><br>
+
+    {% endfor %}
+
+    {% for actor in actors %}
+
+    <br><p>
+        <br><font size="10">{{actor["actor_name"]}}</font><br>
+    </p>
+    <img src={{actor["image"]}} alt="actor picture" height="382" width="268">
+
+    <p>
+        <ul style="width:100%">
+            <p style="border-bottom:1px solid grey">
+            <font size="2">birthdate: {{ actor["birthdate"]}}</font>
+            </p>
+
+            <p style="border-bottom:1px solid grey">
+            <font size="2">trademarks: {{ actor["trademarks"] }}</font>
+            </p>
+
+            <p style="border-bottom:1px solid grey">
+            <font size="2">jobs: {{ actor["jobs"] }}</font>
+            </p>
+
+            <form action="{{ url_for('actor_info') }}">
+                <fieldset>
+                    <div class="form-group">
+                        <button class="btn btn-default" type= "submit" name= "actor_id" value = {{actor["actor_id"]}} >More information</button>
                     </div>
                 </fieldset>
             </form>
@@ -88,5 +122,6 @@
     </p><br>
 
     {% endfor %}
+
 
 {% endblock %}

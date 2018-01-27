@@ -142,6 +142,25 @@ def valid_id(imdb_id):
     else:
         return False
 
+def valid_id_actor(imdb_id):
+    """checks if valid imdb_id of actor, these functions are split because search movie sometimes returns an actor. You can filter that checking if the id does not start with nm"""
+
+    # check if imdb_id stars starts with valid 2 startings characters
+    if not (imdb_id[:2] not in ['nm']):
+
+        # return true if id exist else false
+        try:
+            imdb.validate_imdb_id(imdb_id)
+            return True
+
+        except:
+            return False
+
+    # if id does not start with valid character return false
+    else:
+        return False
+
+
 def only_signs(s):
     """checks if string contains only special characters"""
 

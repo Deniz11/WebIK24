@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Movie information
+{% endblock %}
+
+{% block main %}
+
+    <form class="search" action="{{ url_for('search') }}" method="post">
+        <input type="text" placeholder="Search.." name="search">
+        <select style="float:left" name ="search_for">
+            <option value="None" {% if select_something_select %} selected {% endif %}>search for...</option>
+            <option value="movie" {% if movie_select %} selected {% endif %}>Movie</option>
+            <option value="actor" {% if actor_select %} selected {% endif %}>Actor</option>
+            <option value="community" {% if community_select %} selected {% endif %}>Community</option>
+        </select>
+        <button type="submit"><i class="fa fa-search"></i></button><br>
+    </form>
+
+    <br><br>
+
+    <br><p>
+        <br><font size="10">{{actor["actor_name"]}}</font><br>
+    </p>
+    <img src={{ actor["image"]}} alt="actor picture" height="382" width="268">
+
+    <p>
+        <ul style="width:100%">
+            <p style="border-bottom:1px solid grey">
+            <font size="2">birthdate: {{ actor["birthdate"]}}</font>
+            </p>
+
+            <p style="border-bottom:1px solid grey">
+            <font size="2">trademarks: {{ actor["trademarks"] }}</font>
+            </p>
+
+            <p style="border-bottom:1px solid grey">
+            <font size="2">jobs: {{ actor["jobs"] }}</font>
+            </p>
+
+            <p style="border-bottom:1px solid grey">
+            <font size="2">{{ actor["minibios"] }}</font>
+            </p>
+        </ul>
+    </p><br>
+
+    <p><font size="10">recent movies actor played in</font></p>
+
+    {% for movie in recent_movies %}
+
+    <p></p><img src={{ movie["image"]}} alt="actor picture" height="382" width="268">
+    {{ movie["title"] }}
+    <form action="{{ url_for('movie_info') }}">
+        <fieldset>
+            <div class="form-group">
+                <button class="btn btn-default" type= "submit" name= "imdb_id" value = {{movie["film_id"]}} >Go to movie page</button>
+            </div>
+        </fieldset>
+    </form>
+    </p>
+
+    {% endfor %}
+
+{% endblock %}
