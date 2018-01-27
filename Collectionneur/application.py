@@ -40,9 +40,13 @@ db = SQL("sqlite:///Collectionneur.db")
 
 @app.route("/")
 def index():
+
     if request.args.get("filmname"):
+
         all_movie_info = Search.search_titles(request.args.get("filmname"))
+
         return render_template("search.html", all_movie_info=all_movie_info, movie_select = True)
+
     return render_template("index.html", ranks=home.get_popular_movies(), pages=com.show())
 
 @app.route("/login", methods=["GET", "POST"])
@@ -240,11 +244,10 @@ def createcommunity():
 
     # if user reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-        request.form.get("delete account selected")
         # pass input to function
         if com.create(request.form.get("communityname"), session["user_id"], request.form.get("communitydescription")):
             # redirect to newly created community
-            return redirect(url_for("community", name=request.form.get("communityname")))
+            return redirect(url_for("community", community=request.form.get("communityname")))
 
         return render_template("createcommunity.html")
     else:
@@ -447,3 +450,20 @@ def mylist():
 
 
     return render_template("lists.html", information=information)
+
+@app.route("/search1", methods=["GET", "POST"])
+def search1():
+    goal = request.args.get('type')
+    query = request.args.get('q')
+
+    if goal == "none":
+        flash("Please specify search type")
+        return render_template("search1.html")
+    if goal == "movie":
+        flash([row["imdb_id"] for row in imdb.search_for_title(query) if row["imdb_id"][0] == "t"])
+        return render_template("search1.html")
+    else:
+        flash(com.show(query))
+        return render_template("search1.html")
+
+    return render_template("search1.html")
