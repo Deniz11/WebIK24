@@ -295,147 +295,181 @@ def communityoverview():# GEEFT OVERVIEW WEER <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 def mycommunities():
     return render_template("mycommunities.html", pages=com.mycommunities(session["user_id"]))
 
+@app.route("/actor_info", methods=["GET", "POST"])
+def actor_info():
+
+    actors_information = Search.actor_information(request.args.get("actor_id"))
+    recent_movies = Search.actor_movies(request.args.get("actor_id"))
+
+    return render_template("actor_information.html", actor = actors_information, recent_movies = recent_movies, actor_select = True)
+
+@app.route("/movie_info", methods=["GET", "POST"])
+def movie_info():
+
+    # check if user want to add item to list
+    if request.form.get("add_to_list"):
+
+        # check if user is logged in
+        if "user_id" not in session:
+            full_movie_info = Search.title_info(request.form.get("add_to_list"))
+            flash("To use this function, please log in")
+            return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
+
+        # check if something filled in
+        if not request.form.get("name"):
+            full_movie_info = Search.title_info(request.form.get("add_to_list"))
+            flash("please fill in a community/user")
+            return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
+
+        # check if user or exists
+        if not (User.userexist(request.form.get("name")) or request.form.get("name") in com.all_communities()):
+
+            full_movie_info = Search.title_info(request.form.get("add_to_list"))
+            flash("Can not find user/community")
+            return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
+
+        # check if given input is user or community
+        try:
+            user_id = User.user(request.form.get("name"))[0]["id"]
+
+        except:
+            user_id = ""
+
+        # check if user has rights to add to given list
+        if not (session["user_id"] == user_id or User.get_username(session["user_id"]) in com.showmembers(request.form.get("name"))):
+
+            full_movie_info = Search.title_info(request.form.get("add_to_list"))
+            flash("You can only add items to your own list or community list")
+            return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
+
+        # check if film already in list
+        if not Lists.add_item(request.form.get("name"), request.form.get("add_to_list")):
+
+            full_movie_info = Search.title_info(request.form.get("add_to_list"))
+            flash("Already in your list")
+            return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
+
+        # add film in films
+        Search.add_item(request.form.get("add_to_list"))
+
+        full_movie_info = Search.title_info(request.form.get("add_to_list"))
+        flash("succesfully added to your list")
+        return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
+
+
+    similair_films = Search.similair_films(request.args.get("imdb_id"))
+    actors = Search.movie_actors(request.args.get("imdb_id"))
+    full_movie_info = Search.title_info(request.args.get("imdb_id"))
+
+    return render_template("movie_information.html", full_movie_info = full_movie_info, actors = actors, similairs = similair_films, movie_select = True)
+
+
 @app.route("/search", methods=["GET", "POST"])
 def search():
 
-    # if user reached route via POST (as by submitting a form via POST)
-    if request.method == "POST":
+    # check if user want to go to community page
+    if request.form.get("go to community page"):
 
-        # check if user want to go to community page
-        if request.form.get("go to community page"):
+        return redirect(url_for('community', community=request.form.get("go to community page")))
 
-            return redirect(url_for('community', community=request.form.get("go to community page")))
+    # check if user want to join community
+    if request.form.get("join community"):
 
-        # check if user want to join community
-        if request.form.get("join community"):
+        # get community to join and to search
+        split = split_community_search(request.form.get("join community"))
 
-            # get community to join and to search
-            split = split_community_search(request.form.get("join community"))
+        # search communities
+        communities_found = Search.community(split[1])
 
-            # search communities
-            communities_found = Search.community(split[1])
-
-            # check if user is logged in
-            if "user_id" not in session:
-                flash("To use this function, please log in")
-                return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + split[1]), community_select = True)
-
-            # join community and if already joined notify user
-            if not com.join(User.get_username(session["user_id"]), split[0]):
-                flash("you are already a member of this community")
-                return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + split[1]), community_select = True)
-
-            flash("succesfully joined community")
+        # check if user is logged in
+        if "user_id" not in session:
+            flash("To use this function, please log in")
             return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + split[1]), community_select = True)
 
-        # check if more information route clicked
-        if request.form.get("imdb_id"):
+        # join community and if already joined notify user
+        if not com.join(User.get_username(session["user_id"]), split[0]):
+            flash("you are already a member of this community")
+            return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + split[1]), community_select = True)
 
-            full_movie_info = Search.title_info(request.form.get("imdb_id"))
+        flash("succesfully joined community")
+        return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + split[1]), community_select = True)
 
-            return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
+    # if nothing selected to search for
+    if request.form.get("search_for") == "None":
+        flash("please select something to search")
+        return render_template("search.html", select_something_select = True)
 
-        # check if user want to add item to list
-        if request.form.get("add_to_list"):
+    # if movie selected to search for
+    if request.form.get("search_for") == "movie":
 
-            # check if user is logged in
-            if "user_id" not in session:
-                full_movie_info = Search.title_info(request.form.get("add_to_list"))
-                flash("To use this function, please log in")
-                return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
+        # check if something filled in
+        if not request.form.get("search"):
+            flash("please fill in something to search")
+            return render_template("search.html", movie_select = True)
 
-            # check if something filled in
-            if not request.form.get("name"):
-                full_movie_info = Search.title_info(request.form.get("add_to_list"))
-                flash("please fill in a community/user")
-                return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
+        # check if valid search given
+        if not only_signs(request.form.get("search")):
+            flash("Invalid search, search contains only special characters")
+            return render_template("search.html", movie_select = True)
 
-            # check if user or exists
-            if User.userexist(request.form.get("name")) or request.form.get("name") in com.all_communities():
+        all_movie_info = Search.search_titles(request.form.get("search"))
 
-                # check if given input is user or community
-                try:
-                    user_id = User.user(request.form.get("name"))[0]["id"]
+        # check if something found
+        if not all_movie_info:
+            flash("Nothing found")
+            return render_template("search.html", movie_select = True)
 
-                except:
-                    user_id = ""
+        return render_template("search.html", all_movie_info=all_movie_info, movie_select = True)
 
-                # check if user has rights to add to given list
-                if session["user_id"] == user_id or User.get_username(session["user_id"]) in com.showmembers(request.form.get("name")):
+    # if actor selected to search for
+    if request.form.get("search_for") == "actor":
 
-                    # add film in films
-                    Search.add_item(request.form.get("add_to_list"))
+        # remember search name
+        to_search = request.form.get("search")
 
-                    # add list to community user if not already in his list
-                    if not Lists.add_item(request.form.get("name"), request.form.get("add_to_list")):
+        # check if something filled in
+        if not to_search:
+            flash("please fill in something to search")
+            return render_template("search.html", actor_select = True)
 
-                        full_movie_info = Search.title_info(request.form.get("add_to_list"))
-                        flash("Already in your list")
-                        return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
+        # check if valid search given
+        if not only_signs(request.form.get("search")):
+            flash("Invalid search, search contains only special characters")
+            return render_template("search.html", actor_select = True)
 
+        # search actors
+        actors_information = Search.search_actor(to_search)
 
-                    full_movie_info = Search.title_info(request.form.get("add_to_list"))
-                    flash("succesfully added to your list")
-                    return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
+        # notify that no actors are found
+        if not Search.search_actor(to_search):
+            flash("Did not find any actors")
+            render_template("search.html", community_select = True)
 
-                else:
-                    full_movie_info = Search.title_info(request.form.get("add_to_list"))
-                    flash("You can only add items to your own list or community list")
-                    return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
-
-            # notify user that user or community does not exist
-            else:
-                full_movie_info = Search.title_info(request.form.get("add_to_list"))
-                flash("Can not find user/community")
-                return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
-
-        # if nothing selected to search for
-        if request.form.get("search_for") == "None":
-            flash("please select something to search")
-            return render_template("search.html", select_something_select = True)
-
-        # if movie selected to search for
-        if request.form.get("search_for") == "movie":
-
-            # check if something filled in
-            if not request.form.get("search"):
-                flash("please fill in something to search")
-                return render_template("search.html", movie_select = True)
-
-            # check if something found or valid search given
-            if not only_signs(request.form.get("search")) or not Search.search_titles(request.form.get("search")):
-                flash("Nothing found")
-                return render_template("search.html", movie_select = True)
-
-            all_movie_info = Search.search_titles(request.form.get("search"))
-            return render_template("search.html", all_movie_info=all_movie_info, movie_select = True)
+        return render_template("search.html", actors = actors_information, actor_select = True)
 
 
-        # if community selected to search for
-        if request.form.get("search_for") == "community":
+    # if community selected to search for
+    if request.form.get("search_for") == "community":
 
-            # remember search name
-            to_search = request.form.get("search")
+        # remember search name
+        to_search = request.form.get("search")
 
-            # check if something filled in
-            if not to_search:
-                flash("please fill in something to search")
-                return render_template("search.html", community_select = True)
+        # check if something filled in
+        if not to_search:
+            flash("please fill in something to search")
+            return render_template("search.html", community_select = True)
 
-            # search communities
-            communities_found = Search.community(to_search)
+        # search communities
+        communities_found = Search.community(to_search)
 
-            # notify that no communities similiar to search
-            if not communities_found:
-                flash("no communities found")
-                render_template("search.html", community_select = True)
+        # notify that no communities similiar to search
+        if not communities_found:
+            flash("no communities found")
+            render_template("search.html", community_select = True)
 
-            return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + request.form.get("search")), community_select = True)
+        return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + request.form.get("search")), community_select = True)
 
-
-    # else if user reached route via GET (as by clicking a link or via redirect)
-    else:
-        return render_template("search.html")
+    return render_template("search.html")
 
 
 @app.route("/mylist", methods=["GET", "POST"])
