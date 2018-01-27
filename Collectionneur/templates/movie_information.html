@@ -11,6 +11,7 @@
         <select style="float:left" name ="search_for">
             <option value="None" {% if select_something_select %} selected {% endif %}>search for...</option>
             <option value="movie" {% if movie_select %} selected {% endif %}>Movie</option>
+            <option value="actor" {% if actor_select %} selected {% endif %}>Actor</option>
             <option value="community" {% if community_select %} selected {% endif %}>Community</option>
         </select>
         <button type="submit"><i class="fa fa-search"></i></button><br>
@@ -21,7 +22,7 @@
     <br><p>
         <br><font size="10">{{full_movie_info["title"]}}</font><br>
     </p>
-    <img src={{full_movie_info["image"]}} alt="movie picture">
+    <img src={{full_movie_info["image"]}} alt="movie picture" height="382" width="268">
 
     <p>
         <ul style="width:100%">
@@ -47,7 +48,7 @@
         </ul>
     </p><br>
 
-    <form action="{{ url_for('search') }}" method="post">
+    <form action="{{ url_for('movie_info') }}" method="post">
         <fieldset>
             <div class="form-group">
                 <input class="form-control" name="name" placeholder="type community/user name" type="text"/>
@@ -57,5 +58,45 @@
             </div>
         </fieldset>
     </form>
+
+    <p><font size="10">actors that played in the movie</font></p>
+
+    <table>
+        {% for actor in actors%}
+
+            <th><font size="5">{{ actor["name"] }}</font>
+            <img src={{ actor["image"]}} alt="actor picture" height="382" width="268">
+
+
+
+            <form action="{{ url_for('actor_info') }}">
+                <fieldset>
+                    <div class="form-group">
+                        <button class="btn btn-default" type= "submit" name= "actor_id" value = {{actor["actor_id"]}} >Go to actor page</button>
+                    </div>
+                </fieldset>
+            </form></th>
+
+
+
+        {% endfor %}
+    </table>
+
+    <p><font size="10">similair movies</font></p>
+
+    {% for similair in similairs %}
+
+    <p></p><img src={{ similair["image"]}} alt="movie picture" height="382" width="268">
+    {{ similair["title"] }}
+    <form action="{{ url_for('movie_info') }}">
+        <fieldset>
+            <div class="form-group">
+                <button class="btn btn-default" type= "submit" name= "imdb_id" value = {{similair["imdb_id"]}} >Go to movie page</button>
+            </div>
+        </fieldset>
+    </form>
+    </p>
+
+    {% endfor %}
 
 {% endblock %}
