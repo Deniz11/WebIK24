@@ -471,15 +471,15 @@ def myprofile():
 
 
     if not Lists.user_films(session["user_id"]) and not com.mycommunities(session["user_id"]):
-        return render_template("profilepage(no films and com).html")
+        return render_template("profilepage.no.films.and.com.html")
 
 
     elif not Lists.user_films(session["user_id"]):
-        return render_template("profilepage(no films).html", communities=com.mycommunities(session["user_id"]))
+        return render_template("profilepage.no.films.html", communities=com.mycommunities(session["user_id"]))
 
 
     elif not com.mycommunities(session["user_id"]):
-        return render_template("profilepage(no com).html", films=Lists.showlist(session["user_id"]))
+        return render_template("profilepage.no.com.html", films=Lists.showlist(session["user_id"]))
 
 
 
