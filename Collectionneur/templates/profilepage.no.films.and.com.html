@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Homepagina
+{% endblock %}
+
+{% block main %}
+	<style>
+    	.filmindex {
+            border-collapse: collapse;
+            float: left;
+            width: 45%;
+        }
+        .comindex {
+            border-collapse: collapse;
+            float: right;
+            width: 45%;
+        }
+
+        td, th {
+            border: 2px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+	<body>
+	    <h1 align="center">My profile</h1>
+
+		<table class="filmindex">
+	    <caption>My movies</caption>
+
+		<tr>
+			<td>No films added to list yet!</td>
+		</tr>
+
+		</table>
+
+		<table class="comindex">
+		<caption>Communities that you are a member of</caption>
+
+                <tr>
+                    <td>You haven't joined a community yet!</td>
+                </tr>
+
+        </table>
+        </div>
+{% endblock %}
