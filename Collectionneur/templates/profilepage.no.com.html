@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Homepagina
+{% endblock %}
+
+{% block main %}
+	<style>
+    	.filmindex {
+            border-collapse: collapse;
+            float: left;
+            width: 45%;
+        }
+        .comindex {
+            border-collapse: collapse;
+            float: right;
+            width: 45%;
+        }
+
+        td, th {
+            border: 2px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+	<body>
+	    <h1 align="center">My profile</h1>
+
+		<table class="filmindex">
+	    <caption>My movies</caption>
+	    <thead>
+			<tr>
+				<th>Movie</th>
+			</tr>
+		</thead>
+		{% for film in films %}
+		<tr>
+			<td>{{ film.title }} &nbsp;<form action="{{ url_for('index') }}"><button class="btn btn-default" style="float:right" type= "submit" name= "filmname" value = {{ film }} >Info</button></td>
+		</tr>
+		{% endfor %}
+		</table>
+
+		<table class="comindex">
+		<caption>Communities that you are a member of</caption>
+
+                <tr>
+                    <td>You haven't joined a community yet!</td>
+                </tr>
+
+        </table>
+        </div>
+{% endblock %}
