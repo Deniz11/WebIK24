@@ -6,19 +6,6 @@
 
 {% block main %}
 
-    <form class="search" action="{{ url_for('search') }}" method="post">
-        <input type="text" placeholder="Search.." name="search">
-        <select style="float:left" name ="search_for">
-            <option value="None" {% if select_something_select %} selected {% endif %}>search for...</option>
-            <option value="movie" {% if movie_select %} selected {% endif %}>Movie</option>
-            <option value="actor" {% if actor_select %} selected {% endif %}>Actor</option>
-            <option value="community" {% if community_select %} selected {% endif %}>Community</option>
-        </select>
-        <button type="submit"><i class="fa fa-search"></i></button><br>
-    </form>
-
-    <br><br>
-
     <br><p>
         <br><font size="10">{{full_movie_info["title"]}}</font><br>
     </p>
