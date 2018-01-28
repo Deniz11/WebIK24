@@ -48,7 +48,11 @@
 		        <h3 class="modal-title">Add to:</h3>
 		      </div>
 		      <div class="modal-body">
-		          <h4>My list</h4>
+		          <form action="{{ url_for('movie_info', imdb_id=full_movie_info.imdb_id) }}" method="post">
+                            <div class="form-group" style="float:left">
+                                <button class="btn btn-default" name="listadd" value="add" type="submit">My list</button>
+                            </div>
+                        </form>
 		          <h4>Community:</h4>
 		          {% if not mycom %}
 		              <ul>Go join some communities!</ul>

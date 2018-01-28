@@ -61,6 +61,10 @@ class User():
     def get_username(id):
         return db.execute("SELECT username FROM users WHERE id = :id", id=id)[0]["username"]
 
+    def get_list_id(username):
+        return db.execute("SELECT * FROM lists WHERE owner = :username", username=username)[0]["id"]
+
+
     '''
     def mylists():
         username = db.execute("SELECT username FROM user WHERE id=:id", id = session["user_id"])

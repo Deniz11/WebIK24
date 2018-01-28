@@ -40,9 +40,13 @@ db = SQL("sqlite:///Collectionneur.db")
 
 @app.route("/")
 def index():
-    #print(com.showlist("China"))
+    try:
+        session["user_id"]
+        username=User.get_username(session["user_id"])
+    except KeyError:
+        username = ""
 
-    return render_template("index.html", movies=home.get_popular_movies(), pages=com.show())
+    return render_template("index.html", movies=home.get_popular_movies(), pages=com.show(), username=username)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -320,8 +324,12 @@ def movie_info():
     full_movie_info = Search.title_info(request.args.get("imdb_id"))
 
     if request.method == "POST":
-        Lists.add_item(com.get_list_id(request.form.get("comadd")), request.args.get("imdb_id"))
-        return render_template("movie_information.html", full_movie_info = full_movie_info, actors = actors, similars = similar_films, movie_select = True, mycom=mycommunities)
+        if request.form.get("listadd") == "add":
+            Lists.add_item(User.get_list_id(User.get_username(session["user_id"])), request.args.get("imdb_id"))
+            return render_template("movie_information.html", full_movie_info = full_movie_info, actors = actors, similars = similar_films, movie_select = True, mycom=mycommunities)
+        else:
+            Lists.add_item(com.get_list_id(request.form.get("comadd")), request.args.get("imdb_id"))
+            return render_template("movie_information.html", full_movie_info = full_movie_info, actors = actors, similars = similar_films, movie_select = True, mycom=mycommunities)
     else:
         return render_template("movie_information.html", full_movie_info = full_movie_info, actors = actors, similars = similar_films, movie_select = True, mycom=mycommunities)
 
@@ -438,7 +446,7 @@ def search():
 @login_required
 def mylist():
 
-    information = Lists.showlist(session["user_id"])
+    information = Lists.showlist(User.get_username(session["user_id"]))
 
 
 
@@ -469,12 +477,11 @@ def search1():
 @login_required
 def myprofile():
 
-
-    if not Lists.user_films(session["user_id"]) and not com.mycommunities(session["user_id"]):
+    if not Lists.showlist(User.get_username(session["user_id"])) and not com.mycommunities(session["user_id"]):
         return render_template("profilepage.no.films.and.com.html")
 
 
-    elif not Lists.user_films(session["user_id"]):
+    elif not Lists.showlist(User.get_username(session["user_id"])):
         return render_template("profilepage.no.films.html", communities=com.mycommunities(session["user_id"]))
 
 
@@ -484,6 +491,6 @@ def myprofile():
 
 
     else:
-        return render_template("profilepage.html", films=Lists.showlist(session["user_id"]), communities=com.mycommunities(session["user_id"]))
+        return render_template("profilepage.html", films=Lists.showlist(User.get_username(session["user_id"])), communities=com.mycommunities(session["user_id"]))
 
 

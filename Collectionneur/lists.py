@@ -47,13 +47,16 @@ class Lists():
         db.execute("DELETE FROM list_item WHERE list_id = :list_id AND film_id = :film_id", list_id=list_id, film_id=film_id)
         #return redirect(url_for("list"))
 
-
+    def get_listid(owner):
+        print(owner)
+        print(db.execute("SELECT id FROM lists WHERE owner= :owner ", owner = owner)[0]["id"])
+        return db.execute("SELECT id FROM lists WHERE owner= :owner ", owner = owner)[0]["id"]
 
     # get list of dics of users film
     def showlist(owner):
 
         # get list id
-        list_id =  db.execute("SELECT id FROM lists WHERE owner= :username ", username = owner)[0]["id"]
+        list_id =  Lists.get_listid(owner)
         # return films of user
         if len(db.execute("SELECT film_id FROM list_item WHERE list_id= :list_id", list_id = list_id)) == 0:
             return False
