@@ -438,7 +438,7 @@ def search():
 @login_required
 def mylist():
 
-    information = Lists.user_films(session["user_id"])
+    information = Lists.showlist(session["user_id"])
 
 
 
@@ -460,3 +460,30 @@ def search1():
         return render_template("search1.html")
 
     return render_template("search1.html")
+
+
+
+
+
+@app.route("/myprofile", methods=["GET", "POST"])
+@login_required
+def myprofile():
+
+
+    if not Lists.user_films(session["user_id"]) and not com.mycommunities(session["user_id"]):
+        return render_template("profilepage(no films and com).html")
+
+
+    elif not Lists.user_films(session["user_id"]):
+        return render_template("profilepage(no films).html", communities=com.mycommunities(session["user_id"]))
+
+
+    elif not com.mycommunities(session["user_id"]):
+        return render_template("profilepage(no com).html", films=Lists.showlist(session["user_id"]))
+
+
+
+    else:
+        return render_template("profilepage.html", films=Lists.showlist(session["user_id"]), communities=com.mycommunities(session["user_id"]))
+
+
