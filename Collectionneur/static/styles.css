@@ -1,3 +1,6 @@
+main {
+  text-align: center;
+}
 
 main .form-control
 {
@@ -245,7 +248,7 @@ table.communityoverview tr:nth-child(even) {
 
 .half {
     font-weight: bold;
-	border-bottom: 2px solid #dddddd;
+	  border-bottom: 2px solid #dddddd;
 }
 
 .textbox {

@@ -47,56 +47,74 @@
             </p>
         </ul>
     </p><br>
+        {% if session.user_id %}
+        <!-- Trigger the modal with a button -->
+		<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">Add to list/community</button>
+		<!-- Modal -->
+		<div id="myModal" class="modal fade" role="dialog">
+		  <div class="modal-dialog modal-sm">
 
-    <form action="{{ url_for('movie_info') }}" method="post">
-        <fieldset>
-            <div class="form-group">
-                <input class="form-control" name="name" placeholder="type community/user name" type="text"/>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-default" type="submit" name = "add_to_list" value ="{{full_movie_info["imdb_id"]}}" >Add to list</button>
-            </div>
-        </fieldset>
-    </form>
+		    <!-- Modal content-->
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h3 class="modal-title">Add to:</h3>
+		      </div>
+		      <div class="modal-body">
+		          <h4>My list</h4>
+		          <h4>Community:</h4>
+		          {% if not mycom %}
+		              <ul>Go join some communities!</ul>
+		          {% else %}
+		          {% for item in mycom %}
+                        <form action="{{ url_for('movie_info', imdb_id=full_movie_info.imdb_id) }}" method="post">
+                            <div class="form-group" style="float:left">
+                                <button class="btn btn-default" name="comadd" value={{ item.name }} type="submit">{{ item.name }}</button>
+                            </div>
+                        </form>
+                	{% endfor %}
+		          {% endif %}
 
-    <p><font size="10">actors that played in the movie</font></p>
+
+
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		{% endif %}
+
+    <p><font size="10">Actors that played in the movie</font></p>
 
     <table>
         {% for actor in actors%}
-
-            <th><font size="5">{{ actor["name"] }}</font>
-            <img src={{ actor["image"]}} alt="actor picture" height="382" width="268">
-
-
-
-            <form action="{{ url_for('actor_info') }}">
-                <fieldset>
-                    <div class="form-group">
-                        <button class="btn btn-default" type= "submit" name= "actor_id" value = {{actor["actor_id"]}} >Go to actor page</button>
-                    </div>
-                </fieldset>
-            </form></th>
-
-
-
+            <th width="20%"><font size="5">{{ actor["name"] }}</font>
+                <img src={{ actor["image"]}} alt="actor picture">
+                <form action="{{ url_for('actor_info') }}">
+                    <fieldset>
+                        <div class="form-group">
+                            <button class="btn btn-default" type= "submit" name= "actor_id" value = {{actor["actor_id"]}} >Go to actor page</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </th>
         {% endfor %}
     </table>
 
-    <p><font size="10">similair movies</font></p>
+    <p><font size="10">Similar movies</font></p>
+    <table>
 
-    {% for similair in similairs %}
-
-    <p></p><img src={{ similair["image"]}} alt="movie picture" height="382" width="268">
-    {{ similair["title"] }}
+    {% for similar in similars %}
+    <th width="20%"><font size="5">{{ similar["title"] }}</font>
+    <img src={{ similar["image"]}} alt="movie picture">
     <form action="{{ url_for('movie_info') }}">
         <fieldset>
             <div class="form-group">
-                <button class="btn btn-default" type= "submit" name= "imdb_id" value = {{similair["imdb_id"]}} >Go to movie page</button>
+                <button class="btn btn-default" type= "submit" name= "imdb_id" value = {{similar["imdb_id"]}} >Go to movie page</button>
             </div>
         </fieldset>
-    </form>
-    </p>
+    </form></th>
 
     {% endfor %}
+    </table>
 
 {% endblock %}

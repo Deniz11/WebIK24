@@ -278,14 +278,8 @@ class Search():
         else:
             return False
 
-    def add_item(film_id):
-        """adds item to items"""
-
-        db.execute("INSERT INTO films (film_id, title, summary, year, image) VALUES (:film_id, :title, :summary, :year, :image)", film_id = film_id, title = Search.title_name(film_id), summary = Search.title_summary(film_id),
-        year = Search.title_year(film_id), image = Search.title_poster(film_id))
-
     def community(community):
-        """searches a community and returns list of similiarcommunitties"""
+        """searches a community and returns list of similar communities"""
 
         communities_found = []
 
@@ -307,7 +301,7 @@ class Search():
                 name_lower = name_lower.replace(old, new)
                 community_lower = community_lower.replace(old, new)
 
-            # if similair community found add to list
+            # if similar community found add to list
             if name_lower.find(community_lower) != -1:
 
                 # add name to list
@@ -475,42 +469,42 @@ class Search():
         # return list of actors played in movie if it is less than 5
         return movie_actors
 
-    def similair_films(imdb_id):
-        """returns list of similair_films"""
+    def similar_films(imdb_id):
+        """returns list of similar_films"""
 
-        # get all similair films
+        # get all similar films
         similarities = imdb.get_title_similarities(imdb_id)["similarities"]
 
         teller = 0
-        similair_titles = []
+        similar_titles = []
 
         # loop trough each film
         for title in similarities:
 
-            similair_title = {}
+            similar_title = {}
 
-            # check if similair title is not the same movie
+            # check if similar title is not the same movie
             if not title["id"][7:16] == imdb_id:
 
                 # try to get all requited information
                 try:
                     # filter film id from /title/film_id/
-                    similair_title["imdb_id"] = title["id"][7:16]
+                    similar_title["imdb_id"] = title["id"][7:16]
 
-                    similair_title["image"] = title["image"]["url"]
+                    similar_title["image"] = title["image"]["url"]
 
-                    similair_title["title"] = title["title"]
+                    similar_title["title"] = title["title"]
 
-                    similair_titles.append(similair_title)
+                    similar_titles.append(similar_title)
 
                     teller += 1
 
                 except:
-                    similair_title = {}
+                    similar_title = {}
 
                 # only get first 5 films
                 if teller == 5:
-                    return similair_titles
+                    return similar_titles
 
-        #return list of similair films if it is less than 5
-        return similair_titles
+        #return list of similar films if it is less than 5
+        return similar_titles

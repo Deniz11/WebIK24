@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block main %}
-
 	<body>
 	    <h1 align="center">Filmdatabase</h1>
 	    <h2 align="center">Op deze website kunt u lijsten aanmaken met uw favoriete films en community's volgen met de laatste filmupdates.</h2>
@@ -18,10 +17,11 @@
 				<th>Movie</th>
 			</tr>
 		</thead>
-		{% for k, v in ranks.items() %}
+		{% for movie in movies %}
 		<tr>
-			<td>{{ k }}</td>
-			<td>{{ v }} &nbsp;<form action="{{ url_for('index') }}"><button class="btn btn-default" style="float:right" type= "submit" name= "filmname" value = {{ v }} >Search</button></td>
+			<td>{{ movie.rank }}</td>
+			<td><a href="{{ url_for('movie_info', imdb_id=movie.id) }}">{{ movie.title }}</a></td>
+
 		</tr>
 		{% endfor %}
 		</table>

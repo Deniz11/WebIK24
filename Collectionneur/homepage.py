@@ -6,9 +6,13 @@ class Home():
         """returns dic of ranks"""
 
         poptitles = imdb.get_popular_movies()["ranks"]
-        ranks = {}
+        ranks = []
+        for item in poptitles:
+            rank = {}
+            rank["rank"] = item["currentRank"]
+            rank["title"] = item["title"]
+            rank["id"] = item["id"][7:-1]
+            ranks.append(rank)
 
-        for i in range(10):
-            ranks[i + 1] = poptitles[i]["title"]
 
-        return ranks
+        return ranks[:10]

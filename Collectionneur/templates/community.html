@@ -23,7 +23,7 @@
 
 
         <div class="textbox">
-            <h1>{{ page.name }}</h1>
+            <h1 text-align:"center">{{ page.name }}</h1>
         </div>
 
         <div class="memberlist">
@@ -36,6 +36,9 @@
         <div class="textbox">
             <h2>{{ page.description }}</h2>
         </div>
+        {% if not films %}
+        <h4>Your community list seems to be empty, go add some things!</h4>
+        {% else %}
         <div class="communitydiv">
         <table class="list">
             <thead>
@@ -73,6 +76,7 @@
             </tbody>
         </table>
         </div>
+        {% endif %}
     </body>
 
 

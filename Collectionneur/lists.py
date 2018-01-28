@@ -1,5 +1,8 @@
 from cs50 import SQL
+from flask import flash
 from helpers import valid_id
+from user import User
+from search import Search
 from user import User
 
 # configure CS50 Library to use SQLite database
@@ -22,13 +25,19 @@ class Lists():
         #return redirect(url_for("overzicht"))
 
     # item aan lijst toevoegen
-    def add_item(name, film):
-        list_id = Lists.name_to_id(name)[0]["id"]
+    def add_item(list_id, film_id):
+        # insert movie in database indien nog niet aanwezig
+        if len(db.execute("SELECT * FROM films WHERE film_id = :film_id", film_id=film_id)) == 0:
+            db.execute("INSERT INTO films (film_id, title, summary, year, image) VALUES (:film_id, :title, :summary, :year, :image)", film_id = film_id, title = Search.title_name(film_id), summary = Search.title_summary(film_id), year = Search.title_year(film_id), image = Search.title_poster(film_id))
 
-        if len(db.execute("SELECT * FROM list_item WHERE list_id = :list_id AND film_id = :film_id", film_id = film, list_id = list_id)) == 0:
-            db.execute("INSERT INTO list_item (list_id, film_id) VALUES (:list_id, :film_id)", list_id=list_id, film_id=film)
+        # voeg film toe aan lijst
+        if len(db.execute("SELECT * FROM list_item WHERE list_id = :list_id AND film_id = :film_id", film_id = film_id, list_id = list_id)) == 0:
+            db.execute("INSERT INTO list_item (list_id, film_id) VALUES (:list_id, :film_id)", list_id=list_id, film_id=film_id)
+            flash("Succesfully added to list!")
             return True
+        # returnt false als film al in lijst zit
         else:
+            flash("Item already in list.")
             return False
        # return redirect(url_for("list"))
 
@@ -39,20 +48,15 @@ class Lists():
         #return redirect(url_for("list"))
 
 
-    # get user_id from name
-    def name_to_id(name):
-        return db.execute("SELECT id FROM lists WHERE owner = :name", name = name)
 
     # get list of dics of users film
-    def user_films(id):
-
-        # get username from id
-        username = User.get_username(id)
+    def showlist(owner):
 
         # get list id
-        list_id =  db.execute("SELECT id FROM lists WHERE owner= :username ", username = username)[0]["id"]
-
+        list_id =  db.execute("SELECT id FROM lists WHERE owner= :username ", username = owner)[0]["id"]
         # return films of user
+        if len(db.execute("SELECT film_id FROM list_item WHERE list_id= :list_id", list_id = list_id)) == 0:
+            return False
         films = db.execute("SELECT film_id FROM list_item WHERE list_id= :list_id", list_id = list_id)
 
         films_info = []

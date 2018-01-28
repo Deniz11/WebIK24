@@ -65,14 +65,16 @@ class Communities():
             return db.execute("SELECT * FROM community_page")
         # Zoekt gegevens van specifieke community.
         else:
-            return db.execute("SELECT * FROM community_page WHERE name=:communityname",communityname=communityname)
+            return db.execute("SELECT * FROM community_page WHERE LOWER(name)=:communityname",communityname=communityname.lower())
 
     def all_communities():
         """returns list of all communities"""
         rows = db.execute("SELECT name FROM community_page")
         return [row["name"] for row in rows]
 
-    def mycommunities(userid):
+    def mycommunities(userid=0):
+        if userid==0:
+            return ["a", "b"]
         # Returns alle communities waar gebruiker lid van is
         pages = db.execute("SELECT communityname FROM community_users WHERE username=:username",username=User.get_username(userid))
         return [Communities.show(page["communityname"])[0] for page in pages]
@@ -84,3 +86,9 @@ class Communities():
             if username == name["username"]:
                 return True
         return False
+    def get_list_id(communityname):
+        return db.execute("SELECT * FROM lists WHERE owner = :communityname", communityname=communityname)[0]["id"]
+
+    def showlist(list_id):
+        # returns a single communitylist
+        return db.execute("SELECT film_id FROM list_item WHERE list_id = :comlistid", comlistid=comlistid)

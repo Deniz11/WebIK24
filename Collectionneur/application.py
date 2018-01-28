@@ -40,14 +40,9 @@ db = SQL("sqlite:///Collectionneur.db")
 
 @app.route("/")
 def index():
+    #print(com.showlist("China"))
 
-    if request.args.get("filmname"):
-
-        all_movie_info = Search.search_titles(request.args.get("filmname"))
-
-        return render_template("search.html", all_movie_info=all_movie_info, movie_select = True)
-
-    return render_template("index.html", ranks=home.get_popular_movies(), pages=com.show())
+    return render_template("index.html", movies=home.get_popular_movies(), pages=com.show())
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -260,9 +255,7 @@ def createcommunity():
 def community():
 
     # add random films for TEST PURPOSES
-    films = Search.search_titles("star wars")
-    for film in films:
-        film["shortplot"]=film["short plot"]
+    films = Lists.showlist(request.args.get('community'))
 
     if request.method == "POST":
 
@@ -289,7 +282,7 @@ def community():
 @app.route("/communityoverview", methods=["GET", "POST"])
 
 def communityoverview():# GEEFT OVERVIEW WEER <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<DEZE LATER IN TOTAALOVERZICHT ZETTEN!!!!!!!!!!!!!!!!!!!!!
-
+    print(com.show())
     return render_template("communityoverview.html", overview=com.show())
 
 @app.route("/mycommunities", methods=["GET", "POST"])
@@ -309,62 +302,21 @@ def actor_info():
 @app.route("/movie_info", methods=["GET", "POST"])
 def movie_info():
 
-    # check if user want to add item to list
-    if request.form.get("add_to_list"):
+    try:
+        session["user_id"]
+        mycommunities = com.mycommunities(session["user_id"])
+    except KeyError:
+        mycommunities = []
 
-        # check if user is logged in
-        if "user_id" not in session:
-            full_movie_info = Search.title_info(request.form.get("add_to_list"))
-            flash("To use this function, please log in")
-            return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
-
-        # check if something filled in
-        if not request.form.get("name"):
-            full_movie_info = Search.title_info(request.form.get("add_to_list"))
-            flash("please fill in a community/user")
-            return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
-
-        # check if user or exists
-        if not (User.userexist(request.form.get("name")) or request.form.get("name") in com.all_communities()):
-
-            full_movie_info = Search.title_info(request.form.get("add_to_list"))
-            flash("Can not find user/community")
-            return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
-
-        # check if given input is user or community
-        try:
-            user_id = User.user(request.form.get("name"))[0]["id"]
-
-        except:
-            user_id = ""
-
-        # check if user has rights to add to given list
-        if not (session["user_id"] == user_id or User.get_username(session["user_id"]) in com.showmembers(request.form.get("name"))):
-
-            full_movie_info = Search.title_info(request.form.get("add_to_list"))
-            flash("You can only add items to your own list or community list")
-            return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
-
-        # check if film already in list
-        if not Lists.add_item(request.form.get("name"), request.form.get("add_to_list")):
-
-            full_movie_info = Search.title_info(request.form.get("add_to_list"))
-            flash("Already in your list")
-            return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
-
-        # add film in films
-        Search.add_item(request.form.get("add_to_list"))
-
-        full_movie_info = Search.title_info(request.form.get("add_to_list"))
-        flash("succesfully added to your list")
-        return render_template("movie_information.html", full_movie_info = full_movie_info, movie_select = True)
-
-
-    similair_films = Search.similair_films(request.args.get("imdb_id"))
+    similar_films = Search.similar_films(request.args.get("imdb_id"))
     actors = Search.movie_actors(request.args.get("imdb_id"))
     full_movie_info = Search.title_info(request.args.get("imdb_id"))
 
-    return render_template("movie_information.html", full_movie_info = full_movie_info, actors = actors, similairs = similair_films, movie_select = True)
+    if request.method == "POST":
+        Lists.add_item(com.get_list_id(request.form.get("comadd")), request.args.get("imdb_id"))
+        return render_template("movie_information.html", full_movie_info = full_movie_info, actors = actors, similars = similar_films, movie_select = True, mycom=mycommunities)
+    else:
+        return render_template("movie_information.html", full_movie_info = full_movie_info, actors = actors, similars = similar_films, movie_select = True, mycom=mycommunities)
 
 
 @app.route("/search", methods=["GET", "POST"])
