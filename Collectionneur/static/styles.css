@@ -298,3 +298,23 @@ table.comindex tr, td, th {
 table.comindex tr:nth-child(even) {
     background-color: #dddddd;
 }
+
+.box {
+    background-color: #f2f2f2;
+    width: 800px;
+    border-top: 3px solid #66c2ff;
+    border-bottom: 3px solid #66c2ff;
+    text-align: left;
+    height: 125px;
+
+}
+
+.box h4 {
+  margin-left: 20px;
+
+}
+
+.box p {
+  margin-left: 5px;
+  word-wrap: break-word;
+}

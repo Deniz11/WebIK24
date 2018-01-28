@@ -92,3 +92,9 @@ class Communities():
     def showlist(list_id):
         # returns a single communitylist
         return db.execute("SELECT film_id FROM list_item WHERE list_id = :comlistid", comlistid=comlistid)
+
+    def save_comment(username, community, comment):
+        return db.execute("INSERT INTO comment_section (community, username, comment) VALUES(:community, :username, :comment)", community = community, username = username, comment=comment)
+
+    def community_comments(community):
+        return db.execute("SELECT username,datetime,comment FROM comment_section WHERE community = :community ORDER BY datetime(datetime) DESC", community=community)

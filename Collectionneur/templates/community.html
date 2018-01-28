@@ -77,6 +77,30 @@
         </table>
         </div>
         {% endif %}
+
+        <div style="float:left">
+        <br><textarea required maxlength = "356" rows="4" cols="50" name="comment" form="comment_section" placeholder = "type comment here"></textarea>
+        <form action="{{ url_for('community', community=page.name ) }}" id="comment_section" method="post">
+
+            <div class="form-group">
+                <button class="btn btn-default" type= "submit" name= "commented" value = "True" >Comment</button>
+            </div>
+
+        </form>
+
+        {% for comment in comments %}
+
+        <div class="box">
+        	<h4><font color=" #0099cc"><i>"{{comment["username"]}}" commented at {{comment["datetime"]}}</i></font></h4>
+            <p><font color = "#004d66" face="Calibri light"><i>{{comment["comment"]}}</i></font><p>
+        </div>
+
+        <br>
+
+        {% endfor %}
+
+        </div>
+
     </body>
 
 
