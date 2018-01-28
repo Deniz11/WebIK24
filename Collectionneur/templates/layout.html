@@ -44,24 +44,7 @@
                             </ul>
                         </li>
                     </ul>
-
-
-                    <form class="navbar-form navbar-left" action="{{ url_for('search') }}" method="post">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search" name="search">
-                            <select class="selectpicker" name ="search_for" multiple>
-                                <option value="None" {% if select_something_select %} selected {% endif %}>search for...</option>
-                                <option value="movie" {% if movie_select %} selected {% endif %}>Movie</option>
-                                <option value="community" {% if community_select %} selected {% endif %}>Community</option>
-                            </select>
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-                            </span>
-                        </div>
-                    </form>
-
-
-
+                    <!--- User --->
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Username<span class="caret"></span></a>
@@ -72,6 +55,18 @@
                         </ul>
                       </li>
                     </ul>
+                    <!--- Search -->
+                    <form class="navbar-form navbar-left" action="{{ url_for('search') }}" method="post">
+                    <input type="text" placeholder="Search.." name="search" class="form-control">
+                    <select style="selectpicker" name ="search_for">
+                        <option value="None" {% if select_something_select %} selected {% endif %}>search for...</option>
+                        <option value="movie" {% if movie_select %} selected {% endif %}>Movie</option>
+                        <option value="actor" {% if actor_select %} selected {% endif %}>Actor</option>
+                        <option value="community" {% if community_select %} selected {% endif %}>Community</option>
+                    </select>
+                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                    </form>
+                    <br><br>
                     {% else %}
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="#">Home</a></li>
@@ -85,18 +80,22 @@
                             </ul>
                         </li>
                     </ul>
-                    <form class="navbar-form navbar-left">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search">
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-                            </span>
-                        </div>
-                    </form>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{{ url_for('register') }}">Register</a></li>
                         <li><a href="{{ url_for('login') }}">Login</a></li>
                     </ul>
+                    <!--- Search -->
+                    <form class="navbar-form navbar-left" action="{{ url_for('search') }}" method="post">
+                    <input type="text" placeholder="Search.." name="search" class="form-control">
+                    <select class="form-control" name ="search_for">
+                        <option value="None" {% if select_something_select %} selected {% endif %}>search for...</option>
+                        <option value="movie" {% if movie_select %} selected {% endif %}>Movie</option>
+                        <option value="actor" {% if actor_select %} selected {% endif %}>Actor</option>
+                        <option value="community" {% if community_select %} selected {% endif %}>Community</option>
+                    </select>
+                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                    </form>
+                    <br><br>
                     {% endif %}
                 </div>
             </nav>
