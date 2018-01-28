@@ -1,51 +1,58 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Homepagina
+    Profielpagina
 {% endblock %}
 
 {% block main %}
-	<style>
-    	.filmindex {
-            border-collapse: collapse;
-            float: left;
-            width: 45%;
-        }
-        .comindex {
-            border-collapse: collapse;
-            float: right;
-            width: 45%;
-        }
-
-        td, th {
-            border: 2px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-
-        tr:nth-child(even) {
-            background-color: #dddddd;
-        }
-    </style>
 	<body>
 	    <h1 align="center">My profile</h1>
+        {% if not films %}
+            <table class="filmindex">
+    	    <caption>My movies</caption>
+    	    <thead>
+    			<tr>
+    			    <th>No films found...</th>
+    			</tr>
+    		</thead>
+    		<tr>
+                <td><a href="{{ url_for('search') }}">Go add some!</a></td>
+    		</tr>
+    		</table>
+        {% else %}
 
-		<table class="filmindex">
-	    <caption>My movies</caption>
-	    <thead>
-			<tr>
-				<th>Movie</th>
-			</tr>
-		</thead>
-		{% for film in films %}
-		<tr>
-			<td>{{ film.title }} &nbsp;<form action="{{ url_for('index') }}"><button class="btn btn-default" style="float:right" type= "submit" name= "filmname" value = {{ film }} >Info</button></td>
-		</tr>
-		{% endfor %}
-		</table>
+    		<table class="filmindex">
+    	    <caption>My movies</caption>
+    	    <thead>
+    			<tr>
+    				<th>Movie</th>
+    			</tr>
+    		</thead>
+    		{% for film in films %}
+    		<tr>
+    			<td>{{ film.title }} &nbsp;<form action="{{ url_for('index') }}"><button class="btn btn-default" style="float:right" type= "submit" name= "filmname" value = {{ film }} >Info</button></td>
+    		</tr>
+    		{% endfor %}
+    		</table>
+		{% endif %}
 
-		<table class="comindex">
-		<caption>Communities that you are a member of</caption>
+		{% if not communities %}
+    		<table class="comindex">
+    		<caption>My communities</caption>
+            <thead>
+                <tr>
+                    <th>No communities found...</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td><a href="{{ url_for('communityoverview') }}">Go add some!</a></td>
+                    </tr>
+            </tbody>
+        </table>
+		{% else %}
+    		<table class="comindex">
+    		<caption>My communities</caption>
             <thead>
                 <tr>
                     <th>Community</th>
@@ -55,11 +62,12 @@
             <tbody>
                 {% for community in communities %}
                     <tr>
-                        <td>{{ community.name }} <a class="btn btn-default" style="float:right" href="{{ url_for('community', community=community.name) }}">Visit page</a></td>
+                        <td><a href="{{ url_for('community', community=community.name) }}">{{ community.name }}</a></td>
                         <td>{{ community.description }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
+        {% endif %}
         </table>
-        </div>
+    </body>
 {% endblock %}

@@ -77,19 +77,3 @@ class Lists():
             films_info.append(film_data)
 
         return films_info
-
-
-
-    def user_films(id):
-
-        # get username from id
-        username = User.get_username(id)
-
-
-        # get list id
-        list_id =  db.execute("SELECT id FROM lists WHERE owner= :username ", username = username)[0]["id"]
-
-        # return films of user
-        films = db.execute("SELECT film_id FROM list_item WHERE list_id= :list_id", list_id = list_id)
-
-        return films

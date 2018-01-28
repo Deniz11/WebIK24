@@ -1,6 +1,7 @@
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
+from tempfile import mkdtemp
 from passlib.apps import custom_app_context as pwd_context
 # configure CS50 Library to use SQLite database
 db = SQL("sqlite:///Collectionneur.db")
@@ -58,8 +59,6 @@ class User():
         rows = db.execute("SELECT hash FROM users WHERE id = :id", id=id)
         return rows
 
-    def get_username(id):
-        return db.execute("SELECT username FROM users WHERE id = :id", id=id)[0]["username"]
 
     def get_list_id(username):
         return db.execute("SELECT * FROM lists WHERE owner = :username", username=username)[0]["id"]

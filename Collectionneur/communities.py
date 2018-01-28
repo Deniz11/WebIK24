@@ -1,7 +1,7 @@
 from cs50 import SQL
 from user import User
 from imdbpie import Imdb
-from flask import flash
+from flask import flash, session
 from flask_session import Session
 imdb = Imdb()
 from tempfile import mkdtemp
@@ -14,7 +14,7 @@ db = SQL("sqlite:///Collectionneur.db")
 class Communities():
 
     # Community aanmaken.
-    def create(communityname, userid, description):
+    def create(communityname, description):
 
         users = db.execute("SELECT * FROM users WHERE username = :communityname", communityname=communityname)
         communities = db.execute("SELECT * FROM community_page WHERE name = :communityname", communityname=communityname)
@@ -23,7 +23,7 @@ class Communities():
             return flash("name already in use")
         else:
             db.execute("INSERT INTO community_page (name, description) VALUES(:name, :description)", name=communityname, description=description)
-            db.execute("INSERT INTO community_users (communityname, username) VALUES(:communityname, :username)", communityname=communityname, username=User.get_username(userid))
+            db.execute("INSERT INTO community_users (communityname, username) VALUES(:communityname, :username)", communityname=communityname, username=session["username"])
             db.execute("INSERT INTO lists (owner, list_name) VALUES(:owner, :name)", owner=communityname, name=communityname+" Shared List")
             return True
 
@@ -72,18 +72,15 @@ class Communities():
         rows = db.execute("SELECT name FROM community_page")
         return [row["name"] for row in rows]
 
-    def mycommunities(userid=0):
-        if userid==0:
-            return ["a", "b"]
+    def mycommunities(userid):
         # Returns alle communities waar gebruiker lid van is
-        pages = db.execute("SELECT communityname FROM community_users WHERE username=:username",username=User.get_username(userid))
+        pages = db.execute("SELECT communityname FROM community_users WHERE username=:username",username=session["username"])
         return [Communities.show(page["communityname"])[0] for page in pages]
 
     def member(userid, communityname):
-        username = db.execute("SELECT username FROM users WHERE id = :id", id=userid)[0]["username"]
         check = db.execute("SELECT username FROM community_users WHERE communityname = :communityname", communityname=communityname)
         for name in check:
-            if username == name["username"]:
+            if session["username"] == name["username"]:
                 return True
         return False
     def get_list_id(communityname):

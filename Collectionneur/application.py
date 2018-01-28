@@ -42,7 +42,7 @@ db = SQL("sqlite:///Collectionneur.db")
 def index():
     try:
         session["user_id"]
-        username=User.get_username(session["user_id"])
+        username=session["username"]
     except KeyError:
         username = ""
 
@@ -76,6 +76,7 @@ def login():
 
         # remember which user has logged in
         session["user_id"] = User.user(request.form.get("username"))[0]["id"]
+        session["username"] = request.form.get("username")
 
         # redirect user to home page
         flash("succesfully logged in")
@@ -244,7 +245,7 @@ def createcommunity():
     # if user reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
         # pass input to function
-        if com.create(request.form.get("communityname"), session["user_id"], request.form.get("communitydescription")):
+        if com.create(request.form.get("communityname"), request.form.get("communitydescription")):
             # redirect to newly created community
             return redirect(url_for("community", community=request.form.get("communityname")))
 
@@ -265,20 +266,20 @@ def community():
     if request.method == "POST":
 
         if request.form.get("commented"):
-            username = User.get_username(session["user_id"])
+            username = session["username"]
             com.save_comment(username, request.args.get('community'), request.form.get("comment"))
             comments = com.community_comments(request.args.get('community'))
             return render_template("community.html", comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
 
         if request.form.get("comaction") == "join":
 
-            com.join(User.get_username(session["user_id"]),request.args.get('community'))
+            com.join(session["username"] ,request.args.get('community'))
 
             return render_template("community.html", comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
 
         elif request.form.get("comaction") == "leave":
 
-            com.remove_member(User.get_username(session["user_id"]),request.args.get('community'))
+            com.remove_member(session["username"],request.args.get('community'))
 
             return render_template("community.html", comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
 
@@ -325,7 +326,7 @@ def movie_info():
 
     if request.method == "POST":
         if request.form.get("listadd") == "add":
-            Lists.add_item(User.get_list_id(User.get_username(session["user_id"])), request.args.get("imdb_id"))
+            Lists.add_item(User.get_list_id(session["username"]), request.args.get("imdb_id"))
             return render_template("movie_information.html", full_movie_info = full_movie_info, actors = actors, similars = similar_films, movie_select = True, mycom=mycommunities)
         else:
             Lists.add_item(com.get_list_id(request.form.get("comadd")), request.args.get("imdb_id"))
@@ -357,7 +358,7 @@ def search():
             return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + split[1]), community_select = True)
 
         # join community and if already joined notify user
-        if not com.join(User.get_username(session["user_id"]), split[0]):
+        if not com.join(session["username"], split[0]):
             flash("you are already a member of this community")
             return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + split[1]), community_select = True)
 
@@ -446,7 +447,7 @@ def search():
 @login_required
 def mylist():
 
-    information = Lists.showlist(User.get_username(session["user_id"]))
+    information = Lists.showlist(session["username"])
 
 
 
@@ -477,20 +478,6 @@ def search1():
 @login_required
 def myprofile():
 
-    if not Lists.showlist(User.get_username(session["user_id"])) and not com.mycommunities(session["user_id"]):
-        return render_template("profilepage.no.films.and.com.html")
-
-
-    elif not Lists.showlist(User.get_username(session["user_id"])):
-        return render_template("profilepage.no.films.html", communities=com.mycommunities(session["user_id"]))
-
-
-    elif not com.mycommunities(session["user_id"]):
-        return render_template("profilepage.no.com.html", films=Lists.showlist(session["user_id"]))
-
-
-
-    else:
-        return render_template("profilepage.html", films=Lists.showlist(User.get_username(session["user_id"])), communities=com.mycommunities(session["user_id"]))
+    return render_template("profilepage.html", films=Lists.showlist(session["username"]), communities=com.mycommunities(session["user_id"]))
 
 
