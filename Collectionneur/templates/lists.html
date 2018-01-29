@@ -18,7 +18,7 @@
                 <tbody>
                      {% for info in information %}
                         <tr>
-                            <td width="180"><img src={{info["image"]}} alt="movie picture"</td>
+                            <td width="180"><a href="{{ url_for('movie_info', imdb_id=info.film_id) }}"><img src={{info["image"]}} alt="movie picture"</a></td>
                             <td>
                                 <div class="half">{{ info.title }}</div>
                                 <div>{{ info["summary"] }}</div>
