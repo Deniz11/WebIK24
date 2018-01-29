@@ -39,6 +39,9 @@ class User():
         # delete list
         db.execute("DELETE FROM lists WHERE owner= :username ", username = username)
 
+        #delete comments
+        db.execute("DELETE FROM comment_section WHERE username= :username ", username = username)
+
         # delete user
         db.execute("DELETE FROM users WHERE username= :username ", username = username)
 
