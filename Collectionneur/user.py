@@ -25,9 +25,7 @@ class User():
         # show index page
         return True
 
-    def deleteaccount(id):
-        # get username from id
-        username = User.get_username(id)
+    def deleteaccount(username):
 
         # delete from community
         db.execute("DELETE FROM community_users WHERE username= :username ", username = username)
@@ -41,8 +39,9 @@ class User():
         # delete list
         db.execute("DELETE FROM lists WHERE owner= :username ", username = username)
 
-        #
-        db.execute("DELETE FROM users WHERE id= :id ", id = id)
+        # delete user
+        db.execute("DELETE FROM users WHERE username= :username ", username = username)
+
         # show index/log in page
         return True
 
