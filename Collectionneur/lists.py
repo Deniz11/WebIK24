@@ -71,7 +71,7 @@ class Lists():
             film_id = film["film_id"]
 
             # get movie data from database
-            film_data =  db.execute("SELECT title,summary,year,image FROM films WHERE film_id = :film ", film = film_id)[0]
+            film_data =  db.execute("SELECT film_id,title,summary,year,image FROM films WHERE film_id = :film ", film = film_id)[0]
 
             # add to list
             films_info.append(film_data)
