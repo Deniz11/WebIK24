@@ -6,13 +6,69 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Collectionneur</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <style type="text/css">
 	.navbar{
-		margin-top: 20px;
+		margin-top: 10px;
 	}
+	body{
+    background:url('http://www.wallpaperup.com/uploads/wallpapers/2012/10/21/20181/cad2441dd3252cf53f12154412286ba0.jpg');
+}
+
+#login-dp{
+    min-width: 250px;
+    padding: 14px 14px 0;
+    overflow:hidden;
+    background-color:rgba(255,255,255,.8);
+}
+#login-dp .help-block{
+    font-size:12px
+}
+#login-dp .bottom{
+    background-color:rgba(255,255,255,.8);
+    border-top:1px solid #ddd;
+    clear:both;
+    padding:14px;
+}
+#login-dp .social-buttons{
+    margin:12px 0
+}
+#login-dp .social-buttons a{
+    width: 49%;
+}
+#login-dp .form-group {
+    margin-bottom: 10px;
+}
+.btn-fb{
+    color: #fff;
+    background-color:#3b5998;
+}
+.btn-fb:hover{
+    color: #fff;
+    background-color:#496ebc
+}
+.btn-tw{
+    color: #fff;
+    background-color:#55acee;
+}
+.btn-tw:hover{
+    color: #fff;
+    background-color:#59b5fa;
+}
+@media(max-width:768px){
+    #login-dp{
+        background-color: inherit;
+        color: #fff;
+    }
+    #login-dp .bottom{
+        background-color: inherit;
+        border-top:0 none;
+    }
+}
+
 </style>
 <script>
 $(document).ready(function(){
@@ -87,8 +143,34 @@ $(document).ready(function(){
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{{ url_for('register') }}">Register</a></li>
-                        <li><a href="{{ url_for('login') }}">Login</a></li>
-                    </ul>
+                        <!--- Login dropdown --->
+                        <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
+                			<ul id="login-dp" class="dropdown-menu">
+                				<li>
+                					     <div class="row">
+                							<div class="col-md-12">
+                								 <form class="form" role="form" method="post" action="{{ url_for('login') }}" accept-charset="UTF-8" id="login-nav">
+                										<div class="form-group">
+                											 <label class="sr-only" for="exampleInputEmail2">Username</label>
+                											 <!--<input type="email" class="form-control" id="exampleInputEmail2" placeholder="Email address" required>-->
+                											 <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text"/>
+                										</div>
+                										<div class="form-group">
+                											 <label class="sr-only" for="exampleInputPassword2">Password</label>
+                											 <input class="form-control" name="password" placeholder="Password" type="password"/>
+                											 <!--<input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password" required>-->
+                										</div>
+                										<div class="form-group">
+                											 <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+                										</div>
+                								 </form>
+                							</div>
+					 </div>
+				</li>
+			</ul>
+			</li>
+      </ul>
                     <!--- Search -->
                     <form class="navbar-form navbar-left" action="{{ url_for('search') }}" method="post">
                     <input type="text" placeholder="Search..." name="search" class="form-control">
