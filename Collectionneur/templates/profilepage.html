@@ -7,7 +7,7 @@
 {% block main %}
 	<body>
 	    <h1 align="center">My profile</h1>
-        {% if not films %}
+        {% if not movies %}
             <table class="filmindex">
     	    <caption>My movies</caption>
     	    <thead>
@@ -28,9 +28,9 @@
     				<th>Movie</th>
     			</tr>
     		</thead>
-    		{% for film in films %}
+    		{% for movie in movies %}
     		<tr>
-    		    <td><a href="{{ url_for('movie_info', imdb_id=movie.id) }}">{{ film.title }}</a></td>
+    		    <td><a href="{{ url_for('movie_info', imdb_id=movie.film_id) }}">{{ movie.title }}</a></td>
     		</tr>
     		{% endfor %}
     		</table>
