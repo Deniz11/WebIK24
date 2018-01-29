@@ -30,7 +30,7 @@
     		</thead>
     		{% for film in films %}
     		<tr>
-    			<td>{{ film.title }} &nbsp;<form action="{{ url_for('index') }}"><button class="btn btn-default" style="float:right" type= "submit" name= "filmname" value = {{ film }} >Info</button></td>
+    		    <td><a href="{{ url_for('movie_info', imdb_id=movie.id) }}">{{ film.title }}</a></td>
     		</tr>
     		{% endfor %}
     		</table>
