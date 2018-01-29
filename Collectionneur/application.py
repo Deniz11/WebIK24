@@ -134,7 +134,8 @@ def register():
 
         # let user log in
         flash("Account succesfully created")
-        session["user_id"] = User.user(request.form.get("username"))[0]["id"]
+
+
         return redirect(url_for("index"))
 
     else:
@@ -224,7 +225,7 @@ def settings():
                 return render_template("settings.html")
 
             # delete user
-            User.deleteaccount(id)
+            User.deleteaccount(session["username"])
 
             # show index/log in page
             flash("Succesfully deleted account")
