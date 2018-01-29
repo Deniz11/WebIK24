@@ -53,16 +53,20 @@
                                 <button class="btn btn-default" name="listadd" value="add" type="submit">My list</button>
                             </div>
                         </form>
+                </div>
+                <div text-align:"left" class="modal-body">
 		          <h4>Community:</h4>
 		          {% if not mycom %}
 		              <ul>Go join some communities!</ul>
 		          {% else %}
 		          {% for item in mycom %}
+		              <ul>
                         <form action="{{ url_for('movie_info', imdb_id=full_movie_info.imdb_id) }}" method="post">
                             <div class="form-group" style="float:left">
                                 <button class="btn btn-default" name="comadd" value={{ item.name }} type="submit">{{ item.name }}</button>
                             </div>
                         </form>
+                    </ul>
                 	{% endfor %}
 		          {% endif %}
 
