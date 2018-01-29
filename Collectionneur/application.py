@@ -315,6 +315,8 @@ def actor_info():
 @app.route("/movie_info", methods=["GET", "POST"])
 def movie_info():
 
+
+    print(request.args.get("imdb_id"))
     try:
         session["user_id"]
         mycommunities = com.mycommunities(session["user_id"])
@@ -450,8 +452,6 @@ def mylist():
 
     information = Lists.showlist(session["username"])
 
-
-
     return render_template("lists.html", information=information)
 
 @app.route("/search1", methods=["GET", "POST"])
@@ -479,6 +479,6 @@ def search1():
 @login_required
 def myprofile():
 
-    return render_template("profilepage.html", films=Lists.showlist(session["username"]), communities=com.mycommunities(session["user_id"]))
+    return render_template("profilepage.html", movies=Lists.showlist(session["username"]), communities=com.mycommunities(session["user_id"]))
 
 
