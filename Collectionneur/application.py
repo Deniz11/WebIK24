@@ -135,6 +135,7 @@ def register():
         # let user log in
         flash("Account succesfully created")
         session["user_id"] = User.user(request.form.get("username"))[0]["id"]
+        username=session["username"]
         return redirect(url_for("index"))
 
     else:
