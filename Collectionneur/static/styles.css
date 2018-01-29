@@ -319,6 +319,16 @@ table.comindex tr:nth-child(even) {
   word-wrap: break-word;
 }
 
+.tooltip-inner {
+  background-color: #73AD21;
+  color: #dddddd;
+  border: 1px solid green;
+  padding: 15px;
+  font-size: 20px;
+}
+
+
+
 
 
 

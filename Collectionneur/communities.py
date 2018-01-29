@@ -67,11 +67,6 @@ class Communities():
         else:
             return db.execute("SELECT * FROM community_page WHERE LOWER(name)=:communityname",communityname=communityname.lower())
 
-    def all_communities():
-        """returns list of all communities"""
-        rows = db.execute("SELECT name FROM community_page")
-        return [row["name"] for row in rows]
-
     def mycommunities(userid):
         # Returns alle communities waar gebruiker lid van is
         pages = db.execute("SELECT communityname FROM community_users WHERE username=:username",username=session["username"])
@@ -88,7 +83,7 @@ class Communities():
 
     def showlist(list_id):
         # returns a single communitylist
-        return db.execute("SELECT film_id FROM list_item WHERE list_id = :comlistid", comlistid=comlistid)
+        return db.execute("SELECT film_id FROM list_item WHERE list_id = :list_id", list_id=list_id)
 
     def save_comment(username, community, comment):
         return db.execute("INSERT INTO comment_section (community, username, comment) VALUES(:community, :username, :comment)", community = community, username = username, comment=comment)
