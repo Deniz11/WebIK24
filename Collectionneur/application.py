@@ -135,7 +135,11 @@ def register():
         # let user log in
         flash("Account succesfully created")
 
+        # remember which user has logged in
+        session["user_id"] = User.user(request.form.get("username"))[0]["id"]
+        session["username"] = request.form.get("username")
 
+        # redirect user to home page
         return redirect(url_for("index"))
 
     else:
