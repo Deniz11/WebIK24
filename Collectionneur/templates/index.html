@@ -7,8 +7,8 @@
 {% block main %}
 
 	<body>
-	    <h1 align="center">Filmdatabase</h1>
-	    <h2 align="center">Op deze website kunt u lijsten aanmaken met uw favoriete films en community's volgen met de laatste filmupdates.</h2>
+	    <h1>Filmdatabase</h1>
+	    <h2>Op deze website kunt u lijsten aanmaken met uw favoriete films en community's volgen met de laatste filmupdates.</h2>
 
 
 
@@ -124,20 +124,19 @@
         </div>
 </div>
 
-
-
-		<div style="width: 100%; display: flex;">
-			{% for movie in movies %}
+<h2 text-align="left" >Popular communities</h2><br>
+<div class="container"style=" display: flex;">
+			{% for item in pages %}
 			<div class="card">
-	  			<img src="img_avatar.png" alt="Avatar">
+	  			<img src="https://cdn3.iconfinder.com/data/icons/iboxgrey/Group.png" alt="Avatar">
 	  			<div class="cardcontainer">
-	    			<h4><b>{{ movie.title }}</b></h4>
-	    			<p>Architect & Engineer</p>
+	    			<h4><b><a href="{{ url_for('community', community=item.name) }}">{{ item.name }}</a></b></h4>
+	    			<p>{{ item.description }}</p>
 	  			</div>
 			</div>
 			{% endfor %}
-		</div>
-
+</div>
+<!--
 		<table class="filmindex">
 	    <caption>Popular movies</caption>
 	    <thead>
@@ -174,3 +173,4 @@
         </table>
         </div>
 {% endblock %}
+-->
