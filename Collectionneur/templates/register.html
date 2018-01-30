@@ -68,6 +68,25 @@ input::-webkit-input-placeholder {
 }
 	</style>
 	<body>
+		<script>
+    		function isPasswordMatch() {
+    		var password = $("#txtNewPassword").val();
+            var confirmPassword = $("#txtConfirmPassword").val();
+
+            if (password != confirmPassword) $("#divCheckPassword").html("Passwords do not match!");
+            else $("#divCheckPassword").html("Passwords match.");
+        	}
+
+        function ConfirmPassword() {
+            var password = $("#txtNewPassword").val();
+            var confirmPassword = $("#txtConfirmPassword").val();
+
+            if (password != confirmPassword) return false;
+
+    		return true;
+        	}
+		</script>
+
 		<div class="container">
 			<div class="row main">
 				<div class="panel-heading">
@@ -94,7 +113,7 @@ input::-webkit-input-placeholder {
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" minlength = "8" required class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+									<input type="password" minlength = "8" required class="form-control" name="password" id="txtNewPassword" placeholder="Enter your Password"/>
 								</div>
 							</div>
 						</div>
@@ -104,13 +123,14 @@ input::-webkit-input-placeholder {
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" minlength = "8" required class="form-control" name="password-again" id="confirm"  placeholder="Confirm your Password"/>
+									<input type="password" minlength = "8" required class="form-control" name="password-again" id="txtConfirmPassword" placeholder="Confirm your Password" onChange="isPasswordMatch();"/>
 								</div>
+									<div id="divCheckPassword"></div>
 							</div>
 						</div>
 
 						<div class="form-group ">
-							<button type="submit" class="btn btn-primary btn-lg btn-block login-button">Register</button>
+							<button type="submit" onclick='return ConfirmPassword();' class="btn btn-primary btn-lg btn-block login-button">Register</button>
 						</div>
 					</form>
 				</div>
