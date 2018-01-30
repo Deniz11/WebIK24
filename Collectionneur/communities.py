@@ -43,6 +43,9 @@ class Communities():
         else:
             return False
 
+    def get_list_id(communityname):
+        return db.execute("SELECT * FROM lists WHERE owner = :communityname", communityname=communityname)[0]["id"]
+
     # Lid verwijderen.
     def remove_member(name, community):
         # CODE TOEVOEGEN VOOR OWNER OF LAATSTE MEMBER
@@ -62,7 +65,11 @@ class Communities():
     def show(communityname = ""):
         # Returnt alle communities indien invoer leeg is.
         if not communityname:
-            return db.execute("SELECT * FROM community_page")
+            pages = db.execute("SELECT * FROM community_page")
+            for page in pages:
+                page["members"] = len(Communities.showmembers(page["name"]))
+                page["length"] = len(Communities.showlist(Communities.get_list_id(page["name"])))
+            return pages
         # Zoekt gegevens van specifieke community.
         else:
             return db.execute("SELECT * FROM community_page WHERE LOWER(name)=:communityname",communityname=communityname.lower())
@@ -78,8 +85,6 @@ class Communities():
             if session["username"] == name["username"]:
                 return True
         return False
-    def get_list_id(communityname):
-        return db.execute("SELECT * FROM lists WHERE owner = :communityname", communityname=communityname)[0]["id"]
 
     def showlist(list_id):
         # returns a single communitylist

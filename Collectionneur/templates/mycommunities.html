@@ -13,17 +13,25 @@
                 <tr>
                     <th>Community</th>
                     <th>Description</th>
+                    <th>Members</th>
+                    <th>Items</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                {% for item in pages %}
+                {% for page in pages %}
                     <tr>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.description }}</td>
+                        <td><a href="{{ url_for('community', community=page.name) }}">{{ page.name }}</a></td>
+                        <td>{{ page.description }}</td>
+                        <td>{{ page.members }}</td>
+                        <td>{{ page.length }}</td>
                         <td>
                             <div>
-                                <a href="{{ url_for('community', community=item.name) }}">More</a>
+                                <form action="{{ url_for('community', community=page.name) }}" method="post">
+                                    <div class="form-group" style="float:right" >
+                                        <button class="btn btn-default" name="comaction" value="leave" type="submit">Leave community</button>
+                                    </div>
+                                </form>
                             </div>
                         </td>
                     </tr>

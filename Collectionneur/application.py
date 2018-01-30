@@ -46,7 +46,6 @@ def index():
     except KeyError:
         username = ""
     movies = home.get_popular_movies()
-    print(movies)
 
     #print(movies)
     return render_template("index.html", movies=movies, pages=home.rank_communities(), username=username)
@@ -287,9 +286,23 @@ def community():
 
 @app.route("/communityoverview", methods=["GET", "POST"])
 
-def communityoverview():# GEEFT OVERVIEW WEER <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<DEZE LATER IN TOTAALOVERZICHT ZETTEN!!!!!!!!!!!!!!!!!!!!!
-    print(com.show())
-    return render_template("communityoverview.html", overview=com.show())
+def communityoverview():
+    overview=com.show()
+    try:
+        session["user_id"]
+        username=session["username"]
+    except KeyError:
+        for item in overview:
+            item["member"] = False
+        return render_template("communityoverview.html", overview=overview)
+
+    for item in overview:
+        if session["username"] in com.showmembers(item["name"]):
+            item["member"] = True
+        else:
+            item["member"] = False
+
+    return render_template("communityoverview.html", overview=overview)
 
 @app.route("/mycommunities", methods=["GET", "POST"])
 @login_required

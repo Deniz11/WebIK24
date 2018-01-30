@@ -59,10 +59,10 @@
                         </td>
                         <td>
                             <div class="half">
-                                {{ film.title }}
+                                <a href="{{ url_for('movie_info', imdb_id=film.film_id) }}">{{ film.title }}</a>
                             </div>
                             <div>
-                                {{ film.shortplot }}
+                                {{ film.summary }}
                             </div>
                         </td>
                         <td>
@@ -70,10 +70,9 @@
                         </td>
                         <td>
                             <div>
-                                <a href="{{ url_for('community', community=page.name) }}">More</a>
          {% if session.user_id %}
         <!-- Trigger the modal with a button -->
-		<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>
+		<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>  Add to</button>
 		<!-- Modal -->
 		<div id="myModal" class="modal fade" role="dialog">
 		  <div class="modal-dialog modal-sm">
@@ -123,10 +122,10 @@
 
 
 
-		</div><br>
+		<br>
 
 
-        <div>
+        <div style= "width:100%">
         <br><textarea required maxlength = "356" rows="4" cols="50" name="comment" form="comment_section" placeholder = "type comment here"></textarea>
         <form action="{{ url_for('community', community=page.name ) }}" id="comment_section" method="post">
 
@@ -147,6 +146,7 @@
 
         {% endfor %}
 
+        </div>
         </div>
 
     </body>

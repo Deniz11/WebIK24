@@ -24,6 +24,7 @@ class Home():
         ranks=[]
         for item in coms:
             # get list length
+            print(com.showlist(com.get_list_id(item["name"])))
             coms_tuples.append((item["name"], len(com.showmembers(item["name"]))+len(com.showlist(com.get_list_id(item["name"]))), item["description"]))
         for i in range(len(coms_tuples)):
             rank = {}
