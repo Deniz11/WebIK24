@@ -250,31 +250,40 @@ def community():
 
     if request.method == "POST":
 
-        if request.form.get("commented"):
-            username = session["username"]
-            com.save_comment(username, request.args.get('community'), request.form.get("comment"))
-            comments = com.community_comments(request.args.get('community'))
-            return render_template("community.html", comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
-
         if request.form.get("comaction") == "join":
 
             com.join(session["username"] ,request.args.get('community'))
 
-            return render_template("community.html", comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
+            return render_template("community.html", mycom = com.mycommunities(session["user_id"]), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
 
         elif request.form.get("comaction") == "leave":
 
             com.remove_member(session["username"],request.args.get('community'))
 
-            return render_template("community.html", comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
+            return render_template("community.html", mycom = com.mycommunities(session["user_id"]), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
+
+        if request.form.get("listadd") != 0:
+            Lists.add_item(User.get_list_id(session["username"]), request.form.get("listadd"))
+            return render_template("community.html" , mycom = com.mycommunities(session["user_id"]), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
+        elif request.form.get("comadd") != 0:
+            Lists.add_item(com.get_list_id(request.form.get("comadd")), request.form.get("comadd"))
+            return render_template("community.html" , mycom = com.mycommunities(session["user_id"]),comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
+
+        if request.form.get("commented"):
+            username = session["username"]
+            com.save_comment(username, request.args.get('community'), request.form.get("comment"))
+            comments = com.community_comments(request.args.get('community'))
+            return render_template("community.html", mycom = com.mycommunities(session["user_id"]), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
+
+
 
         #wrong post request
         else:
-            return render_template("community.html", comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
+            return render_template("community.html", mycom = com.mycommunities(session["user_id"]), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
 
     else:
 
-        return render_template("community.html" ,comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
+        return render_template("community.html" , mycom = com.mycommunities(session["user_id"]), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
 
 @app.route("/communityoverview", methods=["GET", "POST"])
 

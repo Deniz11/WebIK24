@@ -212,11 +212,7 @@ html, body {
     background-color: #005577;
   }
 } /* END Media Query */
-.communitydiv {
-    float: left;
-    margin: 10px;
-    width: 75%;
-}
+
 
 
 table.list {
