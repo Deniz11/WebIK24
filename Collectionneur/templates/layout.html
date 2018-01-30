@@ -172,14 +172,16 @@ jQuery(document).ready(function($) {
                 					     <div class="row">
                 							<div class="col-md-12">
                 								 <form class="form" role="form" method="post" action="{{ url_for('login') }}" accept-charset="UTF-8" id="login-nav">
-                										<div class="form-group">
+                										<div class="input-group" class="form-group">
                 											 <label class="sr-only" for="exampleInputEmail2">Username</label>
+                											 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                 											 <!--<input type="email" class="form-control" id="exampleInputEmail2" placeholder="Email address" required>-->
-                											 <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text"/>
+                											 <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" required type="text"/>
                 										</div>
-                										<div class="form-group">
+                										<div class="input-group" class="form-group">
                 											 <label class="sr-only" for="exampleInputPassword2">Password</label>
-                											 <input class="form-control" name="password" placeholder="Password" type="password"/>
+                											 <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                											 <input class="form-control" name="password" placeholder="Password" required type="password"/>
                 											 <!--<input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password" required>-->
                 										</div>
                 										<div class="form-group">

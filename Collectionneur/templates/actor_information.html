@@ -36,7 +36,7 @@
     <table>
         {% for movie in recent_movies %}
 
-        <th <p></p><img src={{ movie["image"]}} alt="actor picture" height="382" width="268">
+        <th <p></p><a href="{{ url_for('movie_info', imdb_id=movie.film_id) }}"><img src={{ movie["image"]}} alt="actor picture" height="382" width="268"></a>
         {{ movie["title"] }}
         <form action="{{ url_for('movie_info') }}">
             <fieldset>
