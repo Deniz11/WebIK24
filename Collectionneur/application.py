@@ -54,24 +54,18 @@ def index():
 def login():
     """Log user in."""
 
-    # forget any user_id
-    #session.clear()
-
-
     # if user reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
         # ensure username exists and password is correct
         if not User.user(request.form.get("username")) or not pwd_context.verify(request.form.get("password"), User.user(request.form.get("username"))[0]["hash"]):
-            flash("Invalid username and/or password")
-            return redirect(url_for("index"))
+            return render_template("login.html", InvalidUserMatch = True)
 
         # remember which user has logged in
         session["user_id"] = User.user(request.form.get("username"))[0]["id"]
         session["username"] = request.form.get("username")
 
         # redirect user to home page
-        flash("succesfully logged in")
         return redirect(url_for("index"))
 
     # else if user reached route via GET (as by clicking a link or via redirect)
@@ -92,18 +86,12 @@ def logout():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user."""
-     # if user reached route via POST (as by submitting a form via POST)
+    # if user reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-
-        #check if passwords match
-        if request.form.get("password") != request.form.get("password-again"):
-            flash("Passwords do not match!")
-            return render_template("register.html")
 
         # ensure username exists
         if User.userexist(request.form.get("username")):
-            flash("Seems like this username already exists, please provide another one.")
-            return render_template("register.html")
+            return render_template("register.html", InUse = True)
 
         # register user
         hash1 = pwd_context.hash(request.form.get("password"))
@@ -115,9 +103,6 @@ def register():
         # give an user a list
         Lists.create_list(request.form.get("username"), list_name)
 
-        # let user log in
-        flash("Account succesfully created")
-
         # remember which user has logged in
         session["user_id"] = User.user(request.form.get("username"))[0]["id"]
         session["username"] = request.form.get("username")
@@ -127,6 +112,7 @@ def register():
 
     else:
         return render_template("register.html")
+
 
 @app.route("/settings", methods=["GET", "POST"])
 @login_required
@@ -138,39 +124,16 @@ def settings():
 
         if request.form.get("change password selected"):
 
-            # ensure password was submitted
-            if not request.form.get("password"):
-                flash("Please fill in your current password")
-                return render_template("settings.html")
-
-            # ensure new password was submitted
-            if not request.form.get("password-new"):
-                flash("Please fill in your new password")
-                return render_template("settings.html")
-
-            # ensure new password was submitted again
-            if not request.form.get("password-new-again"):
-                flash("Please fill in your new password again")
-                return render_template("settings.html")
-
-            # ensure new password matches
-            if not request.form.get("password-new") == request.form.get("password-new-again"):
-                flash("New passwords do not match")
-                return render_template("settings.html")
-
             # query database for password
             id = session["user_id"]
             rows = User.requestpassword(id)
-
-            ##print(rows[0]["hash"])
 
             # hash password
             hash2 = pwd_context.hash(request.form.get("password"))
 
             # ensure that password is correct
             if not pwd_context.verify(request.form.get("password"), rows[0]["hash"]):
-                flash("Incorrect password")
-                return render_template("settings.html")
+                return render_template("settings.html", OldPasswordIncorrect = True)
 
             # hash new password
             hash1 = pwd_context.hash(request.form.get("password-new"))
@@ -179,43 +142,26 @@ def settings():
             User.changepassword(hash1, id)
 
             # show index page
-            flash("Succesfully changed password")
             return redirect(url_for("index"))
 
         if request.form.get("delete account selected"):
-
-            # ensure password was submitted
-            if not request.form.get("username"):
-                flash("Please fill in your current username")
-                return render_template("settings.html")
-
-            # ensure password was submitted
-            if not request.form.get("password") or not request.form.get("password-again"):
-                flash("Please fill in your password")
-                return render_template("settings.html")
-
-            if request.form.get("password") != request.form.get("password-again"):
-                flash("Passwords do not match!")
-                return render_template("settings.html")
 
             # query database for password
             id = session["user_id"]
             rows = User.requestpassword(id)
 
+            # ensure that user is only deleting his account
+            if not (request.form.get("username") == session["username"]):
+                return render_template("settings.html", NotCorrectUser=True)
+
             # ensure that password is correct
             if not pwd_context.verify(request.form.get("password"), rows[0]["hash"]):
-                flash("Incorrect password")
-                return render_template("settings.html")
-
-            if not request.form.get("delete account"):
-                flash("Please verify that you want to delete your account!")
-                return render_template("settings.html")
+                return render_template("settings.html", Passwordincorrect = True)
 
             # delete user
             User.deleteaccount(session["username"])
 
             # show index/log in page
-            flash("Succesfully deleted account")
             return redirect(url_for("logout"))
 
     # else if user reached route via GET (as by clicking a link or via redirect)

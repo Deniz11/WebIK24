@@ -6,6 +6,7 @@
 
 {% block main %}
     <h1>Log in</h1>
+    {% if InvalidUserMatch %} <div><font color="red">Invalid username and/or password.</font></div> {% endif %}
     <form action="{{ url_for('login') }}" method="post">
         <fieldset>
             <div class="form-group">

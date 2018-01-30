@@ -73,15 +73,21 @@ input::-webkit-input-placeholder {
     		var password = $("#txtNewPassword").val();
             var confirmPassword = $("#txtConfirmPassword").val();
 
-            if (password != confirmPassword) $("#divCheckPassword").html("Passwords do not match!");
+			if (password.length == 0 || confirmPassword.length == 0)  $("#divCheckPassword").html("");
+            else if (password != confirmPassword) $("#divCheckPassword").html("Passwords do not match!");
             else $("#divCheckPassword").html("Passwords match.");
         	}
 
-        function ConfirmPassword() {
+        	$(document).ready(function () {
+		    $("#txtConfirmPassword").keyup(isPasswordMatch);
+		    $("#txtNewPassword").keyup(isPasswordMatch);
+			});
+
+        	function ConfirmPassword() {
             var password = $("#txtNewPassword").val();
             var confirmPassword = $("#txtConfirmPassword").val();
 
-            if (password != confirmPassword) return false;
+            if (password != confirmPassword || password.length == 0) return false;
 
     		return true;
         	}
@@ -105,6 +111,7 @@ input::-webkit-input-placeholder {
 									<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
 									<input type="text" required class="form-control" name="username" id="username"  placeholder="Enter your Username"/>
 								</div>
+								{% if InUse %} <div><font color="red">Username already in use.</font></div> {% endif %}
 							</div>
 						</div>
 

@@ -69,32 +69,27 @@ input::-webkit-input-placeholder {
 	</style>
     <body>
     	<script>
-    		function isPasswordMatch() {
+    		function isPasswordMatchChangePassword() {
     		var password = $("#txtNewPassword").val();
             var confirmPassword = $("#txtConfirmPassword").val();
 
-            if (password != confirmPassword) $("#divCheckPassword").html("Passwords do not match!");
+			if (password.length == 0 || confirmPassword.length == 0)  $("#divCheckPassword").html("");
+            else if (password != confirmPassword) $("#divCheckPassword").html("Passwords do not match!");
             else $("#divCheckPassword").html("Passwords match.");
         	}
 
-        	function isPasswordMatch2() {
+        	function isPasswordMatchDeleteAccount() {
     		var password = $("#txtNewPassword2").val();
             var confirmPassword = $("#txtConfirmPassword2").val();
+            var checkbox = $("#checker").val();
 
-            if (password != confirmPassword) $("#divCheckPassword2").html("Passwords do not match!");
+			if (password.length == 0 || confirmPassword.length == 0) $("#divCheckPassword2").html("");
+            else if (password != confirmPassword) $("#divCheckPassword2").html("Passwords do not match!");
+            else if (!document.getElementById('checker').checked) $("#divCheckPassword2").html("checkbox not selected");
             else $("#divCheckPassword2").html("Passwords match.");
         	}
 
-        	function ConfirmPassword2() {
-            var password = $("#txtNewPassword2").val();
-            var confirmPassword = $("#txtConfirmPassword2").val();
-
-            if (password != confirmPassword) return false;
-
-    		return true;
-        	}
-
-        	function ConfirmPassword() {
+        	function ConfirmButtonChangePassword() {
             var password = $("#txtNewPassword").val();
             var confirmPassword = $("#txtConfirmPassword").val();
 
@@ -102,6 +97,25 @@ input::-webkit-input-placeholder {
 
     		return true;
         	}
+
+        	function ConfirmButtonDeleteAccount() {
+            var password = $("#txtNewPassword2").val();
+            var confirmPassword = $("#txtConfirmPassword2").val();
+            var checkbox = $("#checker").val();
+
+            if (password != confirmPassword) return false;
+            if (!document.getElementById('checker').checked) return false;
+
+    		return true;
+        	}
+
+        	$(document).ready(function () {
+		    $("#txtConfirmPassword").keyup(isPasswordMatchChangePassword);
+		    $("#txtNewPassword").keyup(isPasswordMatchChangePassword);
+		    $("#txtConfirmPassword2").keyup(isPasswordMatchDeleteAccount);
+		    $("#txtNewPassword2").keyup(isPasswordMatchDeleteAccount);
+			});
+
 		</script>
 
 		<div class="container">
@@ -120,7 +134,7 @@ input::-webkit-input-placeholder {
 	            </div>
 				<div class="main-login main-center">
 					<form class="form-horizontal" method="post" action="{{ url_for('settings') }}">
-
+						{% if OldPasswordIncorrect %} <div><font color="red">Old password is incorrect.</font></div> {% endif %}
 						<div class="form-group">
 							<label for="password" class="cols-sm-2 control-label">Password</label>
 							<div class="cols-sm-10">
@@ -146,14 +160,14 @@ input::-webkit-input-placeholder {
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" minlength = "8" required class="form-control" name="password-new-again" id="txtConfirmPassword" placeholder="Confirm your Password" onChange="isPasswordMatch();"/>
+									<input type="password" minlength = "8" required class="form-control" name="password-new-again" id="txtConfirmPassword" placeholder="Confirm your Password" onChange="isPasswordMatchChangePassword"/>
 								</div>
 									<div id="divCheckPassword"></div>
 							</div>
 						</div>
 
 						<div class="form-group ">
-							<button type="submit" onclick='return ConfirmPassword();' class="btn btn-primary btn-lg btn-block login-button" value= "change password selected" name="change password selected">Change password</button>
+							<button type="submit" onclick='return ConfirmButtonChangePassword();' class="btn btn-primary btn-lg btn-block login-button" value= "change password selected" name="change password selected">Change password</button>
 						</div>
 					</form>
 				</div>
@@ -168,7 +182,8 @@ input::-webkit-input-placeholder {
 	            </div>
 				<div class="main-login main-center">
 					<form class="form-horizontal" method="post" action="{{ url_for('settings') }}">
-
+						{% if NotCorrectUser %} <div><font color="red">You can only delete your own account.</font></div> {% endif %}
+						{% if Passwordincorrect %} <div><font color="red">Password incorrect.</font></div> {% endif %}
 						<div class="form-group">
 							<label for="username" class="cols-sm-2 control-label">Username</label>
 							<div class="cols-sm-10">
@@ -194,19 +209,19 @@ input::-webkit-input-placeholder {
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" minlength = "8" required class="form-control" name="password-again" id="txtConfirmPassword2"  placeholder="Confirm your Password" onChange="isPasswordMatch2();"/>
+									<input type="password" minlength = "8" required class="form-control" name="password-again" id="txtConfirmPassword2"  placeholder="Confirm your Password" onChange="isPasswordMatchDeleteAccount();"/>
 								</div>
 									<div id="divCheckPassword2"></div>
 							</div>
 						</div>
 
 						<div>
-            				<input type="checkbox" id="checker" name="delete account" value=True>
+            				<input type="checkbox" id="checker" name="delete account" value=True onClick = "isPasswordMatchDeleteAccount();">
             				<label for="checker">Yes, I want to delete my account.</label>
             			</div>
 
 						<div class="form-group ">
-							<button type="submit" onclick='return ConfirmPassword();'class="btn btn-primary btn-lg btn-block login-button" value= "delete account selected" name= "delete account selected">Delete account</button>
+							<button type="submit" onclick='return ConfirmButtonDeleteAccount();'class="btn btn-primary btn-lg btn-block login-button" value= "delete account selected" name= "delete account selected">Delete account</button>
 						</div>
 					</form>
 				</div>
