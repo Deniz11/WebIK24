@@ -33,5 +33,5 @@ class Home():
             rank["name"]=top[0]
             rank["description"]=top[2]
             ranks.append(rank)
-        return ranks[:10]
+        return ranks[:5]
 
