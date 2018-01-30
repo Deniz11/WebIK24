@@ -25,7 +25,7 @@
     <br><p>
         <br><font size="10">{{movie_info["title"]}}</font><br>
     </p>
-    <img src={{movie_info["image"]}} alt="movie picture" height="382" width="268">
+    <a href="{{ url_for('movie_info', imdb_id=movie_info.imdb_id) }}"><img src={{movie_info["image"]}} alt="movie picture" height="382" width="268"></a>
 
     <p>
         <ul style="width:100%">
@@ -58,7 +58,7 @@
     <br><p>
         <br><font size="10">{{actor["actor_name"]}}</font><br>
     </p>
-    <img src={{actor["image"]}} alt="actor picture" height="382" width="268">
+    <a href="{{ url_for('actor_info', actor_id=actor.actor_id) }}"><img src={{actor["image"]}} alt="actor picture" height="382" width="268"></a>
 
     <p>
         <ul style="width:100%">
