@@ -59,16 +59,6 @@ def login():
     # if user reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
-        # ensure username was submitted
-        if not request.form.get("username"):
-            flash("Please provide an username")
-            return render_template("login.html")
-
-        # ensure password was submitted
-        elif not request.form.get("password"):
-            flash("Please provide a password")
-            return render_template("login.html")
-
         # ensure username exists and password is correct
         if not User.user(request.form.get("username")) or not pwd_context.verify(request.form.get("password"), User.user(request.form.get("username"))[0]["hash"]):
             flash("Invalid username and/or password")
@@ -103,17 +93,8 @@ def register():
      # if user reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
-        # ensure username was submitted
-        if not request.form.get("username"):
-            flash("Please provide an username")
-            return render_template("register.html")
-
-        # ensure password was submitted
-        elif not request.form.get("password") and not request.form.get("password-again"):
-            flash("Please provide a password")
-            return render_template("register.html")
-
-        elif request.form.get("password") != request.form.get("password-again"):
+        #check if passwords match
+        if request.form.get("password") != request.form.get("password-again"):
             flash("Passwords do not match!")
             return render_template("register.html")
 
