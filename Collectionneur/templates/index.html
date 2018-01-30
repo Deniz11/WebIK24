@@ -7,8 +7,6 @@
 {% block main %}
 
 	<body>
-	{% set desc = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium." %}
-
 	    <h1>Filmdatabase</h1>
 	    <h2>Op deze website kunt u lijsten aanmaken met uw favoriete films en community's volgen met de laatste filmupdates.</h2><br>
 
@@ -21,7 +19,7 @@
                     <div class="col-xs-12" id="slider">
                         <!-- Top part of the slider -->
                         <div class="row">
-                            <div class="col-sm-8" id="carousel-bounding-box">
+                            <div class="col-sm-8" id="carousel-bounding-box" style= "margin-left:5%; width:40%">
                                 <div class="carousel slide" id="myCarousel">
                                     <!-- Carousel items -->
                                     <div class="carousel-inner">
@@ -52,43 +50,37 @@
                                     </div>
                             </div>
 
-                            <div class="col-sm-4" id="carousel-text"></div>
+                            <div class="col-sm-4" id="carousel-text" style="max-height:400px; overflow: hidden; text-align: justify; margin-right:5%; width:50%"></div>
 
                             <div id="slide-content" style="display: none;">
                                 <div id="slide-content-0">
-                                    <h2>{{ movies[0].title }}</h2>
-                                    <p>{{ desc }}</p>
-                                    <p class="sub-text">October 24 2014 - <a href="{{ url_for('movie_info', imdb_id=movies[0].id) }}">Read more</a></p>
+                                    <a href="{{ url_for('movie_info', imdb_id=movies[5].id) }}"><h2 style="text-align: center;">{{ movies[0].title }}</h2></a>
+                                    <p>{{ movies[0].summary}}</p>
                                 </div>
 
                                 <div id="slide-content-1">
-                                    <h2>{{ movies[1].title }}</h2>
-                                    <p>{{ desc }}</p>
-                                    <p class="sub-text">October 24 2014 - <a href="{{ url_for('movie_info', imdb_id=movies[1].id) }}">Read more</a></p>
+                                    <a href="{{ url_for('movie_info', imdb_id=movies[5].id) }}"><h2 style="text-align: center;">{{ movies[1].title }}</h2></a>
+                                    <p>{{ movies[1].summary}}</p>
                                 </div>
 
                                 <div id="slide-content-2">
-                                    <h2>{{ movies[2].title }}</h2>
-                                    <p>{{ desc }}</p>
-                                    <p class="sub-text">October 24 2014 - <a href="{{ url_for('movie_info', imdb_id=movies[2].id) }}">Read more</a></p>
+                                    <a href="{{ url_for('movie_info', imdb_id=movies[5].id) }}"><h2 style="text-align: center;">{{ movies[2].title }}</h2></a>
+                                    <p>{{ movies[2].summary}}</p>
                                 </div>
 
                                 <div id="slide-content-3">
-                                    <h2>{{ movies[3].title }}</h2>
-                                    <p>{{ desc }}</p>
-                                    <p class="sub-text">October 24 2014 - <a href="{{ url_for('movie_info', imdb_id=movies[3].id) }}">Read more</a></p>
+                                    <a href="{{ url_for('movie_info', imdb_id=movies[5].id) }}"><h2 style="text-align: center;">{{ movies[3].title }}</h2></a>
+                                    <p>{{ movies[3].summary}}</p>
                                 </div>
 
                                 <div id="slide-content-4">
-                                    <h2>{{ movies[4].title }}</h2>
-                                    <p>{{ desc }}</p>
-                                    <p class="sub-text">October 24 2014 - <a href="{{ url_for('movie_info', imdb_id=movies[4].id) }}">Read more</a></p>
+                                    <a href="{{ url_for('movie_info', imdb_id=movies[5].id) }}"><h2 style="text-align: center;">{{ movies[4].title }}</h2></a>
+                                    <p>{{ movies[4].summary}}</p>
                                 </div>
 
                                 <div id="slide-content-5">
-                                    <h2>{{ movies[5].title }}</h2>
-                                    <p>{{ desc }}</p>
-                                    <p class="sub-text">October 24 2014 - <a href="{{ url_for('movie_info', imdb_id=movies[5].id) }}">Read more</a></p>
+                                    <a href="{{ url_for('movie_info', imdb_id=movies[5].id) }}"><h2 style="text-align: center;">{{ movies[5].title }}</h2></a>
+                                    <p>{{ movies[5].summary}}</p>
                                 </div>
                             </div>
                         </div>

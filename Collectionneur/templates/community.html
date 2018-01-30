@@ -33,11 +33,13 @@
             {% endfor %}
         </div>
 
-        <div class="textbox">
+        <div id="comdes" class="textbox">
             <h2>{{ page.description }}</h2>
+            <button class="btn btn-default" value="save" type="submit">Edit description</button>
         </div>
         {% if not films %}
-        <div class="container"style= "float:left; margin:10px; width:75%;">
+        <div class="container" style= "float:left; margin:10px; width:75%">
+
         <h4>Your community list seems to be empty, go add some things!</h4>
         </div>
         {% else %}

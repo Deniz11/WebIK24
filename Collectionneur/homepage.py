@@ -1,4 +1,5 @@
 from communities import Communities as com
+from search import Search
 from imdbpie import Imdb
 imdb = Imdb()
 
@@ -14,6 +15,7 @@ class Home():
             rank["title"] = item["title"]
             rank["id"] = item["id"][7:-1]
             rank["image"] = item["image"]["url"]
+            rank["summary"] = Search.title_summary(rank["id"])
             ranks.append(rank)
 
 
