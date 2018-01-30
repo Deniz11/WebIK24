@@ -88,7 +88,7 @@ def logout():
 
     # redirect user to login form
     flash("You have succesfully logged out")
-    return redirect(url_for("login"))
+    return redirect(url_for("index"))
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
