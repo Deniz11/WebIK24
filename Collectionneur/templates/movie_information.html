@@ -83,7 +83,7 @@
     <table>
         {% for actor in actors%}
             <th width="20%"><font size="5">{{ actor["name"] }}</font>
-                <img src={{ actor["image"]}} alt="actor picture">
+                <a href="{{ url_for('actor_info', actor_id=actor.actor_id) }}"><img src={{ actor["image"]}} alt="actor picture"></a>
                 <form action="{{ url_for('actor_info') }}">
                     <fieldset>
                         <div class="form-group">
@@ -100,7 +100,7 @@
 
     {% for similar in similars %}
     <th width="20%"><font size="5">{{ similar["title"] }}</font>
-    <img src={{ similar["image"]}} alt="movie picture">
+    <a href="{{ url_for('movie_info', imdb_id=similar.imdb_id) }}"><img src={{ similar["image"]}} alt="movie picture"></a>
     <form action="{{ url_for('movie_info') }}">
         <fieldset>
             <div class="form-group">
