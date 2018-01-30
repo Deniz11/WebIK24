@@ -114,6 +114,7 @@ jQuery(document).ready(function($) {
                     <div id="navbarCollapse" class="collapse navbar-collapse">
                         {% if session.user_id %}
                     <ul class="nav navbar-nav">
+                        <li class="active"><a href="{{ url_for('myprofile') }}">Profile</a></li>
                         <li class="dropdown">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">Communities <b class="caret"></b></a>
                             <ul class="dropdown-menu">
