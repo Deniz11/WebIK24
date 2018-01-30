@@ -65,7 +65,7 @@ def login():
         # ensure username exists and password is correct
         if not User.user(request.form.get("username")) or not pwd_context.verify(request.form.get("password"), User.user(request.form.get("username"))[0]["hash"]):
             flash("Invalid username and/or password")
-            return render_template("login.html")
+            return redirect(url_for("index"))
 
         # remember which user has logged in
         session["user_id"] = User.user(request.form.get("username"))[0]["id"]
@@ -77,7 +77,7 @@ def login():
 
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
-        return render_template("login.html")
+        return redirect(url_for("index"))
 
 @app.route("/logout")
 def logout():
