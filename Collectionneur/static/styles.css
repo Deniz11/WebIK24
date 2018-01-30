@@ -1,7 +1,9 @@
 main {
   text-align: center;
 }
-
+.container {
+  width=100%
+}
 main .form-control
 {
     /* center form controls */
@@ -360,9 +362,12 @@ margin-top:20px;
   width:400px;
 }
 
+.affix {
+      top: 0;
+      width: 100%;
+      z-index: 9999 !important;
+  }
 
 
 
 
-/* TODO */
-/* Algemeen stijl voor rijen en kolommen in tabellen als MAIN definieren*/
