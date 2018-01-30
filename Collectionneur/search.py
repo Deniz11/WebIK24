@@ -24,27 +24,21 @@ class Search():
 
             # look for information in database
             info_database = db.execute("SELECT * FROM films WHERE film_id = :film_id", film_id = title_results[i]["imdb_id"])
+
             if info_database:
 
-                info_database_indexed = info_database[0]
+                # extract dic from one list
+                movie_info = info_database[0]
 
-                # put movie imdb_id in list
-                movie_info["imdb_id"] = info_database_indexed["film_id"]
+                # change film_id to imdb_id and summary to short plot
+                movie_info['imdb_id'] = movie_info.pop("film_id")
+                movie_info['short plot'] = movie_info.pop("summary")
 
-                # put movie title in list
-                movie_info["title"] = info_database_indexed["title"]
+                # put the movie_info in a list
+                all_movie_info.append(movie_info)
 
-                # put movie year in list
-                movie_info["year"] = info_database_indexed["summary"]
-
-                # put movie image in list
-                movie_info["image"] = info_database_indexed["year"]
-
-                #put short plot in list
-                movie_info["short plot"] = info_database_indexed["image"]
-
-            # do if imdb_id exist
-            if valid_id(title_results[i]["imdb_id"]):
+            # do if imdb_id exist and movie not in database
+            elif valid_id(title_results[i]["imdb_id"]):
 
                 title_info = imdb.get_title(title_results[i]["imdb_id"])
 
@@ -70,6 +64,7 @@ class Search():
                     except:
                         movie_info["year"] = "Sorry, no year found!"
 
+                # try to find movie poster
                 try:
                     # put a movie image in the list
                     movie_info["image"] = title_info["base"]["image"]['url']
@@ -118,38 +113,22 @@ class Search():
             except:
                 full_movie_info["year"] = "Sorry, no year found!"
 
-            # try to put a movie image in the dic
-            full_movie_info["image"] = Search.title_poster(imdb_id)
+            # try to find movie poster
+            try:
+                # put a movie image in the dic
+                full_movie_info["image"] = title_info_id["base"]["image"]['url']
+            except:
+                # try to find related image else put image not found image in dic
+                full_movie_info["image"] = Search.title_poster(imdb_id, check = 1)
 
-            # if there are no summaries put outline in dic
+            # try to find a summary else put outline in dic
             full_movie_info["plot"] = Search.title_summary(imdb_id)
 
             # try to get genre list
-            try:
-                genres = imdb.get_title_genres(imdb_id)["genres"]
-
-                s = ''
-
-                # turn list in string
-                for genre in genres:
-
-                    if not s:
-                        s = s + genre
-
-                    else:
-                        s = s + ", " + genre
-
-                # put movie genre(s) in dic
-                full_movie_info["genre"] = s
-
-            except:
-                full_movie_info["genre"] = "nothing found"
+            full_movie_info["genre"] = Search.title_genres(imdb_id)
 
             # try to get movie rating
-            try:
-                full_movie_info["rating"] = imdb.get_title_ratings(imdb_id)["rating"]
-            except:
-                full_movie_info["rating"] = "no ratings found"
+            full_movie_info["rating"] = Search.title_rating(imdb_id)
 
             return full_movie_info
 
@@ -226,10 +205,12 @@ class Search():
                     # if there are no summaries put outline in dic
                     return plot_summary["outline"]['text']
 
-                # check if there are summuries
+                # check if there are summaries
                 else:
                     # put summary in dic
                     return plot_summary["summaries"][0]['text']
+
+            # notify user that no plot is found
             except:
                 return "Sorry, no plot found!"
 
@@ -286,8 +267,7 @@ class Search():
         # request name and description from database
         rows = db.execute("SELECT name,description FROM community_page")
 
-
-        # check if name is similiar to search
+        # check if name is similar to search
         for row in rows:
 
             community_found = {}
@@ -342,6 +322,7 @@ class Search():
             # get actor id
             actor_information["actor_id"] = actor_id
 
+            # get actor information
             actor_info = imdb.get_name(actor_id)
 
             # get actor name
@@ -408,6 +389,7 @@ class Search():
             # check if film is released
             if film["status"] == 'released':
 
+                # try to get all required information
                 try:
                     # filter film id from /title/film_id/
                     futured_films["film_id"] = film["id"][7:16]
@@ -420,6 +402,7 @@ class Search():
 
                     teller += 1
 
+                # if not all info found skip movie
                 except:
                     futured_films = {}
 
@@ -447,6 +430,7 @@ class Search():
             # check if cast member is really an actor or actress
             if actor["category"] == 'actor' or actor["category"] == "actress":
 
+                # try to get all required information
                 try:
                     # filter actor id from /name/actor_id/
                     movie_actor["actor_id"] = actor["id"][6:15]
@@ -459,6 +443,7 @@ class Search():
 
                     teller += 1
 
+                # if not all info found skip actor/actress
                 except:
                     movie_actor = {}
 
@@ -486,7 +471,7 @@ class Search():
             # check if similar title is not the same movie
             if not title["id"][7:16] == imdb_id:
 
-                # try to get all requited information
+                # try to get all required information
                 try:
                     # filter film id from /title/film_id/
                     similar_title["imdb_id"] = title["id"][7:16]
@@ -499,6 +484,7 @@ class Search():
 
                     teller += 1
 
+                # if not all info found skip movie
                 except:
                     similar_title = {}
 
