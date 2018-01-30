@@ -219,10 +219,6 @@ def settings():
             flash("Succesfully deleted account")
             return redirect(url_for("logout"))
 
-        else:
-            flash("nothing selected")
-            return render_template("settings.html")
-
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("settings.html")

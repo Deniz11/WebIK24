@@ -98,8 +98,8 @@ jQuery(document).ready(function($) {
 </script>
 </head>
 <body>
-    <div class="container">
-    <nav class="navbar navbar-inverse">
+    <div class="container" margin-top="0">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
                         <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
@@ -126,7 +126,7 @@ jQuery(document).ready(function($) {
                         </li>
                     </ul>
                     <!--- User --->
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right"style="margin-right:10px">
                         <li class="dropdown">
                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>      {{ session["username"] }}<span class="caret"></span></a>
                           <ul class="dropdown-menu">
@@ -162,7 +162,7 @@ jQuery(document).ready(function($) {
                             </ul>
                         </li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right"style="margin-right:10px">
                         <li><a href="{{ url_for('register') }}">Register</a></li>
                         <!--- Login dropdown --->
                         <li class="dropdown">
@@ -216,9 +216,10 @@ jQuery(document).ready(function($) {
                     </div>
                 </header>
             {% endif %}
-
             <main>
+                <div class="container" style="margin-top:75px">
                 {% block main %}{% endblock %}
+                </div>
             </main>
         </div>
     </body>
