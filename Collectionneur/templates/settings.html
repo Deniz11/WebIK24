@@ -76,6 +76,12 @@ input::-webkit-input-placeholder {
 	               		<hr />
 	               	</div>
 	            </div>
+	            <div class="panel-heading">
+	               <div class="panel-title text-center">
+	               		<h2 class="title">Change password</h2>
+	               		<hr />
+	               	</div>
+	            </div>
 				<div class="main-login main-center">
 					<form class="form-horizontal" method="post" action="{{ url_for('settings') }}">
 
@@ -83,7 +89,7 @@ input::-webkit-input-placeholder {
 							<label for="password" class="cols-sm-2 control-label">Password</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
 									<input type="password" required class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
 								</div>
 							</div>
@@ -119,6 +125,7 @@ input::-webkit-input-placeholder {
 
 				<div class="panel-heading">
 	               <div class="panel-title text-center">
+	               		<h2 class="title">Delete account</h2>
 	               		<hr />
 	               	</div>
 	            </div>
@@ -156,10 +163,9 @@ input::-webkit-input-placeholder {
 						</div>
 
 						<div>
-            <input type="checkbox" id="checker" name="delete account" value=True>
-            <label for="checker">Yes, I want to delete my account.</label>
-            </div>
-
+            				<input type="checkbox" id="checker" name="delete account" value=True>
+            				<label for="checker">Yes, I want to delete my account.</label>
+            			</div>
 
 						<div class="form-group ">
 							<button type="submit" class="btn btn-primary btn-lg btn-block login-button" value= "delete account selected" name= "delete account selected">Delete account</button>

@@ -7,6 +7,19 @@
 {% block main %}
 
     <body>
+        {% if not information %}
+            <table class="list">
+    	    <caption>My movies</caption>
+    	    <thead>
+    			<tr>
+    			    <th>No films found...</th>
+    			</tr>
+    		</thead>
+    		<tr>
+                <td><a href="{{ url_for('search') }}">Go add some!</a></td>
+    		</tr>
+    		</table>
+    	{% else %}
         <table class="list">
             <thead>
                 <tr>
@@ -27,6 +40,7 @@
                         </tr>
                     {% endfor %}
                 </tbody>
+        {% endif %}
         </table>
     </body>
 {% endblock %}
