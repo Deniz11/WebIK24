@@ -7,10 +7,136 @@
 {% block main %}
 
 	<body>
-		<div></div>
-		<a href="#" data-toggle="tooltip" data-placement="bottom" title="Hooray!">Hover over me</a>
 	    <h1 align="center">Filmdatabase</h1>
 	    <h2 align="center">Op deze website kunt u lijsten aanmaken met uw favoriete films en community's volgen met de laatste filmupdates.</h2>
+
+
+
+		<div class="container">
+        <div id="main_area">
+                <!-- Slider -->
+                <div class="row">
+                    <div class="col-xs-12" id="slider">
+                        <!-- Top part of the slider -->
+                        <div class="row">
+                            <div class="col-sm-8" id="carousel-bounding-box">
+                                <div class="carousel slide" id="myCarousel">
+                                    <!-- Carousel items -->
+                                    <div class="carousel-inner">
+                                        <div class="active item" data-slide-number="0">
+                                        <img src="{{movies[0]["image"]}}" style="max-height:100%; max-height=100%; display:block; margin-left:auto; margin-right: auto;"></div>
+
+                                        <div class="item" data-slide-number="1">
+                                        <img src="{{movies[1]["image"]}}" style="max-height:100%; max-height=100%; display:block; margin-left:auto; margin-right: auto;"></div>
+
+                                        <div class="item" data-slide-number="2">
+                                        <img src="{{movies[2]["image"]}}" style="max-height:100%; max-height=100%; display:block; margin-left:auto; margin-right: auto;"></div>
+
+                                        <div class="item" data-slide-number="3">
+                                        <img src="{{movies[3]["image"]}}" style="max-height:100%; max-height=100%; display:block; margin-left:auto; margin-right: auto;"></div>
+
+                                        <div class="item" data-slide-number="4">
+                                        <img src="{{movies[4]["image"]}}" style="max-height:100%; max-height=100%; display:block; margin-left:auto; margin-right: auto;"></div>
+
+                                        <div class="item" data-slide-number="5">
+                                        <img src="{{movies[5]["image"]}}" style="max-height:100%; max-height=100%; display:block; margin-left:auto; margin-right: auto;"></div>
+                                    </div><!-- Carousel nav -->
+                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                                        <span class="glyphicon glyphicon-chevron-left"></span>
+                                    </a>
+                                    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                                        <span class="glyphicon glyphicon-chevron-right"></span>
+                                    </a>
+                                    </div>
+                            </div>
+
+                            <div class="col-sm-4" id="carousel-text"></div>
+
+                            <div id="slide-content" style="display: none;">
+                                <div id="slide-content-0">
+                                    <h2>{{ movies[0].title }}</h2>
+                                    <p>{{ movies[0].description }}</p>
+                                    <p class="sub-text">October 24 2014 - <a href="#">Read more</a></p>
+                                </div>
+
+                                <div id="slide-content-1">
+                                    <h2>{{ movies[1].title }}</h2>
+                                    <p>{{ movies[1].description }}</p>
+                                    <p class="sub-text">October 24 2014 - <a href="#">Read more</a></p>
+                                </div>
+
+                                <div id="slide-content-2">
+                                    <h2>{{ movies[2].title }}</h2>
+                                    <p>{{ movies[2].description }}</p>
+                                    <p class="sub-text">October 24 2014 - <a href="#">Read more</a></p>
+                                </div>
+
+                                <div id="slide-content-3">
+                                    <h2>{{ movies[3].title }}</h2>
+                                    <p>{{ movies[3].description }}</p>
+                                    <p class="sub-text">October 24 2014 - <a href="#">Read more</a></p>
+                                </div>
+
+                                <div id="slide-content-4">
+                                    <h2>{{ movies[4].title }}</h2>
+                                    <p>{{ movies[4].description }}</p>
+                                    <p class="sub-text">October 24 2014 - <a href="#">Read more</a></p>
+                                </div>
+
+                                <div id="slide-content-5">
+                                    <h2>{{ movies[5].title }}</h2>
+                                    <p>{{ movies[5].description }}</p>
+                                    <p class="sub-text">October 24 2014 - <a href="#">Read more</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--/Slider-->
+
+                <div class="row hidden-xs" id="slider-thumbs">
+                        <!-- Bottom switcher of slider -->
+                        <ul class="hide-bullets">
+                            <li class="col-sm-2">
+                                <a class="thumbnail" id="carousel-selector-0"><img src="{{movies[0]["image"]}}"></a>
+                            </li>
+
+                            <li class="col-sm-2">
+                                <a class="thumbnail" id="carousel-selector-1"><img src="{{movies[1]["image"]}}"></a>
+                            </li>
+
+                            <li class="col-sm-2">
+                                <a class="thumbnail" id="carousel-selector-2"><img src="{{movies[2]["image"]}}"></a>
+                            </li>
+
+                            <li class="col-sm-2">
+                                <a class="thumbnail" id="carousel-selector-3"><img src="{{movies[3]["image"]}}"></a>
+                            </li>
+
+                            <li class="col-sm-2">
+                                <a class="thumbnail" id="carousel-selector-4"><img src="{{movies[4]["image"]}}"></a>
+                            </li>
+
+                            <li class="col-sm-2">
+                                <a class="thumbnail" id="carousel-selector-5"><img src="{{movies[5]["image"]}}"></a>
+                            </li>
+                        </ul>
+                </div>
+        </div>
+</div>
+
+
+
+		<div style="width: 100%; display: flex;">
+			{% for movie in movies %}
+			<div class="card">
+	  			<img src="img_avatar.png" alt="Avatar">
+	  			<div class="cardcontainer">
+	    			<h4><b>{{ movie.title }}</b></h4>
+	    			<p>Architect & Engineer</p>
+	  			</div>
+			</div>
+			{% endfor %}
+		</div>
 
 		<table class="filmindex">
 	    <caption>Popular movies</caption>

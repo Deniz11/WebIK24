@@ -45,8 +45,11 @@ def index():
         username=session["username"]
     except KeyError:
         username = ""
-    print(imdb.get_title('tt0111161'))
-    return render_template("index.html", movies=home.get_popular_movies(), pages=home.rank_communities(), username=username)
+    movies = home.get_popular_movies()
+    print(movies)
+
+    #print(movies)
+    return render_template("index.html", movies=movies, pages=home.rank_communities(), username=username)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

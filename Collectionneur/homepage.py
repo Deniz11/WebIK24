@@ -8,15 +8,16 @@ class Home():
 
         poptitles = imdb.get_popular_movies()["ranks"]
         ranks = []
-        for item in poptitles:
+        for item in poptitles[:6]:
             rank = {}
             rank["rank"] = item["currentRank"]
             rank["title"] = item["title"]
             rank["id"] = item["id"][7:-1]
+            rank["image"] = item["image"]["url"]
             ranks.append(rank)
 
 
-        return ranks[:10]
+        return ranks
     def rank_communities():
         coms = com.show()
         coms_tuples = []

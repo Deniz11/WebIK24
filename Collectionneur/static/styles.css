@@ -109,7 +109,7 @@ main body{
 @import url('https://fonts.googleapis.com/css?family=Lato:300,400');
 
 html, body {
-  font-family: 'Lato', serif;
+  font-family: 'Arial';
 }
 
 .navbar-default {
@@ -327,7 +327,37 @@ table.comindex tr:nth-child(even) {
   font-size: 20px;
 }
 
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 5px;
+}
 
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.cardcontainer {
+    padding: 2px 16px;
+}
+
+.hide-bullets {
+list-style:none;
+margin-left: -40px;
+margin-top:20px;
+}
+
+.carousel.slide {
+  height:400px;
+  width:400px;
+}
+
+.item {
+  height:400px;
+  width:400px;
+}
 
 
 
