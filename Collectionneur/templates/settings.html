@@ -93,7 +93,7 @@ input::-webkit-input-placeholder {
             var password = $("#txtNewPassword").val();
             var confirmPassword = $("#txtConfirmPassword").val();
 
-            if (password != confirmPassword) return false;
+            if (password != confirmPassword && password.length > 0 && confirmPassword.length > 0) return false;
 
     		return true;
         	}
@@ -101,10 +101,11 @@ input::-webkit-input-placeholder {
         	function ConfirmButtonDeleteAccount() {
             var password = $("#txtNewPassword2").val();
             var confirmPassword = $("#txtConfirmPassword2").val();
+            var username = $("#username").val();
             var checkbox = $("#checker").val();
 
-            if (password != confirmPassword) return false;
-            if (!document.getElementById('checker').checked) return false;
+            if ((password != confirmPassword || !document.getElementById('checker').checked) && password.length > 0 && confirmPassword.length > 0 && username.length > 0) return false;
+
 
     		return true;
         	}
