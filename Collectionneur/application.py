@@ -47,7 +47,6 @@ def index():
         username = ""
     movies = home.get_popular_movies()
 
-    #print(movies)s
     return render_template("index.html", movies=movies, pages=home.rank_communities(), username=username)
 
 @app.route("/login", methods=["GET", "POST"])
@@ -353,8 +352,12 @@ def search():
         if not all_movie_info:
             flash("Nothing found")
             return render_template("search.html", movie_select = True)
-
-        return render_template("search.html", all_movie_info=all_movie_info, movie_select = True, mycom=com.mycommunities())
+        try:
+            session["user_id"]
+            mycom = com.mycommunities()
+        except KeyError:
+            mycom = []
+        return render_template("search.html", all_movie_info=all_movie_info, movie_select = True, mycom=mycom)
 
     # if actor selected to search for
     if request.form.get("search_for") == "actor":
@@ -401,6 +404,8 @@ def search():
         if not communities_found:
             flash("no communities found")
             render_template("search.html", community_select = True)
+        for community in communities_found:
+            community["preview"] = com.preview(community["name"])
 
         return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + request.form.get("search")), community_select = True)
 

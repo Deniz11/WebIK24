@@ -1,5 +1,6 @@
 from cs50 import SQL
 from user import User
+from lists import Lists
 from imdbpie import Imdb
 from flask import flash, session
 from flask_session import Session
@@ -8,6 +9,8 @@ from tempfile import mkdtemp
 
 # configure CS50 Library to use SQLite database
 db = SQL("sqlite:///Collectionneur.db")
+
+
 
 class Communities():
 
@@ -96,5 +99,17 @@ class Communities():
     def community_comments(community):
         return db.execute("SELECT username,datetime,comment FROM comment_section WHERE community = :community ORDER BY datetime(datetime) DESC", community=community)
 
-    def change_description(new_description, community):
-        return db.execute("UPDATE community_page SET description = :new_description WHERE name = :community", community = community, new_description = new_description)
+    def preview(communityname):
+        comlist = Lists.showlist(communityname)
+        preview = []
+        if not comlist:
+            for i in range(4):
+                preview.append("https://cdn2.iconfinder.com/data/icons/cinema-and-television/500/Entertainment_film_film_reel_film_roll_movie_reel_roll_theate-512.png")
+        elif len(comlist) < 4:
+            for film in comlist:
+                preview.append(film["image"])
+        while len(preview) < 4:
+            preview.append("https://cdn2.iconfinder.com/data/icons/cinema-and-television/500/Entertainment_film_film_reel_film_roll_movie_reel_roll_theate-512.png")
+
+        return preview
+

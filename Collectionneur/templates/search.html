@@ -60,7 +60,7 @@
                 		      </div>
                 		      <div class="modal-body">
                 		      <div class="container">
-                		          <form action="{{ url_for('movie_info', imdb_id=all_movie_info.imdb_id) }}" method="post">
+                		          <form action="{{ url_for('movie_info', imdb_id=movie_info.imdb_id) }}" method="post">
                                             <div class="form-group" style="float:left">
                                                 <button class="btn btn-default" name="listadd" value="add" type="submit">My list</button>
                                             </div>
@@ -74,7 +74,7 @@
                 		          {% else %}
                 		          {% for item in mycom %}
                 		              <div class="container">
-                                        <form action="{{ url_for('movie_info', imdb_id=all_movie_info .imdb_id) }}" method="post">
+                                        <form action="{{ url_for('movie_info', imdb_id=movie_info.imdb_id) }}" method="post">
                                             <div class="form-group" style="float:left">
                                                 <button class="btn btn-default" name="comadd" value={{ item.name }} type="submit">{{ item.name }}</button>
                                             </div>
@@ -130,7 +130,7 @@
 
     <div class="container" style="display:flex;justify-content:center;align-items:center;">
         <div style="width:30%; float:left;">
-            <a href="{{ url_for('community', community=community["name"]) }}"><img src="https://cdn3.iconfinder.com/data/icons/iboxgrey/Group.png" alt="Avatar" style="border-radius: 5px; max-height:400px;"></a>
+            <img src="https://cdn3.iconfinder.com/data/icons/iboxgrey/Group.png" alt="Avatar" style="max-height:400px;">
         </div>
 
         <div style="width:70%">
