@@ -250,6 +250,9 @@ table.communityoverview tr:nth-child(even) {
 }
 
 .textbox {
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.5);
+    transition: 0.3s;
     float: left;
     width: 75%;
     height: 100px;
@@ -258,6 +261,9 @@ table.communityoverview tr:nth-child(even) {
     border-style: solid;
 }
 .memberlist {
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.5);
+    transition: 0.3s;
     float: right;
     text-align: center;
     width: 20%;

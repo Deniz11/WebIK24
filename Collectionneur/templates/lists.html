@@ -28,8 +28,9 @@ h1.title {
 	font-weight: 400;
 }
 
-
-
+a {
+    color:black;
+}
 
 hr{
 	width: 10%;
@@ -85,6 +86,7 @@ table tbody tr:last-child td:last-child {
 }
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color: #B0E0E6;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 600px) {
@@ -164,18 +166,18 @@ table tbody tr:last-child td:last-child {
         <table class="table-hover border:none">
             <thead>
                 <tr>
-                    <th>Cover</th>
-                    <th>Film</th>
-                    <th>Year</th>
-                    <th>Actions</th>
+                    <th style="width:15%;">Cover</th>
+                    <th style="width:65%;">Film</th>
+                    <th style="width:10%;">Year</th>
+                    <th style="width:10%;">Actions</th>
                 </tr>
             </thead>
                 <tbody>
                      {% for info in information %}
-                        <tr>
-                            <td width="180"><a href="{{ url_for('movie_info', imdb_id=info.film_id) }}"><img src={{info["image"]}} alt="movie picture"</a></td>
+                        <tr onclick="location.href='movie_info?imdb_id={{ info.film_id }}'">
+                            <td><img src={{info["image"]}} alt="{{info["image"]}}" style="max-height: 160px; border-radius: 5px;"></td>
                             <td>
-                                <div class="half">{{ info.title }}</div>
+                                <div class="half"><a href="{{ url_for('movie_info', imdb_id=info.film_id) }}">{{ info.title }}</a></div>
                                 <div>{{ info["summary"] }}</div>
                             </td>
                             <td>{{ info["year"] }}</td>

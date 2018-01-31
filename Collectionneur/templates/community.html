@@ -26,10 +26,110 @@ h1.title {
 	font-size: 50px;
 	font-family: 'Passion One', cursive;
 	font-weight: 400;
+}
+
+a {
+    color:black;
+}
 
 hr{
 	width: 10%;
 	color: #fff;
+}
+
+
+a {
+    color:black;
+}
+body {
+  font-family: "Open Sans", sans-serif;
+  line-height: 1.25;
+}
+table {
+  margin: 0;
+  padding: 0;
+  width: 70%;
+  table-layout: fixed;
+}
+table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+table tr {
+  background: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: .35em;
+}
+table th,
+table td {
+  padding: .625em;
+  text-align: center;
+  border: none;
+}
+table th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  background-color: grey;
+}
+table thead th:first-child {
+    border-radius: 10px 0 0 0;
+}
+table thead th:last-child {
+    border-radius: 0 10px 0 0;
+}
+table tbody tr:last-child td:first-child {
+    border-radius: 0 0 0 10px;
+}
+table tbody tr:last-child td:last-child {
+    border-radius: 0 0 10px 0;
+}
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #B0E0E6;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+  table caption {
+    font-size: 1.3em;
+  }
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  table tr {
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: .625em;
+  }
+  table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+  table td:before {
+    /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  table td:last-child {
+    border-bottom: 0;
+  }
 }
 </style>
     <body>
@@ -86,13 +186,18 @@ hr{
     	                <h1 class="title" text-align:"center">{{ page.name }}</h1>
     	               	<hr />
     	            </div>
+    	       </div>
+    	   </div>
+    	</div>
 
 
         <div class="memberlist">
-            <caption><b>Members</b></caption>
-            {% for member in members %}
-                <ul>{{ member }}</ul>
-            {% endfor %}
+            <p><font size="4"><font style="font-family: 'Passion One';">Members</font></font></p>
+            <p>
+                {% for member in members %}
+                    {{ member }}<br>
+                {% endfor %}
+            </p>
         </div>
 
         <div id="comdes" class="textbox">
@@ -120,17 +225,17 @@ hr{
             <table class="list" style= "width:100%">
                 <thead>
                     <tr>
-                        <th>Poster</th>
-                        <th>Film</th>
-                        <th>Year</th>
-                        <th>Actions</th>
+                        <th style="width:15%;">Poster</th>
+                        <th style="width:60%;">Film</th>
+                        <th style="width:10%;">Year</th>
+                        <th style="width:15%;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for film in films %}
                         <tr>
                             <td>
-                                <img src={{ film.image }} height="60" width="40">
+                                <img src={{ film.image }} style="max-height: 150px; border-radius: 5px;">
                             </td>
                             <td>
                                 <div class="half">
@@ -149,53 +254,18 @@ hr{
                                     <div>
                                         <form action="{{ url_for('community', community=page.name) }}" method="post">
                                             <div class="form-group" style="float:right">
-                                                <button class="btn btn-default btn-sm" name="comlistremove" value="{{ film.film_id }}" type="submit"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>   Remove</button>
+                                                <button class="btn btn-default" name="comlistremove" value="{{ film.film_id }}" type="submit"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>   Remove</button>
                                             </div>
                                         </form>
                                     </div>
                                     {% endif %}
-                                    {% if session.user_id %}
-                                    <!-- Trigger the modal with a button -->
-                                	<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>  Add to</button>
-                                	<!-- Modal -->
-                                	<div id="myModal" class="modal fade" role="dialog">
-                                        <div class="modal-dialog modal-sm">
-
-                                            <!-- Modal content-->
-                                        	<div class="modal-content">
-                                            	<div class="modal-header">
-                                                	<button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                	<h3 class="modal-title">Add to:</h3>
-                                            	</div>
-                                            	<div class="modal-body">
-                                                	<div class="container">
-                                                    	<form action="{{ url_for('community', community=page.name) }}" method="post">
-                                                            <div class="form-group" style="float:left">
-                                                                <button class="btn btn-default" name="listadd" value={{ film.film_id }} type="submit">My list</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <h4 text-align:"left">Community:</h4>
-                                                	{% if not mycom %}
-                                                	<ul><a href="{{ url_for('communityoverview') }}">Go join some communities!</a></ul>
-                                                	{% else %}
-                                                	{% for item in mycom if item.name != page.name %}
-                                                	<div class="container">
-                                                        <form action="{{ url_for('community', community=page.name) }}" method="post">
-                                                            <div class="form-group" style="float:left">
-                                                                <button class="btn btn-default" name="comadd" value={{ film.film_id }} type="submit">{{ item.name }}</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                	{% endfor %}
-                                                	{% endif %}
-                                                </div>
-                            		        </div>
-                                        </div>
-                    		        </div>
-                    		        {% endif %}
+                                    <div>
+                                        <form action="{{ url_for('community', community=page.name) }}" method="post">
+                                            <div class="form-group">
+                                                <button class="btn btn-default" name="listadd" value="{{ film.film_id }}" type="submit"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>   My list</button>
+                                            </div>
+                                        </form>
+                                    </div>
                     		    </div>
                     		</td>
                     	</tr>
