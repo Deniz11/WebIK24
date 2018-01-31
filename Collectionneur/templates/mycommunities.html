@@ -8,7 +8,23 @@
 
 
     <body>
+        {% if not pages %}
+    		<table class="communityoverview">
+    		<caption>My communities</caption>
+            <thead>
+                <tr>
+                    <th>No communities found...</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td><a href="{{ url_for('communityoverview') }}">Go add some!</a></td>
+                    </tr>
+            </tbody>
+        </table>
+        {% else %}
         <table class="communityoverview">
+            <caption>My communities</caption>
             <thead>
                 <tr>
                     <th>Community</th>
@@ -37,6 +53,7 @@
                     </tr>
                 {% endfor %}
             </tbody>
+        {% endif %}
         </table>
     </body>
 {% endblock %}
