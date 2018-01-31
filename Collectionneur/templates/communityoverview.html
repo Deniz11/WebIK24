@@ -105,11 +105,18 @@ table tbody tr:last-child td:last-child {
           <h1>All communities</h1>
             <thead>
                 <tr>
+                  {% if session["user_id"] %}
                     <th>Community</th>
                     <th>Description</th>
                     <th>Members</th>
                     <th>Items</th>
                     <th>Actions</th>
+                  {% else %}
+                    <th>Community</th>
+                    <th>Description</th>
+                    <th>Members</th>
+                    <th>Items</th>
+                  {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -142,6 +149,7 @@ table tbody tr:last-child td:last-child {
                                         <button class="btn btn-default" name="comaction" value="leave" type="submit">Leave community</button>
                                     </div>
                                 </form>
+                            {% else %}
                             {% endif %}
                         </td>
                     </tr>
