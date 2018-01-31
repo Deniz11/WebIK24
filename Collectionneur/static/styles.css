@@ -365,6 +365,12 @@ margin-top:20px;
       width: 100%;
       z-index: 9999 !important;
   }
+.tile{
+    width:50%;
+    float:left;
+    height:50%;
+    max-height:200px;
+}
 
 
 

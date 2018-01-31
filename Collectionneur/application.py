@@ -405,7 +405,22 @@ def search():
         for community in communities_found:
             community["preview"] = com.preview(community["name"])
 
-        return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + request.form.get("search")), community_select = True)
+        try:
+            session["user_id"]
+            mycom = com.mycommunities()
+        except KeyError:
+            mycom = []
+            for item in communities_found:
+                item["member"] = False
+            return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + request.form.get("search")), community_select = True, mycom=mycom)
+
+        for item in communities_found:
+            if session["username"] in com.showmembers(item["name"]):
+                item["member"] = True
+            else:
+                item["member"] = False
+
+        return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + request.form.get("search")), community_select = True, mycom=mycom)
 
     return render_template("search.html")
 

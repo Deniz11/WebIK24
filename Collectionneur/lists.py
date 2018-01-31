@@ -59,7 +59,7 @@ class Lists():
         list_id =  Lists.get_listid(owner)
         # return films of user
         if len(db.execute("SELECT film_id FROM list_item WHERE list_id= :list_id", list_id = list_id)) == 0:
-            return False
+            return []
         films = db.execute("SELECT film_id FROM list_item WHERE list_id= :list_id", list_id = list_id)
 
         films_info = []

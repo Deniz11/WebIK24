@@ -129,9 +129,12 @@
     {% for community in communities_found %}
 
     <div class="container" style="display:flex;justify-content:center;align-items:center;">
-        <div style="width:30%; float:left;">
-            <img src="https://cdn3.iconfinder.com/data/icons/iboxgrey/Group.png" alt="Avatar" style="max-height:400px;">
-        </div>
+            <div style="width:30%; float:left; max-height:400px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.5); transition: 0.3s;border-radius: 5px;">
+                <div class="tile"><img src="{{ community.preview[0] }}" ></div>
+                <div class="tile"><img src="{{ community.preview[1] }}" ></div>
+                <div class="tile"><img src="{{ community.preview[2] }}" ></div>
+                <div class="tile"><img src="{{ community.preview[3] }}" ></div>
+            </div>
 
         <div style="width:70%">
 
@@ -147,10 +150,17 @@
             <p style="border-bottom:1px solid grey">
                 <font size="2">total members: {{community["members amount"]}}</font>
             </p>
-
+            {% if not community.member and session["user_id"] %}
             <p style="border-bottom:1px solid grey">
-                KNOP KNOP
+                <div>
+                    <form action="{{ url_for('community', community=community["name"]) }}" method="post">
+                        <div class="form-group" style="">
+                        <button class="btn btn-default" name="comaction" value="join" type="submit">Join community</button>
+                        </div>
+                     </form>
+                </div>
             </p>
+            {% endif %}
         </ul>
     </p>
     </div>

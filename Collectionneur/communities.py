@@ -101,15 +101,8 @@ class Communities():
 
     def preview(communityname):
         comlist = Lists.showlist(communityname)
-        preview = []
-        if not comlist:
-            for i in range(4):
-                preview.append("https://cdn2.iconfinder.com/data/icons/cinema-and-television/500/Entertainment_film_film_reel_film_roll_movie_reel_roll_theate-512.png")
-        elif len(comlist) < 4:
-            for film in comlist:
-                preview.append(film["image"])
+        preview = [film["image"] for film in comlist][:4]
         while len(preview) < 4:
             preview.append("https://cdn2.iconfinder.com/data/icons/cinema-and-television/500/Entertainment_film_film_reel_film_roll_movie_reel_roll_theate-512.png")
-
         return preview
 
