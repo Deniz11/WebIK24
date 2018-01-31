@@ -70,7 +70,7 @@ def login():
 
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
-        return redirect(url_for("index"))
+        return render_template("login.html", InvalidUserMatch = False)
 
 @app.route("/logout")
 def logout():
