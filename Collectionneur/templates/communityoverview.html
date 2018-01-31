@@ -42,6 +42,12 @@
                                     </div>
                                 </form>
                             </div>
+                            {% else %}
+                                <form action="{{ url_for('community', community=page.name) }}" method="post">
+                                    <div class="form-group" style="float:right">
+                                        <button class="btn btn-default" name="comaction" value="leave" type="submit">Leave community</button>
+                                    </div>
+                                </form>
                             {% endif %}
                         </td>
                     </tr>
