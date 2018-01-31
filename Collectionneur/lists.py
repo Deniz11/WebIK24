@@ -29,7 +29,7 @@ class Lists():
 
         # add film to list
         if len(db.execute("SELECT * FROM list_item WHERE list_id = :list_id AND film_id = :film_id", film_id = film_id, list_id = list_id)) == 0:
-            db.execute("INSERT INTO list_item (list_id, film_id) VALUES (:list_id, :film_id)", list_id=list_id, film_id=film_id)
+            db.execute("INSERT INTO list_item (list_id, film_id) VALUES(:list_id, :film_id)", list_id=list_id, film_id=film_id)
             return True
         # returnt false if film already in list
         else:
