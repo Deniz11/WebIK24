@@ -327,8 +327,7 @@ def search():
 
         # check if valid search given
         if not only_signs(request.form.get("search")):
-            flash("Invalid search, search contains only special characters")
-            return render_template("search.html", movie_select = True)
+            return render_template("search.html", movie_select = True, nothing_found = True)
 
         all_movie_info = Search.search_titles(request.form.get("search"))
 
