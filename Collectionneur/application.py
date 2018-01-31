@@ -189,7 +189,6 @@ def createcommunity():
 @login_required
 def community():
 
-    # add random films for TEST PURPOSES
     films = Lists.showlist(request.args.get('community'))
     comments = com.community_comments(request.args.get('community'))
 
@@ -205,6 +204,11 @@ def community():
 
             com.remove_member(session["username"],request.args.get('community'))
 
+            return render_template("community.html", mycom = com.mycommunities(session["user_id"]), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
+
+        elif request.form.get("comlistremove"):
+            Lists.remove_item(Lists.get_listid(request.args.get('community')), request.form.get("comlistremove"))
+            films = Lists.showlist(request.args.get('community'))
             return render_template("community.html", mycom = com.mycommunities(session["user_id"]), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
 
         if request.form.get("listadd") != 0:
@@ -268,7 +272,6 @@ def actor_info():
 def movie_info():
 
 
-    print(request.args.get("imdb_id"))
     try:
         session["user_id"]
         mycommunities = com.mycommunities(session["user_id"])
@@ -402,26 +405,13 @@ def search():
 @login_required
 def mylist():
 
+    if request.method == "POST":
+
+        Lists.remove_item(Lists.get_listid(session["username"]), request.form.get("listremove"))
+
     information = Lists.showlist(session["username"])
 
     return render_template("lists.html", information=information)
-
-@app.route("/search1", methods=["GET", "POST"])
-def search1():
-    goal = request.args.get('type')
-    query = request.args.get('q')
-
-    if goal == "none":
-        flash("Please specify search type")
-        return render_template("search1.html")
-    if goal == "movie":
-        flash([row["imdb_id"] for row in imdb.search_for_title(query) if row["imdb_id"][0] == "t"])
-        return render_template("search1.html")
-    else:
-        flash(com.show(query))
-        return render_template("search1.html")
-
-    return render_template("search1.html")
 
 
 

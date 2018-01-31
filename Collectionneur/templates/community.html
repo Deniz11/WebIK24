@@ -33,11 +33,11 @@
             {% endfor %}
         </div>
 
-        <div id="comdes" class="textbox">
+        <div class="textbox">
             <h2>{{ page.description }}</h2>
-            <button class="btn btn-default" value="save" type="submit">Edit description</button>
         </div>
         {% if not films %}
+
         <div class="container" style= "float:left; margin:10px; width:75%">
 
         <h4>Your community list seems to be empty, go add some things!</h4>
@@ -72,50 +72,61 @@
                         </td>
                         <td>
                             <div>
-         {% if session.user_id %}
-        <!-- Trigger the modal with a button -->
-		<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>  Add to</button>
-		<!-- Modal -->
-		<div id="myModal" class="modal fade" role="dialog">
-		  <div class="modal-dialog modal-sm">
+                                <div>
+                                    <form action="{{ url_for('community', community=page.name) }}" method="post">
+                                        <div class="form-group" style="float:right">
+                                            <button class="btn btn-default" name="comlistremove" value="{{ film.film_id }}" type="submit">Remove</button>
+                                        </div>
+                                    </form>
+                                </div>
 
-		    <!-- Modal content-->
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        <h3 class="modal-title">Add to:</h3>
-		      </div>
-		      <div class="modal-body">
-		      <div class="container">
-		          <form action="{{ url_for('community', community=page.name) }}" method="post">
-                            <div class="form-group" style="float:left">
-                                <button class="btn btn-default" name="listadd" value="{{ film.film_id }}" type="submit">My list</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="modal-body">
-		          <h4 text-align:"left">Community:</h4>
-		          {% if not mycom %}
-		              <ul><a href="{{ url_for('communityoverview') }}">Go join some communities!</a></ul>
-		          {% else %}
-		          {% for item in mycom if item.name != page.name %}
-		              <div class="container">
-                        <form action="{{ url_for('community', community=page.name) }}" method="post">
-                            <div class="form-group" style="float:left">
-                                <button class="btn btn-default" name="comadd" value="{{ film.film_id }}" type="submit">{{ item.name }}</button>
-                            </div>
-                        </form>
-                    </div>
-                	{% endfor %}
-		          {% endif %}
-		      </div>
-		    </div>
-		  </div>
-		</div>
-		</div>
-		</td>
-		</tr>
+
+
+
+                         {% if session.user_id %}
+                        <!-- Trigger the modal with a button -->
+                		<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>  Add to</button>
+                		<!-- Modal -->
+                		<div id="myModal" class="modal fade" role="dialog">
+                		  <div class="modal-dialog modal-sm">
+
+                		    <!-- Modal content-->
+                		    <div class="modal-content">
+                		      <div class="modal-header">
+                		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                		        <h3 class="modal-title">Add to:</h3>
+                		      </div>
+                		      <div class="modal-body">
+                		      <div class="container">
+                		          <form action="{{ url_for('community', community=page.name) }}" method="post">
+                                            <div class="form-group" style="float:left">
+                                                <button class="btn btn-default" name="listadd" value="{{ film.film_id }}" type="submit">My list</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                		          <h4 text-align:"left">Community:</h4>
+                		          {% if not mycom %}
+                		              <ul><a href="{{ url_for('communityoverview') }}">Go join some communities!</a></ul>
+                		          {% else %}
+                		          {% for item in mycom if item.name != page.name %}
+                		              <div class="container">
+                                        <form action="{{ url_for('community', community=page.name) }}" method="post">
+                                            <div class="form-group" style="float:left">
+                                                <button class="btn btn-default" name="comadd" value="{{ film.film_id }}" type="submit">{{ item.name }}</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                	{% endfor %}
+                		          {% endif %}
+                		      </div>
+                		    </div>
+                		  </div>
+                		</div>
+                		</div>
+                		</td>
+                		</tr>
 		{% endif %}
 		{% endfor %}
 		</tbody>

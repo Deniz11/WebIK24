@@ -26,6 +26,7 @@
                     <th>Cover</th>
                     <th>Film</th>
                     <th>Year</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
                 <tbody>
@@ -37,6 +38,15 @@
                                 <div>{{ info["summary"] }}</div>
                             </td>
                             <td>{{ info["year"] }}</td>
+                            <td>
+                                <div>
+                                    <form action="{{ url_for('mylist') }}" method="post">
+                                        <div class="form-group" style="float:right">
+                                            <button class="btn btn-default" name="listremove" value="{{ info.film_id }}" type="submit">Remove</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
