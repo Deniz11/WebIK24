@@ -6,35 +6,44 @@
 
 {% block main %}
 
-    <br><p>
-        <br><font size="10">{{full_movie_info["title"]}}</font><br>
+
+    <div class="container" style="display:flex;justify-content:center;align-items:center;">
+
+
+        <div style="width:30%; float:left;">
+            <img src={{full_movie_info["image"]}} alt="movie picture" style="border-radius: 5px; max-height:400px;">
+        </div>
+
+
+        <div>
+                <ul style="width:100%">
+                    <p style="border-bottom:1px solid grey">
+                    <font size="10">{{full_movie_info["title"]}}</font>
+                    </p>
+
+                    <p style="border-bottom:1px solid grey">
+                    <font size="2">year: {{full_movie_info["year"]}}</font>
+                    </p>
+
+                    <p style="border-bottom:1px solid grey">
+                    <font size="2">genre(s) : {{full_movie_info["genre"]}}</font>
+                    </p>
+
+                    <p style="border-bottom:1px solid grey">
+                    <font size="2">rating : {{full_movie_info["rating"]}}</font>
+                    </p>
+                </ul>
+        </div>
+    </div>
+    <br>
+    <p style="border-bottom:1px solid grey">
+        <font size="2">plot: {{full_movie_info["plot"]}}</font>
     </p>
-    <img src={{full_movie_info["image"]}} alt="movie picture" height="382" width="268">
 
-    <p>
-        <ul style="width:100%">
-            <p style="border-bottom:1px solid grey">
-            <font size="2">title: {{full_movie_info["title"]}}</font>
-            </p>
 
-            <p style="border-bottom:1px solid grey">
-            <font size="2">year: {{full_movie_info["year"]}}</font>
-            </p>
 
-            <p style="border-bottom:1px solid grey">
-            <font size="2">plot: {{full_movie_info["plot"]}}</font>
-            </p>
 
-            <p style="border-bottom:1px solid grey">
-            <font size="2">genre(s) : {{full_movie_info["genre"]}}</font>
-            </p>
-
-            <p style="border-bottom:1px solid grey">
-            <font size="2">rating : {{full_movie_info["rating"]}}</font>
-            </p>
-        </ul>
-    </p><br>
-        {% if session.user_id %}
+    {% if session.user_id %}
         <!-- Trigger the modal with a button -->
 		<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">Add to list/community</button>
 		<!-- Modal -->
@@ -77,13 +86,29 @@
 		</div>
 		{% endif %}
 
+	<h2><b>Similar movies</b></h2><br>
+    <div class="container">
+    	{% for similar in similars %}
+    	    <a href="{{ url_for('movie_info', imdb_id=similar.imdb_id) }}">
+        	    <div class="card" style="height:300px; width:19%; display: inline-block; vertical-align: top;">
+        	  		<div class="cardcontainer" style="height:230px;">
+        	  		    <img src={{ similar["image"]}} alt="{{ similar["title"] }}" style="max-height:230px; margin-top: 10px; vertical-align: center; border-radius: 5px;">
+        	  		</div>
+        	  		<div class="cardcontainer" style="height:70px; margin-top: 10px;">
+                        <h4><b>{{ similar["title"] }}</b></h4>
+        		    </div>
+        		</div>
+        	</a>
+    	{% endfor %}
+    </div>
+
     <h2><b>Actors that played in the movie</b></h2><br>
     <div class="container">
     	{% for actor in actors %}
     	    <a href="{{ url_for('actor_info', actor_id=actor.actor_id) }}">
-        	    <div class="card" style="height:300px; width:19%; display: inline-block; vertical-align: top; position: relative;">
+        	    <div class="card" style="height:300px; width:19%; display: inline-block; vertical-align: top;">
         	  		<div class="cardcontainer" style="height:230px;">
-        	  		    <img src={{ actor["image"]}} alt="{{ actor.name }}" style="max-height:230px; margin-top: 10px; vertical-align: center;">
+        	  		    <img src={{ actor["image"]}} alt="{{ actor.name }}" style="max-height:230px; margin-top: 10px; vertical-align: center; border-radius: 5px;">
         	  		</div>
         	  		<div class="cardcontainer" style="height:70px; margin-top: 10px;">
                         <h4><b>{{ actor.name }}</b></h4>
@@ -93,24 +118,4 @@
     	{% endfor %}
     </div>
 
-
-    <p><font size="10">Similar movies</font></p>
-    <table>
-
-    <table width="100%">
-        <thead>
-            <tr>
-                {% for similar in similars %}
-                <th width="20%">{{ similar["title"] }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-
-        {% for similar in similars %}
-                <td style="text-align: center;">
-                    <a href="{{ url_for('movie_info', imdb_id=similar.imdb_id) }}"><img src={{ similar["image"]}} alt="movie picture" style="max-height:230px"></a>
-                </td>
-            </th>
-        {% endfor %}
-    </table>
 {% endblock %}

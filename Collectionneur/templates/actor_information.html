@@ -9,7 +9,7 @@
     <br><p>
         <br><font size="10">{{actor["actor_name"]}}</font><br>
     </p>
-    <img src={{ actor["image"]}} alt="actor picture" height="382" width="268">
+    <img src={{ actor["image"]}} alt="actor picture" style="border-radius: 5px; max-height:400px;">
 
     <p>
         <ul style="width:100%">
@@ -31,23 +31,21 @@
         </ul>
     </p><br>
 
-    <p><font size="10">Recent movies {{actor["actor_name"]}} played in</font></p>
+    <h2><b>Recent movies {{actor["actor_name"]}} played in</b></h2><br>
+    <div class="container">
+    	{% for movie in recent_movies %}
+    	    <a href="{{ url_for('movie_info', imdb_id=movie.film_id) }}">
+        	    <div class="card" style="height:300px; width:19%; display: inline-block; vertical-align: top;">
+        	  		<div class="cardcontainer" style="height:230px;">
+        	  		    <img src={{ movie["image"]}} alt="{{ movie["title"] }}" style="max-height:230px; margin-top: 10px; vertical-align: center; border-radius: 5px;">
+        	  		</div>
+        	  		<div class="cardcontainer" style="height:70px; margin-top: 10px;">
+                        <h4><b>{{ movie["title"] }}</b></h4>
+        		    </div>
+        		</div>
+        	</a>
+    	{% endfor %}
+    </div>
 
-    <table>
-        {% for movie in recent_movies %}
-
-        <th <p></p><a href="{{ url_for('movie_info', imdb_id=movie.film_id) }}"><img src={{ movie["image"]}} alt="actor picture" height="382" width="268"></a>
-        {{ movie["title"] }}
-        <form action="{{ url_for('movie_info') }}">
-            <fieldset>
-                <div class="form-group">
-                    <button class="btn btn-default" type= "submit" name= "imdb_id" value = {{movie["film_id"]}} >Go to movie page</button>
-                </div>
-            </fieldset>
-        </form>
-        </p></th>
-
-        {% endfor %}
-    </table>
 
 {% endblock %}
