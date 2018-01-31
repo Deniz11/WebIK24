@@ -7,6 +7,33 @@
 {% block main %}
 
     <body>
+        <script>
+		$(document).ready(function () {
+            var oldDescription = $("#description").text();
+            $("#edit").on("click", function(){
+                if ($("#edit").text() == "Edit description"){
+                    $("#edit").html('Cancel');
+                    $("#description").attr("contenteditable","true");
+                }
+
+                else if ($("#edit").text() == "Cancel"){
+
+                    $("#description h2").html(oldDescription);
+                    $("#edit").html('Edit description');
+                    $("#description").attr("contenteditable","false");
+
+                }
+            });
+
+            $("#save").on("click", function(){
+                var s = $("#description").text();
+
+                $("#save").prop('value', s);
+                $("#save").submit();
+            });
+		});
+		</script>
+
         {% if member %}
         <form action="{{ url_for('community', community=page.name) }}" method="post">
             <div class="form-group" style="float:right" >
@@ -33,8 +60,17 @@
             {% endfor %}
         </div>
 
-        <div class="textbox">
-            <h2>{{ page.description }}</h2>
+        <div id="comdes" class="textbox">
+            <div id = "description" contenteditable="false" ><h2>{{ page.description }}</h2></div>
+        </div>
+
+        <div style= "float:left; width:135%;">
+            <button class="btn btn-default" onclick = 'edit();' name = "edit" value="save" type="submit" id ="edit">Edit description</button>
+            <form style="display: inline-block" action="{{ url_for('community', community=page.name) }}" method="post">
+                <div class="form-group">
+                    <button class="btn btn-default" name = "save" onclick = "save();" value="t" type="submit" id ="save">Save</button>
+                </div>
+            </form>
         </div>
         {% if not films %}
 
