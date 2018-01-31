@@ -118,6 +118,10 @@ class Communities():
     def community_comments(community):
         return db.execute("SELECT username,datetime,comment FROM comment_section WHERE community = :community ORDER BY datetime(datetime) DESC", community=community)
 
+    # change description
+    def change_description(new_description, community):
+        return db.execute("UPDATE community_page SET description = :new_description WHERE name = :community", community = community, new_description = new_description)
+
     # Generate a list preview for search results.
     def preview(communityname):
         comlist = Lists.showlist(communityname)
