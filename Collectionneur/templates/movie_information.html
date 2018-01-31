@@ -77,38 +77,40 @@
 		</div>
 		{% endif %}
 
-    <p><font size="10">Actors that played in the movie</font></p>
+    <h2><b>Actors that played in the movie</b></h2><br>
+    <div class="container">
+    	{% for actor in actors %}
+    	    <a href="{{ url_for('actor_info', actor_id=actor.actor_id) }}">
+        	    <div class="card" style="height:300px; width:19%; display: inline-block; vertical-align: top; position: relative;">
+        	  		<div class="cardcontainer" style="height:230px;">
+        	  		    <img src={{ actor["image"]}} alt="{{ actor.name }}" style="max-height:230px; margin-top: 10px; vertical-align: center;">
+        	  		</div>
+        	  		<div class="cardcontainer" style="height:70px; margin-top: 10px;">
+                        <h4><b>{{ actor.name }}</b></h4>
+        		    </div>
+        		</div>
+        	</a>
+    	{% endfor %}
+    </div>
 
-    <table>
-        {% for actor in actors%}
-            <th width="20%"><font size="5">{{ actor["name"] }}</font>
-                <a href="{{ url_for('actor_info', actor_id=actor.actor_id) }}"><img src={{ actor["image"]}} alt="actor picture"></a>
-                <form action="{{ url_for('actor_info') }}">
-                    <fieldset>
-                        <div class="form-group">
-                            <button class="btn btn-default" type= "submit" name= "actor_id" value = {{actor["actor_id"]}} >Go to actor page</button>
-                        </div>
-                    </fieldset>
-                </form>
-            </th>
-        {% endfor %}
-    </table>
 
     <p><font size="10">Similar movies</font></p>
     <table>
 
-    {% for similar in similars %}
-    <th width="20%"><font size="5">{{ similar["title"] }}</font>
-    <a href="{{ url_for('movie_info', imdb_id=similar.imdb_id) }}"><img src={{ similar["image"]}} alt="movie picture"></a>
-    <form action="{{ url_for('movie_info') }}">
-        <fieldset>
-            <div class="form-group">
-                <button class="btn btn-default" type= "submit" name= "imdb_id" value = {{similar["imdb_id"]}} >Go to movie page</button>
-            </div>
-        </fieldset>
-    </form></th>
+    <table width="100%">
+        <thead>
+            <tr>
+                {% for similar in similars %}
+                <th width="20%">{{ similar["title"] }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
 
-    {% endfor %}
+        {% for similar in similars %}
+                <td style="text-align: center;">
+                    <a href="{{ url_for('movie_info', imdb_id=similar.imdb_id) }}"><img src={{ similar["image"]}} alt="movie picture" style="max-height:230px"></a>
+                </td>
+            </th>
+        {% endfor %}
     </table>
-
 {% endblock %}

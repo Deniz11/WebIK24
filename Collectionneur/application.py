@@ -47,7 +47,7 @@ def index():
         username = ""
     movies = home.get_popular_movies()
 
-    #print(movies)
+    #print(movies)s
     return render_template("index.html", movies=movies, pages=home.rank_communities(), username=username)
 
 @app.route("/login", methods=["GET", "POST"])
