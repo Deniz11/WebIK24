@@ -21,25 +21,17 @@
 
 		<title>Admin</title>
 </head>
-
-
-
-    <style>
-
+<style>
 h1.title {
 	font-size: 50px;
 	font-family: 'Passion One', cursive;
 	font-weight: 400;
 }
 
-
-
-
 hr{
 	width: 10%;
 	color: #fff;
 }
-
 
 a {
     color:black;
@@ -134,8 +126,8 @@ table tbody tr:last-child td:last-child {
     border-bottom: 0;
   }
 }
-    </style>
-    <body
+</style>
+  <body>
       <div class="container">
     	    <div class="row main">
     		    <div class="panel-heading">
@@ -143,9 +135,7 @@ table tbody tr:last-child td:last-child {
     	                <h1 class="title">All communities</h1>
     	               	<hr />
     	            </div>
-
-
-        <table class="table-hover border:none">
+          <table class="table-hover border:none">
             <thead>
                 <tr>
                   {% if session["user_id"] %}
@@ -163,7 +153,6 @@ table tbody tr:last-child td:last-child {
                 </tr>
             </thead>
             <tbody>
-
                 {% for page in overview %}
                     <tr  onclick="location.href='community?community={{ page.name }}'">
                         <td><strong>

@@ -21,24 +21,7 @@
 
 		<title>Admin</title>
 </head>
-    <!---
-    <form class="search" action="{{ url_for('search') }}" method="post">
-        <input type="text" placeholder="Search.." name="search">
-        <select style="float:left" name ="search_for">
-            <option value="None" {% if select_something_select %} selected {% endif %}>search for...</option>
-            <option value="movie" {% if movie_select %} selected {% endif %}>Movie</option>
-            <option value="actor" {% if actor_select %} selected {% endif %}>Actor</option>
-            <option value="community" {% if community_select %} selected {% endif %}>Community</option>
-        </select>
-        <button type="submit"><i class="fa fa-search"></i></button><br>
-
-    </form>
-
-    <br><br>
-    -->
-    <style>
-
-
+<style>
 h1.title {
 	font-size: 50px;
 	font-family: 'Passion One', cursive;
@@ -56,13 +39,7 @@ hr{
 	width: 10%;
 	color: #fff;
 }
-
 </style>
-
-
-
-
-
     {% if nothing_found %}
     <div class="container">
         <div class="row main">
@@ -84,15 +61,11 @@ hr{
     	            </div>
     {% endif %}
     {% for movie_info in all_movie_info %}
-
         <div class="container" style="display:flex;justify-content:center;align-items:center;">
-
 
         <div style="width:30%; float:left;">
             <a href="{{ url_for('movie_info', imdb_id=movie_info.imdb_id) }}"><img src={{movie_info["image"]}} alt="{{movie_info["title"]}}" style="border-radius: 5px; max-height:400px;"></a>
         </div>
-
-
         <div style="width:70%">
                 <ul style="width:100%">
                     <p style="border-bottom:1px solid grey">
@@ -184,12 +157,8 @@ hr{
     </p>
     </div>
     </div><br><br>
-
     {% endfor %}
-
-
     {% for community in communities_found %}
-
     <div class="container" style="display:flex;justify-content:center;align-items:center;">
             <div style="width:30%; float:left; max-height:400px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.5); transition: 0.3s;border-radius: 5px;">
                 <div class="tile"><img src="{{ community.preview[0] }}" ></div>
@@ -199,8 +168,7 @@ hr{
             </div>
 
         <div style="width:70%">
-
-    <p>
+        <p>
         <ul style="width:100%">
             <p style="border-bottom:1px solid grey">
                 <a href="{{ url_for('community', community=community["name"]) }}"><font size="10"><font style="font-family: 'Passion One', cursive;">{{community["name"]}}</font></font></a>
@@ -227,6 +195,5 @@ hr{
     </p>
     </div>
     </div><br><br>
-
     {% endfor %}
 {% endblock %}
