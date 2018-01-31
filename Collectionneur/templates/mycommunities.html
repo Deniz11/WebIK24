@@ -27,9 +27,9 @@
                         <td>{{ page.length }}</td>
                         <td>
                             <div>
-                                <form action="{{ url_for('community', community=page.name) }}" method="post">
+                                <form action="{{ url_for('mycommunities') }}" method="post">
                                     <div class="form-group" style="float:right" >
-                                        <button class="btn btn-default" name="comaction" value="leave" type="submit">Leave community</button>
+                                        <button class="btn btn-default" name="comaction" value="{{ page.name }}" type="submit">Leave community</button>
                                     </div>
                                 </form>
                             </div>

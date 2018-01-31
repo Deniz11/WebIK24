@@ -66,15 +66,17 @@ class Communities():
         # Returnt alle communities indien invoer leeg is.
         if not communityname:
             pages = db.execute("SELECT * FROM community_page")
-            for page in pages:
-                page["members"] = len(Communities.showmembers(page["name"]))
-                page["length"] = len(Communities.showlist(Communities.get_list_id(page["name"])))
-            return pages
+
         # Zoekt gegevens van specifieke community.
         else:
-            return db.execute("SELECT * FROM community_page WHERE LOWER(name)=:communityname",communityname=communityname.lower())
+            pages = db.execute("SELECT * FROM community_page WHERE LOWER(name)=:communityname",communityname=communityname.lower())
 
-    def mycommunities(userid):
+        for page in pages:
+            page["members"] = len(Communities.showmembers(page["name"]))
+            page["length"] = len(Communities.showlist(Communities.get_list_id(page["name"])))
+        return pages
+
+    def mycommunities():
         # Returns alle communities waar gebruiker lid van is
         pages = db.execute("SELECT communityname FROM community_users WHERE username=:username",username=session["username"])
         return [Communities.show(page["communityname"])[0] for page in pages]
