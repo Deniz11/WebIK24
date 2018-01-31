@@ -148,11 +148,18 @@ table tbody tr:last-child td:last-child {
         <table class="table-hover border:none">
             <thead>
                 <tr>
+                  {% if session["user_id"] %}
                     <th>Community</th>
                     <th>Description</th>
                     <th>Members</th>
                     <th>Items</th>
                     <th>Actions</th>
+                  {% else %}
+                    <th>Community</th>
+                    <th>Description</th>
+                    <th>Members</th>
+                    <th>Items</th>
+                  {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -170,21 +177,24 @@ table tbody tr:last-child td:last-child {
                         <td>{{ page.description }}</td>
                         <td>{{ page.members }}</td>
                         <td>{{ page.length }}</td>
+                        {% if not page.member and session["user_id"] %}
                         <td>
                             <div>
-                            {% if not page.member and session["user_id"] %}
                                 <form action="{{ url_for('community', community=page.name) }}" method="post">
                                     <div class="form-group" style="">
                                         <button class="btn btn-default" name="comaction" value="join" type="submit">Join community</button>
                                     </div>
                                 </form>
                             </div>
-                            {% elif page.member %}
+                        </td>
+                        {% elif page.member %}
+                          <td>
                                 <form action="{{ url_for('community', community=page.name) }}" method="post">
                                     <div class="form-group" style="">
                                         <button class="btn btn-default" name="comaction" value="leave" type="submit">Leave community</button>
                                     </div>
                                 </form>
+                          </td>
                             {% endif %}
                         </td>
                     </tr>

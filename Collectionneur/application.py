@@ -26,8 +26,6 @@ if app.config["DEBUG"]:
         response.headers["Pragma"] = "no-cache"
         return response
 
-# custom filter
-app.jinja_env.filters["usd"] = usd
 
 # configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_FILE_DIR"] = mkdtemp()
@@ -40,11 +38,15 @@ db = SQL("sqlite:///Collectionneur.db")
 
 @app.route("/")
 def index():
+
+    # Check if user is logged in.
     try:
         session["user_id"]
         username=session["username"]
     except KeyError:
         username = ""
+
+    # Get list of ppular movies.
     movies = home.get_popular_movies()
 
     return render_template("index.html", movies=movies, pages=home.rank_communities(), username=username)
@@ -188,39 +190,44 @@ def createcommunity():
 @login_required
 def community():
 
+    # Gather required information.
     films = Lists.showlist(request.args.get('community'))
     comments = com.community_comments(request.args.get('community'))
 
     if request.method == "POST":
 
+        # Get changed community description and save it.
         if request.form.get("save"):
             com.change_description(request.form.get("save"), request.args.get('community'))
             return render_template("community.html", mycom = com.mycommunities(), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
 
+        # Lets user join community.
         if request.form.get("comaction") == "join":
-
             com.join(session["username"] ,request.args.get('community'))
-
             return render_template("community.html", mycom = com.mycommunities(), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
 
+        # Lets user leave community.
         elif request.form.get("comaction") == "leave":
-
             com.remove_member(session["username"],request.args.get('community'))
-
             return render_template("community.html", mycom = com.mycommunities(), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
 
+        # Removes item from community list.
         elif request.form.get("comlistremove"):
             Lists.remove_item(Lists.get_listid(request.args.get('community')), request.form.get("comlistremove"))
             films = Lists.showlist(request.args.get('community'))
             return render_template("community.html", mycom = com.mycommunities(), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
 
+        # Add item to user list.
         if request.form.get("listadd") != 0:
             Lists.add_item(User.get_list_id(session["username"]), request.form.get("listadd"))
             return render_template("community.html" , mycom = com.mycommunities(), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
+
+        # Add item to other community list.
         elif request.form.get("comadd") != 0:
             Lists.add_item(com.get_list_id(request.form.get("comadd")), request.form.get("comadd"))
             return render_template("community.html" , mycom = com.mycommunities(), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
 
+        # Save comment.
         if request.form.get("commented"):
             username = session["username"]
             com.save_comment(username, request.args.get('community'), request.form.get("comment"))
@@ -232,23 +239,26 @@ def community():
         #wrong post request
         else:
             return render_template("community.html", mycom = com.mycommunities(), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
-
+    # Render page.
     else:
-
         return render_template("community.html" , mycom = com.mycommunities(), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
 
 @app.route("/communityoverview", methods=["GET", "POST"])
-
 def communityoverview():
+
+    # Get all information
     overview=com.show()
+
+    # Check if user is logged in.
     try:
         session["user_id"]
         username=session["username"]
+
+    # Add parameter to check if user is member of community.
     except KeyError:
         for item in overview:
             item["member"] = False
         return render_template("communityoverview.html", overview=overview)
-
     for item in overview:
         if session["username"] in com.showmembers(item["name"]):
             item["member"] = True
@@ -259,41 +269,51 @@ def communityoverview():
 
 @app.route("/mycommunities", methods=["GET", "POST"])
 @login_required
-
 def mycommunities():
+
+    # Leave community.
     if request.form.get("comaction"):
         com.remove_member(session["username"], request.form.get("comaction"))
+
+    # Show all communities the user is a member of.
     return render_template("mycommunities.html", pages=com.mycommunities())
 
 @app.route("/actor_info", methods=["GET", "POST"])
 def actor_info():
 
+    # Get information
     actors_information = Search.actor_information(request.args.get("actor_id"))
     recent_movies = Search.actor_movies(request.args.get("actor_id"))
 
+    # Show all actor info.
     return render_template("actor_information.html", actor = actors_information, recent_movies = recent_movies, actor_select = True)
 
 @app.route("/movie_info", methods=["GET", "POST"])
 def movie_info():
 
-
+    # Check if user is logged in.
     try:
         session["user_id"]
         mycommunities = com.mycommunities()
     except KeyError:
         mycommunities = []
 
+    # Get movie information.
     similar_films = Search.similar_films(request.args.get("imdb_id"))
     actors = Search.movie_actors(request.args.get("imdb_id"))
     full_movie_info = Search.title_info(request.args.get("imdb_id"))
 
     if request.method == "POST":
+        # Add movie to a user list.
         if request.form.get("listadd") == "add":
             Lists.add_item(User.get_list_id(session["username"]), request.args.get("imdb_id"))
             return render_template("movie_information.html", full_movie_info = full_movie_info, actors = actors, similars = similar_films, movie_select = True, mycom=mycommunities)
+
+        # Add movie to a community list.
         else:
             Lists.add_item(com.get_list_id(request.form.get("comadd")), request.args.get("imdb_id"))
             return render_template("movie_information.html", full_movie_info = full_movie_info, actors = actors, similars = similar_films, movie_select = True, mycom=mycommunities)
+    # Show movie info page.
     else:
         return render_template("movie_information.html", full_movie_info = full_movie_info, actors = actors, similars = similar_films, movie_select = True, mycom=mycommunities)
 
@@ -402,7 +422,23 @@ def search():
         for community in communities_found:
             community["preview"] = com.preview(community["name"])
 
-        return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + request.form.get("search")), community_select = True)
+        # Check for logged in user to ensure member functions work.
+        try:
+            session["user_id"]
+            mycom = com.mycommunities()
+        except KeyError:
+            mycom = []
+            for item in communities_found:
+                item["member"] = False
+            return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + request.form.get("search")), community_select = True, mycom=mycom)
+
+        for item in communities_found:
+            if session["username"] in com.showmembers(item["name"]):
+                item["member"] = True
+            else:
+                item["member"] = False
+
+        return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + request.form.get("search")), community_select = True, mycom=mycom)
 
     return render_template("search.html")
 
@@ -411,12 +447,14 @@ def search():
 @login_required
 def mylist():
 
+    # Remove item from list.
     if request.method == "POST":
-
         Lists.remove_item(Lists.get_listid(session["username"]), request.form.get("listremove"))
 
+    # Get all information.
     information = Lists.showlist(session["username"])
 
+    # Show list.
     return render_template("lists.html", information=information)
 
 
@@ -426,7 +464,7 @@ def mylist():
 @app.route("/myprofile", methods=["GET", "POST"])
 @login_required
 def myprofile():
-
+    # Show personal profile.
     return render_template("profilepage.html", movies=Lists.showlist(session["username"]), communities=com.mycommunities())
 
 
