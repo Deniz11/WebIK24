@@ -130,7 +130,7 @@ jQuery(document).ready(function($) {
                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>      {{ session["username"] }}<span class="caret"></span></a>
                           <ul class="dropdown-menu">
                             <li><a href="{{ url_for('myprofile') }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> My profile</a></li>
-                            <li><a href="{{ url_for('mylist') }}"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> My lists</a></li>
+                            <li><a href="{{ url_for('mylist') }}"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> My list</a></li>
                             <li><a href="{{ url_for('settings') }}"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> User Settings</a></li>
                             <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
                         </ul>
@@ -140,7 +140,6 @@ jQuery(document).ready(function($) {
                     <form class="navbar-form navbar-left" action="{{ url_for('search') }}" method="post">
                     <input type="text" placeholder="Search..." name="search" class="form-control">
                     <select class="form-control" name ="search_for">
-                        <option value="None" {% if select_something_select %} selected {% endif %}>Search for</option>
                         <option value="movie" {% if movie_select %} selected {% endif %}>Movie</option>
                         <option value="actor" {% if actor_select %} selected {% endif %}>Actor</option>
                         <option value="community" {% if community_select %} selected {% endif %}>Community</option>
@@ -193,7 +192,6 @@ jQuery(document).ready(function($) {
                     <form class="navbar-form navbar-left" action="{{ url_for('search') }}" method="post">
                     <input type="text" placeholder="Search..." name="search" class="form-control">
                     <select class="form-control" name ="search_for">
-                        <option value="None" {% if select_something_select %} selected {% endif %}>Search for</option>
                         <option value="movie" {% if movie_select %} selected {% endif %}>Movie</option>
                         <option value="actor" {% if actor_select %} selected {% endif %}>Actor</option>
                         <option value="community" {% if community_select %} selected {% endif %}>Community</option>

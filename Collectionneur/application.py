@@ -326,11 +326,6 @@ def search():
         flash("succesfully joined community")
         return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + split[1]), community_select = True)
 
-    # if nothing selected to search for
-    if request.form.get("search_for") == "None":
-        flash("please select something to search")
-        return render_template("search.html", select_something_select = True)
-
     # if movie selected to search for
     if request.form.get("search_for") == "movie":
 

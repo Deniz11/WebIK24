@@ -5,10 +5,64 @@
 {% endblock %}
 
 {% block main %}
+<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
+
+		<!-- Website CSS style -->
+		<link rel="stylesheet" type="text/css" href="assets/css/main.css">
+
+		<!-- Website Font style -->
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
+		<!-- Google Fonts -->
+		<link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+
+		<title>Admin</title>
+	</head>
+<style>
+
+
+h1.title {
+	font-size: 50px;
+	font-family: 'Passion One', cursive;
+	font-weight: 400;
+}
+
+
+h2.description {
+	font-size: 25px;
+	font-family: 'Oxygen', cursive;
+	font-weight: 400;
+
+
+hr{
+	width: 10%;
+	color: #fff;
+}
+
+</style>
 
 	<body>
-	    <h1>Moviedatabase</h1>
-	    <h2>On this site you are able to make lists with your favorite movies and follow communities with the latest movie-updates.</h2><br>
+        <div class="container">
+    	    <div class="row main">
+    		    <div class="panel-heading">
+    	            <div class="panel-title text-center">
+    	                <h1 class="title">Moviedatabase</h1>
+    	               	<hr />
+    	            </div>
+    	        </div>
+                <div class="container">
+		        <div class="row main">
+			         <div class="panel-heading">
+                        <div class="panel-title text-center">
+	               	        <h2 class="description">On this site you are able to make lists with your favorite movies and follow communities with the latest movie-updates.</h2>
+	               	    <hr />
+	                   </div>
+	               </div>
+	               <br>
+
 
 
 
@@ -55,32 +109,32 @@
 
                             <div id="slide-content" style="display: none;">
                                 <div id="slide-content-0">
-                                    <a href="{{ url_for('movie_info', imdb_id=movies[0].id) }}"><h2 style="text-align: center;">{{ movies[0].title }}</h2></a>
+                                    <a href="{{ url_for('movie_info', imdb_id=movies[0].id) }}"><h2 style="text-align: center; font-family: 'Passion One', cursive;">{{ movies[0].title }}</h2></a>
                                     <p>{{ movies[0].summary}}</p>
                                 </div>
 
                                 <div id="slide-content-1">
-                                    <a href="{{ url_for('movie_info', imdb_id=movies[1].id) }}"><h2 style="text-align: center;">{{ movies[1].title }}</h2></a>
+                                    <a href="{{ url_for('movie_info', imdb_id=movies[1].id) }}"><h2 style="text-align: center; font-family: 'Passion One', cursive;">{{ movies[1].title }}</h2></a>
                                     <p>{{ movies[1].summary}}</p>
                                 </div>
 
                                 <div id="slide-content-2">
-                                    <a href="{{ url_for('movie_info', imdb_id=movies[2].id) }}"><h2 style="text-align: center;">{{ movies[2].title }}</h2></a>
+                                    <a href="{{ url_for('movie_info', imdb_id=movies[2].id) }}"><h2 style="text-align: center; font-family: 'Passion One', cursive;">{{ movies[2].title }}</h2></a>
                                     <p>{{ movies[2].summary}}</p>
                                 </div>
 
                                 <div id="slide-content-3">
-                                    <a href="{{ url_for('movie_info', imdb_id=movies[3].id) }}"><h2 style="text-align: center;">{{ movies[3].title }}</h2></a>
+                                    <a href="{{ url_for('movie_info', imdb_id=movies[3].id) }}"><h2 style="text-align: center; font-family: 'Passion One', cursive;">{{ movies[3].title }}</h2></a>
                                     <p>{{ movies[3].summary}}</p>
                                 </div>
 
                                 <div id="slide-content-4">
-                                    <a href="{{ url_for('movie_info', imdb_id=movies[4].id) }}"><h2 style="text-align: center;">{{ movies[4].title }}</h2></a>
+                                    <a href="{{ url_for('movie_info', imdb_id=movies[4].id) }}"><h2 style="text-align: center; font-family: 'Passion One', cursive;">{{ movies[4].title }}</h2></a>
                                     <p>{{ movies[4].summary}}</p>
                                 </div>
 
                                 <div id="slide-content-5">
-                                    <a href="{{ url_for('movie_info', imdb_id=movies[5].id) }}"><h2 style="text-align: center;">{{ movies[5].title }}</h2></a>
+                                    <a href="{{ url_for('movie_info', imdb_id=movies[5].id) }}"><h2 style="text-align: center; font-family: 'Passion One', cursive;">{{ movies[5].title }}</h2></a>
                                     <p>{{ movies[5].summary}}</p>
                                 </div>
                             </div>
@@ -126,7 +180,7 @@
     			<div class="card">
     	  			<img src="https://cdn3.iconfinder.com/data/icons/iboxgrey/Group.png" alt="Avatar">
     	  			<div class="cardcontainer">
-    	    			<h4><b><a href="{{ url_for('community', community=item.name) }}">{{ item.name }}</a></b></h4>
+    	    			<h4><b><a href="{{ url_for('community', community=item.name) }}"><font style="font-family: 'Passion One', cursive;">{{ item.name }}</font></a></b></h4>
     	    			<p>{{ item.description }}</p>
     	  			</div>
     			</div>

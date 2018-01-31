@@ -5,22 +5,116 @@
 {% endblock %}
 
 {% block main %}
+	<style>
+a {
+    color:black;
+}
+body {
+  font-family: "Open Sans", sans-serif;
+  line-height: 1.25;
+}
+table {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+table tr {
+  background: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: .35em;
+}
+table th,
+table td {
+  padding: .625em;
+  text-align: center;
+  border: none;
+}
+table th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  background-color: grey;
+}
+table thead th:first-child {
+    border-radius: 10px 0 0 0;
+}
+table thead th:last-child {
+    border-radius: 0 10px 0 0;
+}
+table tbody tr:last-child td:first-child {
+    border-radius: 0 0 0 10px;
+}
+table tbody tr:last-child td:last-child {
+    border-radius: 0 0 10px 0;
+}
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #B0E0E6;
+}
 
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+  table caption {
+    font-size: 1.3em;
+  }
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  table tr {
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: .625em;
+  }
+  table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+  table td:before {
+    /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+    </style>
     <body>
         {% if not information %}
-            <table class="list">
-    	    <caption>My movies</caption>
+            <table class="table-hover border:none">
+          <h1>My movies</h1>
     	    <thead>
     			<tr>
     			    <th>No films found...</th>
     			</tr>
     		</thead>
     		<tr>
-                <td><a href="{{ url_for('search') }}">Go add some!</a></td>
+                <td><strong><a href="{{ url_for('search') }}">Go add some!</a></strong></td>
     		</tr>
     		</table>
     	{% else %}
-        <table class="list">
+        <table class="table-hover border:none">
+          <h1>My movies</h1>
             <thead>
                 <tr>
                     <th>Cover</th>
@@ -41,7 +135,7 @@
                             <td>
                                 <div>
                                     <form action="{{ url_for('mylist') }}" method="post">
-                                        <div class="form-group" style="float:right">
+                                        <div class="form-group">
                                             <button class="btn btn-default" name="listremove" value="{{ info.film_id }}" type="submit">Remove</button>
                                         </div>
                                     </form>
