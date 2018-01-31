@@ -225,13 +225,14 @@ def community():
             return render_template("community.html", mycom = com.mycommunities(), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
 
         # Add item to user list.
-        if request.form.get("listadd") != 0:
+        if request.form.get("listadd"):
             Lists.add_item(User.get_list_id(session["username"]), request.form.get("listadd"))
             return render_template("community.html" , mycom = com.mycommunities(), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
 
         # Add item to other community list.
-        elif request.form.get("comadd") != 0:
-            Lists.add_item(com.get_list_id(request.form.get("comadd")), request.form.get("comadd"))
+        elif request.form.get("comadd"):
+            print(request.form.get("comadd")+"fwkogfwkefgjew")
+            Lists.add_item(com.get_list_id(request.args.get("community")), request.form.get("comadd"))
             return render_template("community.html" , mycom = com.mycommunities(), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
 
         #wrong post request
@@ -315,44 +316,15 @@ def movie_info():
     else:
         return render_template("movie_information.html", full_movie_info = full_movie_info, actors = actors, similars = similar_films, movie_select = True, mycom=mycommunities)
 
-
 @app.route("/search", methods=["GET", "POST"])
 def search():
-
-    # check if user want to go to community page
-    if request.form.get("go to community page"):
-
-        return redirect(url_for('community', community=request.form.get("go to community page")))
-
-    # check if user want to join community
-    if request.form.get("join community"):
-
-        # get community to join and to search
-        split = split_community_search(request.form.get("join community"))
-
-        # search communities
-        communities_found = Search.community(split[1])
-
-        # check if user is logged in
-        if "user_id" not in session:
-            flash("To use this function, please log in")
-            return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + split[1]), community_select = True)
-
-        # join community and if already joined notify user
-        if not com.join(session["username"], split[0]):
-            flash("you are already a member of this community")
-            return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + split[1]), community_select = True)
-
-        flash("succesfully joined community")
-        return render_template("search.html", communities_found = communities_found, to_search = ("__````@#$!^$@#86afsdc" + split[1]), community_select = True)
 
     # if movie selected to search for
     if request.form.get("search_for") == "movie":
 
         # check if something filled in
         if not request.form.get("search"):
-            flash("please fill in something to search")
-            return render_template("search.html", movie_select = True)
+            return render_template("search.html", movie_select = True, nothing_found = True)
 
         # check if valid search given
         if not only_signs(request.form.get("search")):
@@ -363,13 +335,15 @@ def search():
 
         # check if something found
         if not all_movie_info:
-            flash("Nothing found")
-            return render_template("search.html", movie_select = True)
+            return render_template("search.html", movie_select = True, nothing_found = True)
+
+        # check if user logged in and get his community list
         try:
             session["user_id"]
             mycom = com.mycommunities()
         except KeyError:
             mycom = []
+
         return render_template("search.html", all_movie_info=all_movie_info, movie_select = True, mycom=mycom)
 
     # if actor selected to search for
@@ -380,12 +354,10 @@ def search():
 
         # check if something filled in
         if not to_search:
-            flash("please fill in something to search")
             return render_template("search.html", actor_select = True)
 
         # check if valid search given
         if not only_signs(request.form.get("search")):
-            flash("Invalid search, search contains only special characters")
             return render_template("search.html", actor_select = True)
 
         # search actors
@@ -393,7 +365,6 @@ def search():
 
         # notify that no actors are found
         if not Search.search_actor(to_search):
-            flash("Did not find any actors")
             render_template("search.html", community_select = True)
 
         return render_template("search.html", actors = actors_information, actor_select = True)
@@ -407,7 +378,6 @@ def search():
 
         # check if something filled in
         if not to_search:
-            flash("please fill in something to search")
             return render_template("search.html", community_select = True)
 
         # search communities
@@ -415,8 +385,9 @@ def search():
 
         # notify that no communities similiar to search
         if not communities_found:
-            flash("no communities found")
             render_template("search.html", community_select = True)
+
+        # get community preview
         for community in communities_found:
             community["preview"] = com.preview(community["name"])
 
@@ -454,10 +425,6 @@ def mylist():
 
     # Show list.
     return render_template("lists.html", information=information)
-
-
-
-
 
 @app.route("/myprofile", methods=["GET", "POST"])
 @login_required

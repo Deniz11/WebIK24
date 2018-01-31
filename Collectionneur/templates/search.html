@@ -63,8 +63,17 @@ hr{
 
 
 
+    {% if nothing_found %}
+    <div class="container">
+        <div class="row main">
+    	    <div class="panel-heading">
+                <div class="panel-title text-center">
+                    <h1 class="title">No results</h1>
+                   	<hr />
+                </div>
+            </div>
 
-
+    {% else %}
     <div class="container">
     	    <div class="row main">
     		    <div class="panel-heading">
@@ -73,6 +82,7 @@ hr{
     	               	<hr />
     	            </div>
     	            </div>
+    {% endif %}
     {% for movie_info in all_movie_info %}
 
         <div class="container" style="display:flex;justify-content:center;align-items:center;">
