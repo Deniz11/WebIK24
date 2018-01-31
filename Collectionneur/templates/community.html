@@ -64,6 +64,7 @@
             <div id = "description" contenteditable="false" ><h2>{{ page.description }}</h2></div>
         </div>
 
+        {% if member %}
         <div style= "float:left; width:135%;">
             <button class="btn btn-default" onclick = 'edit();' name = "edit" value="save" type="submit" id ="edit">Edit description</button>
             <form style="display: inline-block" action="{{ url_for('community', community=page.name) }}" method="post">
@@ -72,6 +73,7 @@
                 </div>
             </form>
         </div>
+        {% endif %}
         {% if not films %}
 
         <div class="container" style= "float:left; margin:10px; width:75%">
