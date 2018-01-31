@@ -5,6 +5,22 @@
 {% endblock %}
 
 {% block main %}
+<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
+
+		<!-- Website CSS style -->
+		<link rel="stylesheet" type="text/css" href="assets/css/main.css">
+
+		<!-- Website Font style -->
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
+		<!-- Google Fonts -->
+		<link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+
+		<title>Admin</title>
+</head>
     <!---
     <form class="search" action="{{ url_for('search') }}" method="post">
         <input type="text" placeholder="Search.." name="search">
@@ -34,7 +50,7 @@
         <div style="width:70%">
                 <ul style="width:100%">
                     <p style="border-bottom:1px solid grey">
-                    <a href="{{ url_for('movie_info', imdb_id=movie_info.imdb_id) }}"><font size="10">{{movie_info["title"]}}</font></a>
+                    <a href="{{ url_for('movie_info', imdb_id=movie_info.imdb_id) }}"><font size="10"><font style="font-family: 'Passion One', cursive;">{{movie_info["title"]}}</font></font></h2></a>
                     </p>
 
                     <p style="border-bottom:1px solid grey">
@@ -105,7 +121,7 @@
     <p>
         <ul style="width:100%">
             <p style="border-bottom:1px solid grey">
-                <a href="{{ url_for('actor_info', actor_id=actor.actor_id) }}"><font size="10">{{actor["actor_name"]}}</font></a>
+                <a href="{{ url_for('actor_info', actor_id=actor.actor_id) }}"><font size="10"><font style="font-family: 'Passion One', cursive;">{{actor["actor_name"]}}</font></font></a>
             </p>
             <p style="border-bottom:1px solid grey">
                 <font size="2">birthdate: {{ actor["birthdate"]}}</font>
@@ -138,7 +154,7 @@
     <p>
         <ul style="width:100%">
             <p style="border-bottom:1px solid grey">
-                <a href="{{ url_for('community', community=community["name"]) }}"><font size="10">{{community["name"]}}</font></a>
+                <a href="{{ url_for('community', community=community["name"]) }}"><font size="10"><font style="font-family: 'Passion One', cursive;">{{community["name"]}}</font></font></a>
             </p>
             <p style="border-bottom:1px solid grey">
                 <font size="2">description: {{community["description"]}}</font>
