@@ -72,13 +72,15 @@
                         </td>
                         <td>
                             <div>
+                                {% if member %}
                                 <div>
                                     <form action="{{ url_for('community', community=page.name) }}" method="post">
                                         <div class="form-group" style="float:right">
-                                            <button class="btn btn-default" name="comlistremove" value="{{ film.film_id }}" type="submit">Remove</button>
+                                            <button class="btn btn-default btn-sm" name="comlistremove" value="{{ film.film_id }}" type="submit"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>   Remove</button>
                                         </div>
                                     </form>
                                 </div>
+                                {% endif %}
 
 
 

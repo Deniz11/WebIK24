@@ -121,13 +121,15 @@
 <h2 text-align="left" ><b>Popular communities</b></h2><br>
 <div class="container"style=" display: flex;">
 			{% for item in pages %}
-			<div class="card">
-	  			<img src="https://cdn3.iconfinder.com/data/icons/iboxgrey/Group.png" alt="Avatar">
-	  			<div class="cardcontainer">
-	    			<h4><b><a href="{{ url_for('community', community=item.name) }}">{{ item.name }}</a></b></h4>
-	    			<p>{{ item.description }}</p>
-	  			</div>
-			</div>
+			<a href="{{ url_for('community', community=item.name) }}">
+    			<div class="card">
+    	  			<img src="https://cdn3.iconfinder.com/data/icons/iboxgrey/Group.png" alt="Avatar">
+    	  			<div class="cardcontainer">
+    	    			<h4><b><a href="{{ url_for('community', community=item.name) }}">{{ item.name }}</a></b></h4>
+    	    			<p>{{ item.description }}</p>
+    	  			</div>
+    			</div>
+			</a>
 			{% endfor %}
 </div>
 <!--
