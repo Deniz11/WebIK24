@@ -194,6 +194,10 @@ def community():
 
     if request.method == "POST":
 
+        if request.form.get("save"):
+            com.change_description(request.form.get("save"), request.args.get('community'))
+            return render_template("community.html", mycom = com.mycommunities(), comments = comments, page=com.show(request.args.get('community'))[0], members=com.showmembers(request.args.get('community')), films=films, member=com.member(session["user_id"], request.args.get('community')))
+
         if request.form.get("comaction") == "join":
 
             com.join(session["username"] ,request.args.get('community'))
