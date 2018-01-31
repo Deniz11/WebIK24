@@ -160,12 +160,16 @@ hr{
     {% endfor %}
     {% for community in communities_found %}
     <div class="container" style="display:flex;justify-content:center;align-items:center;">
-            <div style="width:30%; float:left; max-height:400px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.5); transition: 0.3s;border-radius: 5px;">
-                <div class="tile"><img src="{{ community.preview[0] }}" ></div>
-                <div class="tile"><img src="{{ community.preview[1] }}" ></div>
-                <div class="tile"><img src="{{ community.preview[2] }}" ></div>
-                <div class="tile"><img src="{{ community.preview[3] }}" ></div>
-            </div>
+            <table style="width:auto; float:left; max-height:200px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.5); transition: 0.3s;border-radius: 5px;">
+                <tr>
+                    <td style="max-height:50%; max-width:50%;"><img src="{{ community.preview[0] }}" alt="{{ community.preview[0] }}" style="border-radius: 5px; max-height:100px; max-width:70px;"></td>
+                    <td style="max-height:50%; max-width:50%;"><img src="{{ community.preview[1] }}" alt="{{ community.preview[1] }}" style="border-radius: 5px; max-height:100px; max-width:70px;"></td>
+                </tr>
+                <tr>
+                    <td style="max-height:50%; max-width:50%;"><img src="{{ community.preview[2] }}" alt="{{ community.preview[2] }}" style="border-radius: 5px; max-height:100px; max-width:70px;"></td>
+                    <td style="max-height:50%; max-width:50%;"><img src="{{ community.preview[3] }}" alt="{{ community.preview[3] }}" style="border-radius: 5px; max-height:100px; max-width:70px;"></td>
+                </tr>
+            </table>
 
         <div style="width:70%">
         <p>
