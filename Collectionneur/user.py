@@ -13,18 +13,19 @@ class User():
         UserInfo = db.execute("SELECT * FROM users WHERE username=:username", username=username)
         return UserInfo
 
+    # register user
     def registeruser(username, hash1):
-        # register user
         hash1 = pwd_context.hash(request.form.get("password"))
         db.execute("INSERT INTO users (username, hash) VALUES(:username, :password)", username=username, password=hash1)
         return True
 
+    # update password
     def changepassword(hash1, id):
-        # update password
         db.execute("UPDATE users SET hash = :hash1 WHERE id= :id ",hash1 = hash1, id = id)
         # show index page
         return True
 
+    # delete account
     def deleteaccount(username):
 
         # delete from community
@@ -48,6 +49,7 @@ class User():
         # show index/log in page
         return True
 
+    # check if user exists
     def userexist(username):
         # return row if username exists in users or community table
         UsernameCheck = db.execute("SELECT * FROM users WHERE username = :username", username=username)
@@ -57,11 +59,12 @@ class User():
         else:
             return True
 
+    # get user password
     def requestpassword(id):
         rows = db.execute("SELECT hash FROM users WHERE id = :id", id=id)
         return rows
 
-
+    # get list id of user
     def get_list_id(username):
         return db.execute("SELECT * FROM lists WHERE owner = :username", username=username)[0]["id"]
 
