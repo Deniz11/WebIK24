@@ -36,7 +36,43 @@
 
     <br><br>
     -->
-    <h1>Results</h1>
+    <style>
+
+
+h1.title {
+	font-size: 50px;
+	font-family: 'Passion One', cursive;
+	font-weight: 400;
+}
+
+
+h2.description {
+	font-size: 25px;
+	font-family: 'Oxygen', cursive;
+	font-weight: 400;
+
+
+hr{
+	width: 10%;
+	color: #fff;
+}
+
+</style>
+
+
+
+
+
+
+
+    <div class="container">
+    	    <div class="row main">
+    		    <div class="panel-heading">
+    	            <div class="panel-title text-center">
+    	                <h1 class="title">Results</h1>
+    	               	<hr />
+    	            </div>
+    	            </div>
     {% for movie_info in all_movie_info %}
 
         <div class="container" style="display:flex;justify-content:center;align-items:center;">
