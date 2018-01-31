@@ -20,108 +20,141 @@
 
     <br><br>
     -->
+    <h1>Results</h1>
     {% for movie_info in all_movie_info %}
 
-    <br><p>
-        <br><font size="10">{{movie_info["title"]}}</font><br>
-    </p>
-    <a href="{{ url_for('movie_info', imdb_id=movie_info.imdb_id) }}"><img src={{movie_info["image"]}} alt="movie picture" height="382" width="268"></a>
+        <div class="container" style="display:flex;justify-content:center;align-items:center;">
 
-    <p>
-        <ul style="width:100%">
-            <p style="border-bottom:1px solid grey">
-            <font size="2">title: {{movie_info["title"]}}</font>
-            </p>
 
-            <p style="border-bottom:1px solid grey">
-            <font size="2">year: {{movie_info["year"]}}</font>
-            </p>
+        <div style="width:30%; float:left;">
+            <a href="{{ url_for('movie_info', imdb_id=movie_info.imdb_id) }}"><img src={{movie_info["image"]}} alt="{{movie_info["title"]}}" style="border-radius: 5px; max-height:400px;"></a>
+        </div>
 
-            <p style="border-bottom:1px solid grey">
-            <font size="2">{{movie_info["short plot"]}}</font>
-            </p>
 
-            <form action="{{ url_for('movie_info') }}">
-                <fieldset>
-                    <div class="form-group">
-                        <button class="btn btn-default" type= "submit" name= "imdb_id" value = {{movie_info["imdb_id"]}} >More information</button>
-                    </div>
-                </fieldset>
-            </form>
-        </ul>
-    </p><br>
+        <div style="width:70%">
+                <ul style="width:100%">
+                    <p style="border-bottom:1px solid grey">
+                    <a href="{{ url_for('movie_info', imdb_id=movie_info.imdb_id) }}"><font size="10">{{movie_info["title"]}}</font></a>
+                    </p>
 
+                    <p style="border-bottom:1px solid grey">
+                    <font size="2">year: {{movie_info["year"]}}</font>
+                    </p>
+
+                    <p style="border-bottom:1px solid grey">
+                    <font size="2">plot: {{movie_info["short plot"]}}</font>
+                    </p>
+                    <p>
+                        {% if session.user_id %}
+                        <!-- Trigger the modal with a button -->
+                		<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">Add to list/community</button>
+                		<!-- Modal -->
+                		<div id="myModal" class="modal fade" role="dialog">
+                		  <div class="modal-dialog modal-sm">
+
+                		    <!-- Modal content-->
+                		    <div class="modal-content">
+                		      <div class="modal-header">
+                		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                		        <h3 class="modal-title">Add to:</h3>
+                		      </div>
+                		      <div class="modal-body">
+                		      <div class="container">
+                		          <form action="{{ url_for('movie_info', imdb_id=all_movie_info.imdb_id) }}" method="post">
+                                            <div class="form-group" style="float:left">
+                                                <button class="btn btn-default" name="listadd" value="add" type="submit">My list</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                		          <h4 text-align:"left">Community:</h4>
+                		          {% if not mycom %}
+                		              <ul><a href="{{ url_for('communityoverview') }}">Go join some communities!</a></ul>
+                		          {% else %}
+                		          {% for item in mycom %}
+                		              <div class="container">
+                                        <form action="{{ url_for('movie_info', imdb_id=all_movie_info .imdb_id) }}" method="post">
+                                            <div class="form-group" style="float:left">
+                                                <button class="btn btn-default" name="comadd" value={{ item.name }} type="submit">{{ item.name }}</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                	{% endfor %}
+                		          {% endif %}
+                		      </div>
+                		    </div>
+                		  </div>
+                		</div>
+                		{% endif %}
+                    </p>
+                </ul>
+        </div>
+    </div><br><br>
     {% endfor %}
 
     {% for actor in actors %}
 
-    <br><p>
-        <br><font size="10">{{actor["actor_name"]}}</font><br>
-    </p>
-    <a href="{{ url_for('actor_info', actor_id=actor.actor_id) }}"><img src={{actor["image"]}} alt="actor picture" height="382" width="268"></a>
+    <div class="container" style="display:flex;justify-content:center;align-items:center;">
+        <div style="width:30%; float:left;">
+            <a href="{{ url_for('actor_info', actor_id=actor.actor_id) }}"><img src="{{actor["image"]}}" style="border-radius: 5px; max-height:400px;"></a>
+        </div>
+
+        <div style="width:70%">
 
     <p>
         <ul style="width:100%">
             <p style="border-bottom:1px solid grey">
-            <font size="2">birthdate: {{ actor["birthdate"]}}</font>
+                <a href="{{ url_for('actor_info', actor_id=actor.actor_id) }}"><font size="10">{{actor["actor_name"]}}</font></a>
+            </p>
+            <p style="border-bottom:1px solid grey">
+                <font size="2">birthdate: {{ actor["birthdate"]}}</font>
             </p>
 
             <p style="border-bottom:1px solid grey">
-            <font size="2">trademarks: {{ actor["trademarks"] }}</font>
+                <font size="2">trademarks: {{ actor["trademarks"] }}</font>
             </p>
 
             <p style="border-bottom:1px solid grey">
-            <font size="2">jobs: {{ actor["jobs"] }}</font>
+                <font size="2">jobs: {{ actor["jobs"] }}</font>
             </p>
-
-            <form action="{{ url_for('actor_info') }}">
-                <fieldset>
-                    <div class="form-group">
-                        <button class="btn btn-default" type= "submit" name= "actor_id" value = {{actor["actor_id"]}} >More information</button>
-                    </div>
-                </fieldset>
-            </form>
         </ul>
-    </p><br>
+    </p>
+    </div>
+    </div><br><br>
 
     {% endfor %}
+
 
     {% for community in communities_found %}
 
-    <br><p style="border-bottom:1px solid grey">
-        <br><font size="10">{{community["name"]}}</font><br>
-    </p>
+    <div class="container" style="display:flex;justify-content:center;align-items:center;">
+        <div style="width:30%; float:left;">
+            <a href="{{ url_for('community', community=community["name"]) }}"><img src="https://cdn3.iconfinder.com/data/icons/iboxgrey/Group.png" alt="Avatar" style="border-radius: 5px; max-height:400px;"></a>
+        </div>
+
+        <div style="width:70%">
 
     <p>
         <ul style="width:100%">
-            <p>
-            <font size="5">description: {{community["description"]}}</font>
+            <p style="border-bottom:1px solid grey">
+                <a href="{{ url_for('community', community=community["name"]) }}"><font size="10">{{community["name"]}}</font></a>
+            </p>
+            <p style="border-bottom:1px solid grey">
+                <font size="2">description: {{community["description"]}}</font>
             </p>
 
-            <p>
-            <font size="5">total members: {{community["members amount"]}}</font>
+            <p style="border-bottom:1px solid grey">
+                <font size="2">total members: {{community["members amount"]}}</font>
             </p>
 
-            <form action="{{ url_for('search') }}" method="post">
-                <fieldset>
-                    <div class="form-group">
-                        <button class="btn btn-default" type= "submit" name= "join community" value = {{community["name"] + to_search}} >Join community</button>
-                    </div>
-                </fieldset>
-            </form>
-
-            <form action="{{ url_for('search') }}" method="post">
-                <fieldset>
-                    <div class="form-group">
-                        <button class="btn btn-default" type= "submit" name= "go to community page" value = {{community["name"]}} >Go to community page</button>
-                    </div>
-                </fieldset>
-            </form>
-
+            <p style="border-bottom:1px solid grey">
+                KNOP KNOP
+            </p>
         </ul>
-    </p><br>
+    </p>
+    </div>
+    </div><br><br>
 
     {% endfor %}
-
-
 {% endblock %}

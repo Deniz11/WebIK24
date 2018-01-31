@@ -350,7 +350,7 @@ def search():
             flash("Nothing found")
             return render_template("search.html", movie_select = True)
 
-        return render_template("search.html", all_movie_info=all_movie_info, movie_select = True)
+        return render_template("search.html", all_movie_info=all_movie_info, movie_select = True, mycom=com.mycommunities())
 
     # if actor selected to search for
     if request.form.get("search_for") == "actor":

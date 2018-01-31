@@ -11,11 +11,11 @@
 
 
         <div style="width:30%; float:left;">
-            <img src={{full_movie_info["image"]}} alt="movie picture" style="border-radius: 5px; max-height:400px;">
+            <img src={{full_movie_info["image"]}} alt="{{full_movie_info["title"]}}" style="border-radius: 5px; max-height:400px;">
         </div>
 
 
-        <div>
+        <div style="width:70%">
                 <ul style="width:100%">
                     <p style="border-bottom:1px solid grey">
                     <font size="10">{{full_movie_info["title"]}}</font>
@@ -32,18 +32,9 @@
                     <p style="border-bottom:1px solid grey">
                     <font size="2">rating : {{full_movie_info["rating"]}}</font>
                     </p>
-                </ul>
-        </div>
-    </div>
-    <br>
-    <p style="border-bottom:1px solid grey">
-        <font size="2">plot: {{full_movie_info["plot"]}}</font>
-    </p>
 
-
-
-
-    {% if session.user_id %}
+                    <p>
+                        {% if session.user_id %}
         <!-- Trigger the modal with a button -->
 		<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">Add to list/community</button>
 		<!-- Modal -->
@@ -85,6 +76,17 @@
 		  </div>
 		</div>
 		{% endif %}
+                    </p>
+                </ul>
+        </div>
+    </div>
+    <br>
+    <p style="border-bottom:1px solid grey; width:70%; margin-left:15%; margin-right:15%;">
+        <font size="2">{{full_movie_info["plot"]}}</font>
+    </p>
+
+
+
 
 	<h2><b>Similar movies</b></h2><br>
     <div class="container">
