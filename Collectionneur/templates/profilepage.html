@@ -5,7 +5,44 @@
 {% endblock %}
 
 {% block main %}
+<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
+
+		<!-- Website CSS style -->
+		<link rel="stylesheet" type="text/css" href="assets/css/main.css">
+
+		<!-- Website Font style -->
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
+		<!-- Google Fonts -->
+		<link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+
+		<title>Admin</title>
+</head>
+
+
+
+
     <style>
+
+h1.title {
+	font-size: 50px;
+	font-family: 'Passion One', cursive;
+	font-weight: 400;
+}
+
+
+
+
+hr{
+	width: 10%;
+	color: #fff;
+}
+
+
+
 a {
     color:black;
 }
@@ -101,7 +138,16 @@ table tbody tr:last-child td:last-child {
     </style>
     </style>
 	<body>
-	    <h1 align="center">My profile</h1>
+	    <div class="container">
+    	    <div class="row main">
+    		    <div class="panel-heading">
+    	            <div class="panel-title text-center">
+    	                <h1 class="title" text-align:"center">My profile</h1>
+    	               	<hr />
+    	            </div>
+
+
+
         {% if not movies %}
             <table class="filmindex">
     	    <caption>My movies</caption>
