@@ -128,7 +128,7 @@ table tbody tr:last-child td:last-child {
             </thead>
             <tbody>
                 {% for page in pages %}
-                    <tr>
+                    <tr onclick="location.href='community?community={{ page.name }}'">
                         <td><strong><a href="{{ url_for('community', community=page.name) }}">{{ page.name }}</a></strong></td>
                         <td>{{ page.description }}</td>
                         <td>{{ page.members }}</td>
